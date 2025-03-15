@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
+@Table(schema = "vector_array")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -16,7 +17,7 @@ import java.util.List;
 public class FloatArrayVectorState extends BaseArrayVectorState<Float> {
 
     @ElementCollection
-    @CollectionTable(name = "float_array_values", joinColumns = @JoinColumn(name = "entity_id"))
+    @CollectionTable(name = "float_array_values", schema = "value", joinColumns = @JoinColumn(name = "entity_id"))
     @Column(name = "float_value")
     private List<Float> array;
 }
