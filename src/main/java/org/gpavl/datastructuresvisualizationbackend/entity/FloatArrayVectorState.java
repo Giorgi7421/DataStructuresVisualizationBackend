@@ -19,5 +19,5 @@ public class FloatArrayVectorState extends BaseArrayVectorState {
     @ElementCollection
     @CollectionTable(name = "float_array_values", schema = "value", joinColumns = @JoinColumn(name = "entity_id"))
     @Column(name = "float_value")
-    private List<Float> array;
+    private List<Double> array;
 }

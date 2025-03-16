@@ -1,5 +1,6 @@
 package org.gpavl.datastructuresvisualizationbackend.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorCreateRequest;
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorStateResponse;
@@ -19,7 +20,7 @@ public class ArrayVectorController {
 
     @PostMapping("/create")
     public <T> ResponseEntity<ArrayVectorStateResponse<T>> createArrayVector(
-            @RequestBody ArrayVectorCreateRequest<T> arrayVectorCreationRequest
+            @Valid @RequestBody ArrayVectorCreateRequest<T> arrayVectorCreationRequest
     ) {
         ArrayVectorStateResponse<T> response = arrayVectorService.createArrayVector(arrayVectorCreationRequest);
         return ResponseEntity.ok(response);

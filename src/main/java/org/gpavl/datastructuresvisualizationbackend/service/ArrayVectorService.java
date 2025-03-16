@@ -14,35 +14,15 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@AllArgsConstructor
 public class ArrayVectorService {
 
-    private final IntArrayVectorRepository intArrayVectorRepository;
-    private final StringArrayVectorRepository stringArrayVectorRepository;
-    private final CharArrayVectorRepository charArrayVectorRepository;
-    private final FloatArrayVectorRepository floatArrayVectorRepository;
-    private final BoolArrayVectorRepository boolArrayVectorRepository;
+    private IntArrayVectorRepository intArrayVectorRepository;
+    private StringArrayVectorRepository stringArrayVectorRepository;
+    private CharArrayVectorRepository charArrayVectorRepository;
+    private FloatArrayVectorRepository floatArrayVectorRepository;
+    private BoolArrayVectorRepository boolArrayVectorRepository;
 
-    private final Map<Class<?>, BaseArrayVectorState> classVectorMap;
-
-    public ArrayVectorService(IntArrayVectorRepository intArrayVectorRepository,
-                              StringArrayVectorRepository stringArrayVectorRepository,
-                              CharArrayVectorRepository charArrayVectorRepository,
-                              FloatArrayVectorRepository floatArrayVectorRepository,
-                              BoolArrayVectorRepository boolArrayVectorRepository) {
-        this.intArrayVectorRepository = intArrayVectorRepository;
-        this.stringArrayVectorRepository = stringArrayVectorRepository;
-        this.charArrayVectorRepository = charArrayVectorRepository;
-        this.floatArrayVectorRepository = floatArrayVectorRepository;
-        this.boolArrayVectorRepository = boolArrayVectorRepository;
-
-        this.classVectorMap = Map.of(
-                int.class, new IntArrayVectorState(),
-                String.class, new StringArrayVectorState(),
-                char.class, new CharArrayVectorState(),
-                float.class, new FloatArrayVectorState(),
-                boolean.class, new BoolArrayVectorState()
-        );;
-    }
 
     @SuppressWarnings("unchecked")
     public <T> ArrayVectorStateResponse<T> createArrayVector(ArrayVectorCreateRequest<T> arrayVectorCreateRequest) {
@@ -77,12 +57,12 @@ public class ArrayVectorService {
                 return response;
             }
             case FLOAT -> {
-                ArrayVector<Float> arrayVector = (ArrayVector<Float>) buildArrayVector(arrayVectorCreateRequest);
-                FloatArrayVectorState state = (FloatArrayVectorState) convertToArrayVectorState(arrayVector, arrayVectorCreateRequest.getName(), float.class);
+                ArrayVector<Double> arrayVector = (ArrayVector<Double>) buildArrayVector(arrayVectorCreateRequest);
+                FloatArrayVectorState state = (FloatArrayVectorState) convertToArrayVectorState(arrayVector, arrayVectorCreateRequest.getName(), double.class);
 
                 Object[] objectArray = arrayVector.getArray();
-                Float[] array = Arrays.copyOf(objectArray, objectArray.length, Float[].class);
-                List<Float> floatList = Arrays.asList(array);
+                Double[] array = Arrays.copyOf(objectArray, objectArray.length, Double[].class);
+                List<Double> floatList = Arrays.asList(array);
                 state.setArray(floatList);
 
                 BaseArrayVectorState result = floatArrayVectorRepository.save(state);
@@ -137,11 +117,21 @@ public class ArrayVectorService {
     }
 
     private <T> BaseArrayVectorState convertToArrayVectorState(ArrayVector<T> arrayVector, String name, Class<?> clazz) {
-        BaseArrayVectorState arrayVectorState = classVectorMap.get(clazz);
+        BaseArrayVectorState arrayVectorState = buildClassVectorMap().get(clazz);
         arrayVectorState.setName(name);
         arrayVectorState.setCount(arrayVector.getCount());
         arrayVectorState.setCapacity(arrayVector.getCapacity());
         return arrayVectorState;
+    }
+
+    private Map<Class<?>, BaseArrayVectorState> buildClassVectorMap() {
+        return Map.of(
+                int.class, new IntArrayVectorState(),
+                String.class, new StringArrayVectorState(),
+                char.class, new CharArrayVectorState(),
+                double.class, new FloatArrayVectorState(),
+                boolean.class, new BoolArrayVectorState()
+        );
     }
 
     private <T> ArrayVectorStateResponse<T> convertToResponse(BaseArrayVectorState state) {
