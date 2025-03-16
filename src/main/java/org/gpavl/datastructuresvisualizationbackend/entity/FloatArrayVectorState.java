@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FloatArrayVectorState extends BaseArrayVectorState<Float> {
+public class FloatArrayVectorState extends BaseArrayVectorState {
 
     @ElementCollection
     @CollectionTable(name = "float_array_values", schema = "value", joinColumns = @JoinColumn(name = "entity_id"))

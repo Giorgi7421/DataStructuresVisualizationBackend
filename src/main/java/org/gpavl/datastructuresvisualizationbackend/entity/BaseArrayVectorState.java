@@ -7,7 +7,7 @@ import lombok.Setter;
 @MappedSuperclass
 @Getter
 @Setter
-public abstract class BaseArrayVectorState<T> {
+public abstract class BaseArrayVectorState {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

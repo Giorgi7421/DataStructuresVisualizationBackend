@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoolArrayVectorState extends BaseArrayVectorState<Boolean> {
+public class BoolArrayVectorState extends BaseArrayVectorState {
 
     @ElementCollection
     @CollectionTable(name = "bool_array_values", schema = "value", joinColumns = @JoinColumn(name = "entity_id"))

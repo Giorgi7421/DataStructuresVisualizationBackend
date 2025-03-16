@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class IntArrayVectorState extends BaseArrayVectorState<Integer> {
+public class IntArrayVectorState extends BaseArrayVectorState {
 
     @ElementCollection
     @CollectionTable(name = "int_array_values", schema = "value", joinColumns = @JoinColumn(name = "entity_id"))

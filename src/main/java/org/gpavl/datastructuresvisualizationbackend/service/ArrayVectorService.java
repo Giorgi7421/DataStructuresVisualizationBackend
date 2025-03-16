@@ -10,169 +10,144 @@ import org.gpavl.datastructuresvisualizationbackend.util.DataType;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
 public class ArrayVectorService {
 
-    private IntArrayVectorRepository intArrayVectorRepository;
-    private StringArrayVectorRepository stringArrayVectorRepository;
-    private CharArrayVectorRepository charArrayVectorRepository;
-    private FloatArrayVectorRepository floatArrayVectorRepository;
-    private BoolArrayVectorRepository boolArrayVectorRepository;
+    private final IntArrayVectorRepository intArrayVectorRepository;
+    private final StringArrayVectorRepository stringArrayVectorRepository;
+    private final CharArrayVectorRepository charArrayVectorRepository;
+    private final FloatArrayVectorRepository floatArrayVectorRepository;
+    private final BoolArrayVectorRepository boolArrayVectorRepository;
 
-    public ArrayVectorStateResponse<?> createArrayVector(ArrayVectorCreateRequest<?> arrayVectorCreateRequest) {
+    private final Map<Class<?>, BaseArrayVectorState> classVectorMap;
+
+    public ArrayVectorService(IntArrayVectorRepository intArrayVectorRepository,
+                              StringArrayVectorRepository stringArrayVectorRepository,
+                              CharArrayVectorRepository charArrayVectorRepository,
+                              FloatArrayVectorRepository floatArrayVectorRepository,
+                              BoolArrayVectorRepository boolArrayVectorRepository) {
+        this.intArrayVectorRepository = intArrayVectorRepository;
+        this.stringArrayVectorRepository = stringArrayVectorRepository;
+        this.charArrayVectorRepository = charArrayVectorRepository;
+        this.floatArrayVectorRepository = floatArrayVectorRepository;
+        this.boolArrayVectorRepository = boolArrayVectorRepository;
+
+        this.classVectorMap = Map.of(
+                int.class, new IntArrayVectorState(),
+                String.class, new StringArrayVectorState(),
+                char.class, new CharArrayVectorState(),
+                float.class, new FloatArrayVectorState(),
+                boolean.class, new BoolArrayVectorState()
+        );;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> ArrayVectorStateResponse<T> createArrayVector(ArrayVectorCreateRequest<T> arrayVectorCreateRequest) {
         DataType dataType = arrayVectorCreateRequest.getDataType();
         switch (dataType) {
             case INT -> {
-                ArrayVector<Integer> arrayVector =
-                        arrayVectorCreateRequest.getAmount() == null ?
-                                new ArrayVector<>() :
-                                new ArrayVector<>(arrayVectorCreateRequest.getAmount(), (int) arrayVectorCreateRequest.getValue());
+                ArrayVector<Integer> arrayVector = (ArrayVector<Integer>) buildArrayVector(arrayVectorCreateRequest);
+                IntArrayVectorState state = (IntArrayVectorState) convertToArrayVectorState(arrayVector, arrayVectorCreateRequest.getName(), int.class);
 
-                IntArrayVectorState state = convertToIntArrayVector(arrayVector, arrayVectorCreateRequest.getName());
-                IntArrayVectorState result = intArrayVectorRepository.save(state);
-                return convertToResponse(result);
+                Object[] objectArray = arrayVector.getArray();
+                Integer[] array = Arrays.copyOf(objectArray, objectArray.length, Integer[].class);
+                List<Integer> intList = Arrays.asList(array);
+                state.setArray(intList);
+
+                BaseArrayVectorState result = intArrayVectorRepository.save(state);
+                ArrayVectorStateResponse<T> response = convertToResponse(result);
+                response.setArray((List<T>) intList);
+                return response;
             }
             case STRING -> {
-                ArrayVector<String> arrayVector =
-                        arrayVectorCreateRequest.getAmount() == null ?
-                                new ArrayVector<>() :
-                                new ArrayVector<>(arrayVectorCreateRequest.getAmount(), (String) arrayVectorCreateRequest.getValue());
+                ArrayVector<String> arrayVector = (ArrayVector<String>) buildArrayVector(arrayVectorCreateRequest);
+                StringArrayVectorState state = (StringArrayVectorState) convertToArrayVectorState(arrayVector, arrayVectorCreateRequest.getName(), String.class);
 
-                StringArrayVectorState state = convertToStringArrayVector(arrayVector, arrayVectorCreateRequest.getName());
-                StringArrayVectorState result = stringArrayVectorRepository.save(state);
-                return convertToResponse(result);
+                Object[] objectArray = arrayVector.getArray();
+                String[] array = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+                List<String> stringList = Arrays.asList(array);
+                state.setArray(stringList);
+
+                BaseArrayVectorState result = stringArrayVectorRepository.save(state);
+                ArrayVectorStateResponse<T> response = convertToResponse(result);
+                response.setArray((List<T>) stringList);
+                return response;
             }
             case FLOAT -> {
-                ArrayVector<Float> arrayVector =
-                        arrayVectorCreateRequest.getAmount() == null ?
-                                new ArrayVector<>() :
-                                new ArrayVector<>(arrayVectorCreateRequest.getAmount(), (float) arrayVectorCreateRequest.getValue());
+                ArrayVector<Float> arrayVector = (ArrayVector<Float>) buildArrayVector(arrayVectorCreateRequest);
+                FloatArrayVectorState state = (FloatArrayVectorState) convertToArrayVectorState(arrayVector, arrayVectorCreateRequest.getName(), float.class);
 
-                FloatArrayVectorState state = convertToFloatArrayVector(arrayVector, arrayVectorCreateRequest.getName());
-                FloatArrayVectorState result = floatArrayVectorRepository.save(state);
-                return convertToResponse(result);
+                Object[] objectArray = arrayVector.getArray();
+                Float[] array = Arrays.copyOf(objectArray, objectArray.length, Float[].class);
+                List<Float> floatList = Arrays.asList(array);
+                state.setArray(floatList);
+
+                BaseArrayVectorState result = floatArrayVectorRepository.save(state);
+                ArrayVectorStateResponse<T> response = convertToResponse(result);
+                response.setArray((List<T>) floatList);
+                return response;
             }
             case CHAR -> {
-                ArrayVector<Character> arrayVector =
-                        arrayVectorCreateRequest.getAmount() == null ?
-                                new ArrayVector<>() :
-                                new ArrayVector<>(arrayVectorCreateRequest.getAmount(), (char) arrayVectorCreateRequest.getValue());
+                ArrayVector<Character> arrayVector = (ArrayVector<Character>) buildArrayVector(arrayVectorCreateRequest);
+                CharArrayVectorState state = (CharArrayVectorState) convertToArrayVectorState(arrayVector, arrayVectorCreateRequest.getName(), char.class);
 
-                CharArrayVectorState state = convertToCharArrayVector(arrayVector, arrayVectorCreateRequest.getName());
-                CharArrayVectorState result = charArrayVectorRepository.save(state);
-                return convertToResponse(result);
+                Object[] objectArray = arrayVector.getArray();
+                Character[] array = Arrays.copyOf(objectArray, objectArray.length, Character[].class);
+                List<Character> charList = Arrays.asList(array);
+                state.setArray(charList);
+
+                BaseArrayVectorState result = charArrayVectorRepository.save(state);
+                ArrayVectorStateResponse<T> response = convertToResponse(result);
+                response.setArray((List<T>) charList);
+                return response;
             }
             case BOOL -> {
-                ArrayVector<Boolean> arrayVector =
-                        arrayVectorCreateRequest.getAmount() == null ?
-                                new ArrayVector<>() :
-                                new ArrayVector<>(arrayVectorCreateRequest.getAmount(), (boolean) arrayVectorCreateRequest.getValue());
+                ArrayVector<Boolean> arrayVector = (ArrayVector<Boolean>) buildArrayVector(arrayVectorCreateRequest);
+                BoolArrayVectorState state = (BoolArrayVectorState) convertToArrayVectorState(arrayVector, arrayVectorCreateRequest.getName(), boolean.class);
 
-                BoolArrayVectorState state = convertToBoolArrayVector(arrayVector, arrayVectorCreateRequest.getName());
-                BoolArrayVectorState result = boolArrayVectorRepository.save(state);
-                return convertToResponse(result);
+                Object[] objectArray = arrayVector.getArray();
+                Boolean[] array = Arrays.copyOf(objectArray, objectArray.length, Boolean[].class);
+                List<Boolean> boolList = Arrays.asList(array);
+                state.setArray(boolList);
+
+                BaseArrayVectorState result = boolArrayVectorRepository.save(state);
+                ArrayVectorStateResponse<T> response = convertToResponse(result);
+                response.setArray((List<T>) boolList);
+                return response;
             }
             default -> throw new IllegalArgumentException("Illegal type");
         }
     }
 
-    private Map<DataType, BaseArrayVectorRepository<?>> buildTypeMap() {
-        return Map.of(
-                DataType.INT, intArrayVectorRepository,
-                DataType.STRING, stringArrayVectorRepository,
-                DataType.CHAR, charArrayVectorRepository,
-                DataType.FLOAT, floatArrayVectorRepository,
-                DataType.BOOL, boolArrayVectorRepository
-        );
+    private <T> ArrayVector<T> buildArrayVector(ArrayVectorCreateRequest<T> arrayVectorCreateRequest) {
+        return isDefaultConstructionRequest(arrayVectorCreateRequest) ?
+                new ArrayVector<>() :
+                new ArrayVector<>(
+                        arrayVectorCreateRequest.getAmount(),
+                        arrayVectorCreateRequest.getValue()
+                );
     }
 
-    private IntArrayVectorState convertToIntArrayVector(ArrayVector<Integer> intArrayVector, String name) {
-        IntArrayVectorState state = new IntArrayVectorState();
-        state.setName(name);
-        state.setCount(intArrayVector.getCount());
-        state.setCapacity(intArrayVector.getCapacity());
-        Object[] objectArray = intArrayVector.getArray();
-        Integer[] array = Arrays.copyOf(objectArray, objectArray.length, Integer[].class);
-        state.setArray(Arrays.asList(array));
-        return state;
+    private <T> boolean isDefaultConstructionRequest(ArrayVectorCreateRequest<T> arrayVectorCreateRequest) {
+        return arrayVectorCreateRequest.getAmount() == null
+                && arrayVectorCreateRequest.getValue() == null;
     }
 
-    private ArrayVectorStateResponse<Integer> convertToResponse(IntArrayVectorState state) {
-        ArrayVectorStateResponse<Integer> response = new ArrayVectorStateResponse<>();
+    private <T> BaseArrayVectorState convertToArrayVectorState(ArrayVector<T> arrayVector, String name, Class<?> clazz) {
+        BaseArrayVectorState arrayVectorState = classVectorMap.get(clazz);
+        arrayVectorState.setName(name);
+        arrayVectorState.setCount(arrayVector.getCount());
+        arrayVectorState.setCapacity(arrayVector.getCapacity());
+        return arrayVectorState;
+    }
+
+    private <T> ArrayVectorStateResponse<T> convertToResponse(BaseArrayVectorState state) {
+        ArrayVectorStateResponse<T> response = new ArrayVectorStateResponse<>();
         response.setCount(state.getCount());
         response.setCapacity(state.getCapacity());
-        response.setArray(state.getArray());
-        return response;
-    }
-
-    private StringArrayVectorState convertToStringArrayVector(ArrayVector<String> stringArrayVector, String name) {
-        StringArrayVectorState state = new StringArrayVectorState();
-        state.setName(name);
-        state.setCount(stringArrayVector.getCount());
-        state.setCapacity(stringArrayVector.getCapacity());
-        state.setArray(Arrays.asList((String[]) stringArrayVector.getArray()));
-        return state;
-    }
-
-    private ArrayVectorStateResponse<String> convertToResponse(StringArrayVectorState state) {
-        ArrayVectorStateResponse<String> response = new ArrayVectorStateResponse<>();
-        response.setCount(state.getCount());
-        response.setCapacity(state.getCapacity());
-        response.setArray(state.getArray());
-        return response;
-    }
-
-    private FloatArrayVectorState convertToFloatArrayVector(ArrayVector<Float> floatArrayVector, String name) {
-        FloatArrayVectorState state = new FloatArrayVectorState();
-        state.setName(name);
-        state.setCount(floatArrayVector.getCount());
-        state.setCapacity(floatArrayVector.getCapacity());
-        state.setArray(Arrays.asList((Float[]) floatArrayVector.getArray()));
-        return state;
-    }
-
-    private ArrayVectorStateResponse<Float> convertToResponse(FloatArrayVectorState state) {
-        ArrayVectorStateResponse<Float> response = new ArrayVectorStateResponse<>();
-        response.setCount(state.getCount());
-        response.setCapacity(state.getCapacity());
-        response.setArray(state.getArray());
-        return response;
-    }
-
-    private CharArrayVectorState convertToCharArrayVector(ArrayVector<Character> charArrayVector, String name) {
-        CharArrayVectorState state = new CharArrayVectorState();
-        state.setName(name);
-        state.setCount(charArrayVector.getCount());
-        state.setCapacity(charArrayVector.getCapacity());
-        state.setArray(Arrays.asList((Character[]) charArrayVector.getArray()));
-        return state;
-    }
-
-    private ArrayVectorStateResponse<Character> convertToResponse(CharArrayVectorState state) {
-        ArrayVectorStateResponse<Character> response = new ArrayVectorStateResponse<>();
-        response.setCount(state.getCount());
-        response.setCapacity(state.getCapacity());
-        response.setArray(state.getArray());
-        return response;
-    }
-
-    private BoolArrayVectorState convertToBoolArrayVector(ArrayVector<Boolean> booleanArrayVector, String name) {
-        BoolArrayVectorState state = new BoolArrayVectorState();
-        state.setName(name);
-        state.setCount(booleanArrayVector.getCount());
-        state.setCapacity(booleanArrayVector.getCapacity());
-        state.setArray(Arrays.asList((Boolean[]) booleanArrayVector.getArray()));
-        return state;
-    }
-
-    private ArrayVectorStateResponse<Boolean> convertToResponse(BoolArrayVectorState state) {
-        ArrayVectorStateResponse<Boolean> response = new ArrayVectorStateResponse<>();
-        response.setCount(state.getCount());
-        response.setCapacity(state.getCapacity());
-        response.setArray(state.getArray());
         return response;
     }
 }
