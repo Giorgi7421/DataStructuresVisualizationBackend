@@ -13,4 +13,6 @@ public class ArrayVectorCreateRequest {
     private Integer amount;
     private String value;
 
+    //TODO add limit to amount
+
 }

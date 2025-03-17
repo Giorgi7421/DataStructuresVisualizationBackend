@@ -1,8 +1,10 @@
 package org.gpavl.datastructuresvisualizationbackend.model.arrayvector;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class ArrayVector {
 
     private static final int INITIAL_CAPACITY = 10;

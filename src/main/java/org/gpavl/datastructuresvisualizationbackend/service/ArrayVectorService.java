@@ -9,6 +9,9 @@ import org.gpavl.datastructuresvisualizationbackend.repository.ArrayVectorReposi
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -21,6 +24,27 @@ public class ArrayVectorService {
         ArrayVectorState state = convertToArrayVectorState(arrayVector, arrayVectorCreateRequest.getName());
 
         ArrayVectorState result = arrayVectorRepository.save(state);
+        return convertToResponse(result);
+    }
+
+    public ArrayVectorStateResponse findByName(String name) {
+        Optional<ArrayVectorState> optionalState = arrayVectorRepository.findByName(name);
+
+        ArrayVectorState state = optionalState.orElseThrow();
+        return convertToResponse(state);
+    }
+
+    public ArrayVectorStateResponse add(String name, String value) {
+        Optional<ArrayVectorState> optionalState = arrayVectorRepository.findByName(name);
+        ArrayVectorState state = optionalState.orElseThrow();
+
+        ArrayVector arrayVector = convertToArrayVector(state);
+        arrayVector.add(value);
+
+        ArrayVectorState newState = convertToArrayVectorState(arrayVector, name);
+        newState.setId(state.getId());
+
+        ArrayVectorState result = arrayVectorRepository.save(newState);
         return convertToResponse(result);
     }
 
@@ -43,7 +67,7 @@ public class ArrayVectorService {
         arrayVectorState.setName(name);
         arrayVectorState.setCount(arrayVector.getCount());
         arrayVectorState.setCapacity(arrayVector.getCapacity());
-        arrayVectorState.setArray(Arrays.asList(arrayVector.getArray()));
+        arrayVectorState.setArray(Arrays.stream(arrayVector.getArray()).filter(Objects::nonNull).toList());
         return arrayVectorState;
     }
 
@@ -53,5 +77,22 @@ public class ArrayVectorService {
         response.setCapacity(state.getCapacity());
         response.setArray(state.getArray());
         return response;
+    }
+
+    private ArrayVector convertToArrayVector(ArrayVectorState state) {
+        int capacity = state.getCapacity();
+        List<String> stateArray = state.getArray();
+
+        ArrayVector arrayVector = new ArrayVector();
+        arrayVector.setCapacity(capacity);
+        arrayVector.setCount(state.getCount());
+
+        String[] array = new String[capacity];
+        for (int i = 0; i < stateArray.size(); i++) {
+            array[i] = stateArray.get(i);
+        }
+
+        arrayVector.setArray(array);
+        return arrayVector;
     }
 }

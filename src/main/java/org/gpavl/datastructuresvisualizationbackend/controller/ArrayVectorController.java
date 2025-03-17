@@ -6,10 +6,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVecto
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorStateResponse;
 import org.gpavl.datastructuresvisualizationbackend.service.ArrayVectorService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/array-vector")
@@ -23,6 +20,18 @@ public class ArrayVectorController {
             @Valid @RequestBody ArrayVectorCreateRequest arrayVectorCreationRequest
     ) {
         ArrayVectorStateResponse response = arrayVectorService.createArrayVector(arrayVectorCreationRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/find/{name}")
+    public ResponseEntity<ArrayVectorStateResponse> findArrayVector(@PathVariable String name) {
+        ArrayVectorStateResponse response = arrayVectorService.findByName(name);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/add/{name}/{value}")
+    public ResponseEntity<ArrayVectorStateResponse> add(@PathVariable String name, @PathVariable String value) {
+        ArrayVectorStateResponse response = arrayVectorService.add(name, value);
         return ResponseEntity.ok(response);
     }
 }
