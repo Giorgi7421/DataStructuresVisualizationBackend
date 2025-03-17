@@ -84,3 +84,5 @@ public class ArrayVectorController {
         return ResponseEntity.ok(response);
     }
 }
+
+//TODO think about api parameters vs request body

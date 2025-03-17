@@ -20,4 +20,9 @@ public class ValidationControllerAdvice {
     public ResponseEntity<String> handleNotFoundError() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found");
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgumentError(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 }
