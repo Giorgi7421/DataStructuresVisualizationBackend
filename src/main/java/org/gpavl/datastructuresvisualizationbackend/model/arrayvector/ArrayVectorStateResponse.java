@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ArrayVectorStateResponse<T> {
+public class ArrayVectorStateResponse {
 
     private int capacity;
     private int count;
-    private List<T> array;
+    private List<String> array;
 }

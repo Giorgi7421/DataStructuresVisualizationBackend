@@ -19,10 +19,10 @@ public class ArrayVectorController {
     private ArrayVectorService arrayVectorService;
 
     @PostMapping("/create")
-    public <T> ResponseEntity<ArrayVectorStateResponse<T>> createArrayVector(
-            @Valid @RequestBody ArrayVectorCreateRequest<T> arrayVectorCreationRequest
+    public ResponseEntity<ArrayVectorStateResponse> createArrayVector(
+            @Valid @RequestBody ArrayVectorCreateRequest arrayVectorCreationRequest
     ) {
-        ArrayVectorStateResponse<T> response = arrayVectorService.createArrayVector(arrayVectorCreationRequest);
+        ArrayVectorStateResponse response = arrayVectorService.createArrayVector(arrayVectorCreationRequest);
         return ResponseEntity.ok(response);
     }
 }

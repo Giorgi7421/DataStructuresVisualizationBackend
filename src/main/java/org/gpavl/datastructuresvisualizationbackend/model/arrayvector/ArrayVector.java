@@ -3,23 +3,23 @@ package org.gpavl.datastructuresvisualizationbackend.model.arrayvector;
 import lombok.Getter;
 
 @Getter
-public class ArrayVector<T> {
+public class ArrayVector {
 
     private static final int INITIAL_CAPACITY = 10;
 
-    private Object[] array;
+    private String[] array;
     private int capacity;
     private int count;
 
     public ArrayVector() {
         capacity = INITIAL_CAPACITY;
         count = 0;
-        array = new Object[capacity];
+        array = new String[capacity];
     }
 
-    public ArrayVector(int amount, T element) {
+    public ArrayVector(int amount, String element) {
         capacity = Math.max(amount, INITIAL_CAPACITY);
-        array = new Object[capacity];
+        array = new String[capacity];
         count = amount;
 
         for (int i = 0; i < amount; i++) {
@@ -39,16 +39,15 @@ public class ArrayVector<T> {
         count = 0;
     }
 
-    @SuppressWarnings("unchecked")
-    public T get(int index) {
+    public String get(int index) {
         if (index < 0 || index >= count) {
             throw new IllegalArgumentException("get: index out of range");
         }
 
-        return (T) array[index];
+        return array[index];
     }
 
-    public void set(int index, T element) {
+    public void set(int index, String element) {
         if (index < 0 || index >= count) {
             throw new IllegalArgumentException("set: index out of range");
         }
@@ -56,11 +55,11 @@ public class ArrayVector<T> {
         array[index] = element;
     }
 
-    public void add(T element) {
+    public void add(String element) {
         insertAt(count, element);
     }
 
-    public void insertAt(int index, T element) {
+    public void insertAt(int index, String element) {
         if (count == capacity) {
             extendCapacity();
         }
@@ -89,9 +88,9 @@ public class ArrayVector<T> {
     }
 
     private void extendCapacity() {
-        Object[] oldArray = array;
+        String[] oldArray = array;
         capacity *= 2;
-        array = new Object[capacity];
+        array = new String[capacity];
 
         if (count >= 0) System.arraycopy(oldArray, 0, array, 0, count);
     }
