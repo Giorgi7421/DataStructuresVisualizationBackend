@@ -1,6 +1,7 @@
 package org.gpavl.datastructuresvisualizationbackend.service;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.function.TriConsumer;
 import org.gpavl.datastructuresvisualizationbackend.entity.ArrayVectorState;
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVector;
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorCreateRequest;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.*;
 
 @Service
 @AllArgsConstructor
@@ -34,18 +36,36 @@ public class ArrayVectorService {
         return convertToResponse(state);
     }
 
-    public ArrayVectorStateResponse add(String name, String value) {
-        Optional<ArrayVectorState> optionalState = arrayVectorRepository.findByName(name);
-        ArrayVectorState state = optionalState.orElseThrow();
+    public int size(String name) {
+        return executeNoArgumentGetOperation(name, ArrayVector::size);
+    }
 
-        ArrayVector arrayVector = convertToArrayVector(state);
-        arrayVector.add(value);
+    public boolean isEmpty(String name) {
+        return executeNoArgumentGetOperation(name, ArrayVector::isEmpty);
+    }
 
-        ArrayVectorState newState = convertToArrayVectorState(arrayVector, name);
-        newState.setId(state.getId());
+    public ArrayVectorStateResponse clear(String name) {
+        return executeNoArgumentSetOperation(name, ArrayVector::clear);
+    }
 
-        ArrayVectorState result = arrayVectorRepository.save(newState);
-        return convertToResponse(result);
+    public String get(String name, int index) {
+        return executeOneArgumentGetOperation(name, ArrayVector::get, index);
+    }
+
+    public ArrayVectorStateResponse set(String name, int index, String element) {
+        return executeTwoArgumentSetOperation(name, ArrayVector::set, index, element);
+    }
+
+    public ArrayVectorStateResponse add(String name, String element) {
+        return executeOneArgumentSetOperation(name, ArrayVector::add, element);
+    }
+
+    public ArrayVectorStateResponse insertAt(String name, int index, String element) {
+        return executeTwoArgumentSetOperation(name, ArrayVector::insertAt, index, element);
+    }
+
+    public ArrayVectorStateResponse removeAt(String name, int index) {
+        return executeOneArgumentSetOperation(name, ArrayVector::removeAt, index);
     }
 
     private ArrayVector buildArrayVector(ArrayVectorCreateRequest arrayVectorCreateRequest) {
@@ -55,11 +75,6 @@ public class ArrayVectorService {
                         arrayVectorCreateRequest.getAmount(),
                         arrayVectorCreateRequest.getValue()
                 );
-    }
-
-    private boolean isDefaultConstructionRequest(ArrayVectorCreateRequest arrayVectorCreateRequest) {
-        return arrayVectorCreateRequest.getAmount() == null
-                && arrayVectorCreateRequest.getValue() == null;
     }
 
     private ArrayVectorState convertToArrayVectorState(ArrayVector arrayVector, String name) {
@@ -77,6 +92,58 @@ public class ArrayVectorService {
         response.setCapacity(state.getCapacity());
         response.setArray(state.getArray());
         return response;
+    }
+
+    private <R> R executeNoArgumentGetOperation(String name, Function<ArrayVector, R> operation) {
+        ArrayVectorState state = getArrayVectorState(name);
+        ArrayVector arrayVector = convertToArrayVector(state);
+        return operation.apply(arrayVector);
+    }
+
+    private <U, R> R executeOneArgumentGetOperation(String name, BiFunction<ArrayVector, U, R> operation, U argument) {
+        ArrayVectorState state = getArrayVectorState(name);
+        ArrayVector arrayVector = convertToArrayVector(state);
+        return operation.apply(arrayVector, argument);
+    }
+
+    private <U, V> ArrayVectorStateResponse executeTwoArgumentSetOperation(String name, TriConsumer<ArrayVector, U, V> operation, U firstArgument, V secondArgument) {
+        ArrayVectorState state = getArrayVectorState(name);
+        ArrayVector arrayVector = convertToArrayVector(state);
+        operation.accept(arrayVector, firstArgument, secondArgument);
+        ArrayVectorState newState = convertToArrayVectorState(arrayVector, name);
+        newState.setId(state.getId());
+        ArrayVectorState result = arrayVectorRepository.save(newState);
+        return convertToResponse(result);
+    }
+
+    private <U> ArrayVectorStateResponse executeOneArgumentSetOperation(String name, BiConsumer<ArrayVector, U> operation, U argument) {
+        ArrayVectorState state = getArrayVectorState(name);
+        ArrayVector arrayVector = convertToArrayVector(state);
+        operation.accept(arrayVector, argument);
+        ArrayVectorState newState = convertToArrayVectorState(arrayVector, name);
+        newState.setId(state.getId());
+        ArrayVectorState result = arrayVectorRepository.save(newState);
+        return convertToResponse(result);
+    }
+
+    private ArrayVectorStateResponse executeNoArgumentSetOperation(String name, Consumer<ArrayVector> operation) {
+        ArrayVectorState state = getArrayVectorState(name);
+        ArrayVector arrayVector = convertToArrayVector(state);
+        operation.accept(arrayVector);
+        ArrayVectorState newState = convertToArrayVectorState(arrayVector, name);
+        newState.setId(state.getId());
+        ArrayVectorState result = arrayVectorRepository.save(newState);
+        return convertToResponse(result);
+    }
+
+    private boolean isDefaultConstructionRequest(ArrayVectorCreateRequest arrayVectorCreateRequest) {
+        return arrayVectorCreateRequest.getAmount() == null
+                && arrayVectorCreateRequest.getValue() == null;
+    }
+
+    private ArrayVectorState getArrayVectorState(String name) {
+        Optional<ArrayVectorState> optionalState = arrayVectorRepository.findByName(name);
+        return optionalState.orElseThrow();
     }
 
     private ArrayVector convertToArrayVector(ArrayVectorState state) {

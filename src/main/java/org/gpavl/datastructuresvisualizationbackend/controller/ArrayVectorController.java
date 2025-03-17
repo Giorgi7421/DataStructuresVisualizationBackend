@@ -19,6 +19,7 @@ public class ArrayVectorController {
     public ResponseEntity<ArrayVectorStateResponse> createArrayVector(
             @Valid @RequestBody ArrayVectorCreateRequest arrayVectorCreationRequest
     ) {
+        //TODO limit value length
         ArrayVectorStateResponse response = arrayVectorService.createArrayVector(arrayVectorCreationRequest);
         return ResponseEntity.ok(response);
     }
@@ -29,9 +30,57 @@ public class ArrayVectorController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/add/{name}/{value}")
-    public ResponseEntity<ArrayVectorStateResponse> add(@PathVariable String name, @PathVariable String value) {
-        ArrayVectorStateResponse response = arrayVectorService.add(name, value);
+    @GetMapping("/size/{name}")
+    public ResponseEntity<Integer> size(@PathVariable String name) {
+        int response = arrayVectorService.size(name);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/is-empty/{name}")
+    public ResponseEntity<Boolean> isEmpty(@PathVariable String name) {
+        boolean response = arrayVectorService.isEmpty(name);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/clear/{name}")
+    public ResponseEntity<ArrayVectorStateResponse> clear(@PathVariable String name) {
+        ArrayVectorStateResponse response = arrayVectorService.clear(name);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/get/{name}/{index}")
+    public ResponseEntity<String> get(@PathVariable String name, @PathVariable int index) {
+        String response = arrayVectorService.get(name, index);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/set/{name}/{index}/{element}")
+    public ResponseEntity<ArrayVectorStateResponse> set(@PathVariable String name,
+                                                        @PathVariable int index,
+                                                        @PathVariable String element) {
+        ArrayVectorStateResponse response = arrayVectorService.set(name, index, element);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping ("/add/{name}/{element}")
+    public ResponseEntity<ArrayVectorStateResponse> add(@PathVariable String name, @PathVariable String element) {
+        ArrayVectorStateResponse response = arrayVectorService.add(name, element);
+        return ResponseEntity.ok(response);
+        //TODO limit value length
+    }
+
+    @PatchMapping ("/insert-at/{name}/{index}/{element}")
+    public ResponseEntity<ArrayVectorStateResponse> insertAt(@PathVariable String name,
+                                                             @PathVariable int index,
+                                                             @PathVariable String element) {
+        ArrayVectorStateResponse response = arrayVectorService.insertAt(name, index, element);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping ("/remove-at/{name}/{index}")
+    public ResponseEntity<ArrayVectorStateResponse> removeAt(@PathVariable String name,
+                                                             @PathVariable int index) {
+        ArrayVectorStateResponse response = arrayVectorService.removeAt(name, index);
         return ResponseEntity.ok(response);
     }
 }
