@@ -28,9 +28,11 @@ public class ArrayVectorState {
     @ElementCollection
     @CollectionTable(name = "structure_value", schema = "structure", joinColumns = @JoinColumn(name = "vector_state_id"))
     @Column(name = "value")
+    @OrderColumn(name = "list_order")
     private List<String> array;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "vector_state_id")
+    @OrderColumn(name = "list_order")
     private List<MemorySnapshot> steps;
 }

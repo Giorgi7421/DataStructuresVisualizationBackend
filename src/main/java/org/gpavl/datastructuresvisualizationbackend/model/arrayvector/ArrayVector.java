@@ -32,13 +32,13 @@ public class ArrayVector {
         array = new String[capacity];
         count = amount;
 
-        updateMemory("capacity", capacity, true);
-        updateMemory("count", count, true);
-        updateMemory("array", toList(), true);
+        addVariableToMemory("capacity", capacity, true);
+        addVariableToMemory("count", count, true);
+        addVariableToMemory("array", toList(), true);
 
         for (int i = 0; i < amount; i++) {
             array[i] = element;
-            updateMemory("array", toList(), true);
+            addVariableToMemory("array", toList(), true);
         }
     }
 
@@ -85,13 +85,13 @@ public class ArrayVector {
 
         for (int i = count; i > index; i--) {
             array[i] = array[i - 1];
-            updateMemory("array", toList(), true);
+            addVariableToMemory("array", toList(), true);
         }
 
         array[index] = element;
-        updateMemory("array", toList(), true);
+        addVariableToMemory("array", toList(), true);
         count++;
-        updateMemory("count", count, true);
+        addVariableToMemory("count", count, true);
     }
 
     public void removeAt(int index) {
@@ -101,36 +101,38 @@ public class ArrayVector {
 
         for (int i = index; i < count - 1; i++) {
             array[i] = array[i + 1];
-            updateMemory("array", toList(), false);
+            addVariableToMemory("array", toList(), true);
         }
         count--;
-        updateMemory("count", count, true);
+        addVariableToMemory("count", count, true);
     }
 
     private void extendCapacity() {
         String[] oldArray = array;
-        updateMemory("oldArray", toList(), false);
+        addVariableToMemory("oldArray", toList(), false);
 
         capacity *= 2;
-        updateMemory("capacity", capacity, true);
+        addVariableToMemory("capacity", capacity, true);
 
         array = new String[capacity];
-        updateMemory("array", toList(), true);
+        addVariableToMemory("array", toList(), true);
 
         for (int i = 0; i < count; i++) {
             array[i] = oldArray[i];
-            updateMemory("array", toList(), true);
+            addVariableToMemory("array", toList(), true);
             if (i == count - 1) {
                 steps.getLast().setMessage("Extending the capacity is completed");
             }
         }
+
+        removeVariableFromMemory("oldArray", false);
     }
 
     private List<String> toList() {
         return Arrays.stream(array).filter(Objects::nonNull).toList();
     }
 
-    private void updateMemory(String variableName, Object variableValue, boolean isInstanceVariable) {
+    private void addVariableToMemory(String variableName, Object variableValue, boolean isInstanceVariable) {
         MemorySnapshotDto currentMemorySnapshot;
 
         if (!steps.isEmpty()) {
@@ -143,6 +145,18 @@ public class ArrayVector {
             currentMemorySnapshot.getInstanceVariables().put(variableName, variableValue);
         }else {
             currentMemorySnapshot.getLocalVariables().put(variableName, variableValue);
+        }
+
+        steps.add(currentMemorySnapshot);
+    }
+
+    private void removeVariableFromMemory(String variableName, boolean isInstanceVariable) {
+        MemorySnapshotDto currentMemorySnapshot = new MemorySnapshotDto(steps.getLast());
+
+        if (isInstanceVariable) {
+            currentMemorySnapshot.getInstanceVariables().remove(variableName);
+        }else {
+            currentMemorySnapshot.getLocalVariables().remove(variableName);
         }
 
         steps.add(currentMemorySnapshot);
