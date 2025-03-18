@@ -3,17 +3,17 @@ package org.gpavl.datastructuresvisualizationbackend.service;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.function.TriConsumer;
 import org.gpavl.datastructuresvisualizationbackend.entity.ArrayVectorState;
+import org.gpavl.datastructuresvisualizationbackend.entity.MemorySnapshot;
+import org.gpavl.datastructuresvisualizationbackend.model.MemorySnapshotDto;
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVector;
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorCreateRequest;
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorStateResponse;
 import org.gpavl.datastructuresvisualizationbackend.repository.ArrayVectorRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -83,6 +83,7 @@ public class ArrayVectorService {
         arrayVectorState.setCount(arrayVector.getCount());
         arrayVectorState.setCapacity(arrayVector.getCapacity());
         arrayVectorState.setArray(Arrays.stream(arrayVector.getArray()).filter(Objects::nonNull).toList());
+        arrayVectorState.setSteps(arrayVector.getSteps().stream().map(ArrayVectorService::convertToMemorySnapshot).toList());
         return arrayVectorState;
     }
 
@@ -91,6 +92,7 @@ public class ArrayVectorService {
         response.setCount(state.getCount());
         response.setCapacity(state.getCapacity());
         response.setArray(state.getArray());
+        response.setSteps(state.getSteps().stream().map(ArrayVectorService::convertToMemorySnapshotDto).toList());
         return response;
     }
 
@@ -98,6 +100,22 @@ public class ArrayVectorService {
         ArrayVectorState state = getArrayVectorState(name);
         ArrayVector arrayVector = convertToArrayVector(state);
         return operation.apply(arrayVector);
+    }
+
+    private static MemorySnapshot convertToMemorySnapshot(MemorySnapshotDto memorySnapshotDto) {
+        MemorySnapshot memorySnapshot = new MemorySnapshot();
+        memorySnapshot.setLocalVariables(new HashMap<>(memorySnapshotDto.getLocalVariables()));
+        memorySnapshot.setInstanceVariables(new HashMap<>(memorySnapshotDto.getInstanceVariables()));
+        memorySnapshot.setMessage(memorySnapshotDto.getMessage());
+        return memorySnapshot;
+    }
+
+    private static MemorySnapshotDto convertToMemorySnapshotDto(MemorySnapshot memorySnapshot) {
+        MemorySnapshotDto memorySnapshotdto = new MemorySnapshotDto();
+        memorySnapshotdto.setLocalVariables(new HashMap<>(memorySnapshot.getLocalVariables()));
+        memorySnapshotdto.setInstanceVariables(new HashMap<>(memorySnapshot.getInstanceVariables()));
+        memorySnapshotdto.setMessage(memorySnapshot.getMessage());
+        return memorySnapshotdto;
     }
 
     private <U, R> R executeOneArgumentGetOperation(String name, BiFunction<ArrayVector, U, R> operation, U argument) {
@@ -160,6 +178,7 @@ public class ArrayVectorService {
         }
 
         arrayVector.setArray(array);
+        arrayVector.setSteps(state.getSteps().stream().map(ArrayVectorService::convertToMemorySnapshotDto).collect(Collectors.toList()));
         return arrayVector;
     }
 }

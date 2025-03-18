@@ -1,6 +1,7 @@
 package org.gpavl.datastructuresvisualizationbackend.model.arrayvector;
 
 import lombok.Data;
+import org.gpavl.datastructuresvisualizationbackend.model.MemorySnapshotDto;
 
 import java.util.List;
 
@@ -10,4 +11,5 @@ public class ArrayVectorStateResponse {
     private int capacity;
     private int count;
     private List<String> array;
+    private List<MemorySnapshotDto> steps;
 }

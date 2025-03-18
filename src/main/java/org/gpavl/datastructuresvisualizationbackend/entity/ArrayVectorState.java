@@ -26,7 +26,11 @@ public class ArrayVectorState {
     private int count;
 
     @ElementCollection
-    @CollectionTable(name = "structure_value", schema = "structure", joinColumns = @JoinColumn(name = "entity_id"))
+    @CollectionTable(name = "structure_value", schema = "structure", joinColumns = @JoinColumn(name = "vector_state_id"))
     @Column(name = "value")
     private List<String> array;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "vector_state_id")
+    private List<MemorySnapshot> steps;
 }
