@@ -86,3 +86,4 @@ public class ArrayVectorController {
 }
 
 //TODO think about api parameters vs request body
+//TODO ? add from what value the variable got assigned from in memory steps
