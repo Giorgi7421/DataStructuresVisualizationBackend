@@ -20,18 +20,25 @@ public class MemorySnapshot {
     private Long id;
 
     @ElementCollection
-    @CollectionTable(name = "local_variables", joinColumns = @JoinColumn(name = "memory_snapshot_id"))
+    @CollectionTable(name = "local_variables", schema = "structure", joinColumns = @JoinColumn(name = "memory_snapshot_id"))
     @MapKeyColumn(name = "variable_name")
     @Column(name = "variable_value")
     @Convert(converter = ObjectToJsonConverter.class)
     private Map<String, Object> localVariables;
 
     @ElementCollection
-    @CollectionTable(name = "instance_variables", joinColumns = @JoinColumn(name = "memory_snapshot_id"))
+    @CollectionTable(name = "instance_variables", schema = "structure", joinColumns = @JoinColumn(name = "memory_snapshot_id"))
     @MapKeyColumn(name = "variable_name")
     @Column(name = "variable_value")
     @Convert(converter = ObjectToJsonConverter.class)
     private Map<String, Object> instanceVariables;
+
+    @ElementCollection
+    @CollectionTable(name = "address_objects", schema = "structure", joinColumns = @JoinColumn(name = "memory_snapshot_id"))
+    @MapKeyColumn(name = "variable_name")
+    @Column(name = "variable_value")
+    @Convert(converter = ObjectToJsonConverter.class)
+    private Map<String, Object> addressObjectMap;
 
     @Setter
     private String message;

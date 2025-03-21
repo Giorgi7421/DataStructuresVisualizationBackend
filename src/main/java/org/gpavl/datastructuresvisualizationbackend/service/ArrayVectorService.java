@@ -9,6 +9,10 @@ import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVecto
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorCreateRequest;
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorStateResponse;
 import org.gpavl.datastructuresvisualizationbackend.repository.ArrayVectorRepository;
+import org.hibernate.NonUniqueObjectException;
+import org.postgresql.util.PSQLException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,7 +29,13 @@ public class ArrayVectorService {
         ArrayVector arrayVector = buildArrayVector(arrayVectorCreateRequest);
         ArrayVectorState state = convertToArrayVectorState(arrayVector, arrayVectorCreateRequest.getName());
 
-        ArrayVectorState result = arrayVectorRepository.save(state);
+        ArrayVectorState result;
+        try {
+            result = arrayVectorRepository.save(state);
+        } catch (DataIntegrityViolationException ex) {
+            throw new DuplicateKeyException("Vector with that name already exists");
+        }
+
         return convertToResponse(result);
     }
 
@@ -106,6 +116,7 @@ public class ArrayVectorService {
         MemorySnapshot memorySnapshot = new MemorySnapshot();
         memorySnapshot.setLocalVariables(new HashMap<>(memorySnapshotDto.getLocalVariables()));
         memorySnapshot.setInstanceVariables(new HashMap<>(memorySnapshotDto.getInstanceVariables()));
+        memorySnapshot.setAddressObjectMap(new HashMap<>(memorySnapshotDto.getAddressObjectMap()));
         memorySnapshot.setMessage(memorySnapshotDto.getMessage());
         return memorySnapshot;
     }
@@ -114,6 +125,7 @@ public class ArrayVectorService {
         MemorySnapshotDto memorySnapshotdto = new MemorySnapshotDto();
         memorySnapshotdto.setLocalVariables(new HashMap<>(memorySnapshot.getLocalVariables()));
         memorySnapshotdto.setInstanceVariables(new HashMap<>(memorySnapshot.getInstanceVariables()));
+        memorySnapshotdto.setAddressObjectMap(new HashMap<>(memorySnapshot.getAddressObjectMap()));
         memorySnapshotdto.setMessage(memorySnapshot.getMessage());
         return memorySnapshotdto;
     }
