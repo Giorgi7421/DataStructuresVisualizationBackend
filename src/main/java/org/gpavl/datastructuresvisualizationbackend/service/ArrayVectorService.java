@@ -2,15 +2,13 @@ package org.gpavl.datastructuresvisualizationbackend.service;
 
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.function.TriConsumer;
-import org.gpavl.datastructuresvisualizationbackend.entity.ArrayVectorState;
+import org.gpavl.datastructuresvisualizationbackend.entity.vector.ArrayVectorState;
 import org.gpavl.datastructuresvisualizationbackend.entity.MemorySnapshot;
 import org.gpavl.datastructuresvisualizationbackend.model.MemorySnapshotDto;
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVector;
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorCreateRequest;
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorStateResponse;
 import org.gpavl.datastructuresvisualizationbackend.repository.ArrayVectorRepository;
-import org.hibernate.NonUniqueObjectException;
-import org.postgresql.util.PSQLException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
