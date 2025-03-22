@@ -14,7 +14,7 @@ public class ArrayVectorTest {
         int capacity = arrayVector.getCapacity();
         int count = arrayVector.getCount();
         String[] array = arrayVector.getArray();
-        List<MemorySnapshotDto> steps = arrayVector.getSteps();
+        List<MemorySnapshotDto> steps = arrayVector.getMemoryHistory().getMemorySnapshots();
 
         Assertions.assertTrue(arrayVector.isEmpty());
         Assertions.assertEquals(0, count);
@@ -33,7 +33,7 @@ public class ArrayVectorTest {
         int capacity = arrayVector.getCapacity();
         int count = arrayVector.getCount();
         String[] array = arrayVector.getArray();
-        List<MemorySnapshotDto> steps = arrayVector.getSteps();
+        List<MemorySnapshotDto> steps = arrayVector.getMemoryHistory().getMemorySnapshots();
 
         Assertions.assertFalse(arrayVector.isEmpty());
         Assertions.assertEquals(amount, count);

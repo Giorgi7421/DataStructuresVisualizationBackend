@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.gpavl.datastructuresvisualizationbackend.entity.MemoryHistory;
 import org.gpavl.datastructuresvisualizationbackend.entity.MemorySnapshot;
 
 import java.util.List;
@@ -32,8 +33,7 @@ public class ArrayVectorState {
     @OrderColumn(name = "list_order")
     private List<String> array;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vector_state_id")
-    @OrderColumn(name = "list_order")
-    private List<MemorySnapshot> steps;
+    private MemoryHistory memoryHistory;
 }

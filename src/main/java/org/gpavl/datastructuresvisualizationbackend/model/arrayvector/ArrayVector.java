@@ -2,11 +2,9 @@ package org.gpavl.datastructuresvisualizationbackend.model.arrayvector;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.gpavl.datastructuresvisualizationbackend.model.MemorySnapshotDto;
+import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 
 import java.util.*;
-
-import static org.gpavl.datastructuresvisualizationbackend.util.AddressUtils.generateNewAddress;
 
 @Getter
 @Setter
@@ -14,38 +12,38 @@ public class ArrayVector {
 
     private static final int INITIAL_CAPACITY = 10;
 
-    private List<MemorySnapshotDto> steps;
+    private MemoryHistoryDto memoryHistory;
 
     private String[] array;
     private int capacity;
     private int count;
 
     public ArrayVector() {
-        steps = new ArrayList<>();
+        memoryHistory = new MemoryHistoryDto();
 
         capacity = INITIAL_CAPACITY;
-        addInstanceVariableToMemory("capacity", capacity);
+        memoryHistory.addInstanceVariableToMemory("capacity", capacity);
 
         count = 0;
-        addInstanceVariableToMemory("count", count);
+        memoryHistory.addInstanceVariableToMemory("count", count);
 
         array = new String[capacity];
-        String newAddress = addNewArrayInAddressMemoryMap(toList());
-        addInstanceVariableToMemory("array", newAddress);
+        String newAddress = memoryHistory.addNewObjectInAddressMemoryMap(toList());
+        memoryHistory.addInstanceVariableToMemory("array", newAddress);
     }
 
     public ArrayVector(int amount, String element) {
-        steps = new ArrayList<>();
+        memoryHistory = new MemoryHistoryDto();
 
         capacity = Math.max(amount, INITIAL_CAPACITY);
-        addInstanceVariableToMemory("capacity", capacity);
+        memoryHistory.addInstanceVariableToMemory("capacity", capacity);
 
         count = amount;
-        addInstanceVariableToMemory("count", count);
+        memoryHistory.addInstanceVariableToMemory("count", count);
 
         array = new String[capacity];
-        String newAddress = addNewArrayInAddressMemoryMap(toList());
-        addInstanceVariableToMemory("array", newAddress);
+        String newAddress = memoryHistory.addNewObjectInAddressMemoryMap(toList());
+        memoryHistory.addInstanceVariableToMemory("array", newAddress);
 
         for (int i = 0; i < amount; i++) {
             array[i] = element;
@@ -63,6 +61,7 @@ public class ArrayVector {
 
     public void clear() {
         count = 0;
+        memoryHistory.addInstanceVariableToMemory("count", count);
     }
 
     public String get(int index) {
@@ -79,6 +78,7 @@ public class ArrayVector {
         }
 
         array[index] = element;
+        updateArrayInMemory();
     }
 
     public void add(String element) {
@@ -102,7 +102,7 @@ public class ArrayVector {
         array[index] = element;
         updateArrayInMemory();
         count++;
-        addInstanceVariableToMemory("count", count);
+        memoryHistory.addInstanceVariableToMemory("count", count);
     }
 
     public void removeAt(int index) {
@@ -115,85 +115,38 @@ public class ArrayVector {
             updateArrayInMemory();
         }
         count--;
-        addInstanceVariableToMemory("count", count);
+        memoryHistory.addInstanceVariableToMemory("count", count);
     }
 
     private void extendCapacity() {
         String[] oldArray = array;
-        String arrayAddress = getArrayAddress();
-        addLocalVariableToMemory("oldArray", arrayAddress);
+        String arrayAddress = memoryHistory.getInstanceVariableAddress("array");
+        memoryHistory.addLocalVariableToMemory("oldArray", arrayAddress);
 
         capacity *= 2;
-        addInstanceVariableToMemory("capacity", capacity);
+        memoryHistory.addInstanceVariableToMemory("capacity", capacity);
 
         array = new String[capacity];
-        String newAddress = addNewArrayInAddressMemoryMap(toList());
-        addInstanceVariableToMemory("array", newAddress);
+        String newAddress = memoryHistory.addNewObjectInAddressMemoryMap(toList());
+        memoryHistory.addInstanceVariableToMemory("array", newAddress);
 
         for (int i = 0; i < count; i++) {
             array[i] = oldArray[i];
             updateArrayInMemory();
             if (i == count - 1) {
-                steps.getLast().setMessage("Extending the capacity is completed");
+                memoryHistory.getMemorySnapshots().getLast().setMessage("Extending the capacity is completed");
             }
         }
 
-        freeOldArray();
+        memoryHistory.freeLocalVariable("oldArray", "Deleted old array to avoid memory leaks");
     }
 
     private List<String> toList() {
         return Arrays.stream(array).filter(Objects::nonNull).toList();
     }
 
-    private void addLocalVariableToMemory(String variableName, Object variableValue) {
-        MemorySnapshotDto currentMemorySnapshot = getCurrentMemorySnapshot();
-        currentMemorySnapshot.updateLocalVariable(variableName, variableValue);
-        steps.add(currentMemorySnapshot);
-    }
-
-    private void addInstanceVariableToMemory(String variableName, Object variableValue) {
-        MemorySnapshotDto currentMemorySnapshot = getCurrentMemorySnapshot();
-        currentMemorySnapshot.updateInstanceVariable(variableName, variableValue);
-        steps.add(currentMemorySnapshot);
-    }
-
-    private void freeOldArray() {
-        String oldArrayAddress = getOldArrayAddress();
-
-        MemorySnapshotDto memorySnapshotDto = getCurrentMemorySnapshot();
-        memorySnapshotDto.removeLocalVariable("oldArray");
-
-        memorySnapshotDto.freeAddress(oldArrayAddress);
-        memorySnapshotDto.setMessage("Deleted old array to avoid memory leaks");
-        steps.add(memorySnapshotDto);
-    }
-
-    private MemorySnapshotDto getCurrentMemorySnapshot() {
-        return !steps.isEmpty()
-                ? new MemorySnapshotDto(steps.getLast())
-                : new MemorySnapshotDto();
-    }
-
-    private String addNewArrayInAddressMemoryMap(List<String> array) {
-        String newAddress = generateNewAddress();
-        MemorySnapshotDto currentMemorySnapshot = getCurrentMemorySnapshot();
-        currentMemorySnapshot.updateAddressObjectMap(newAddress, array);
-        steps.add(currentMemorySnapshot);
-        return newAddress;
-    }
-
     private void updateArrayInMemory() {
-        MemorySnapshotDto currentMemorySnapshot = getCurrentMemorySnapshot();
-        String arrayAddress = getArrayAddress();
-        currentMemorySnapshot.updateAddressObjectMap(arrayAddress, toList());
-        steps.add(currentMemorySnapshot);
-    }
-
-    private String getArrayAddress() {
-        return (String) getCurrentMemorySnapshot().getInstanceVariables().get("array");
-    }
-
-    private String getOldArrayAddress() {
-        return (String) getCurrentMemorySnapshot().getLocalVariables().get("oldArray");
+        String arrayAddress = memoryHistory.getInstanceVariableAddress("array");
+        memoryHistory.updateObjectInAddressMemoryMap(arrayAddress, toList());
     }
 }

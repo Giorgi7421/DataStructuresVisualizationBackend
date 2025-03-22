@@ -2,8 +2,10 @@ package org.gpavl.datastructuresvisualizationbackend.service;
 
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.function.TriConsumer;
+import org.gpavl.datastructuresvisualizationbackend.entity.MemoryHistory;
 import org.gpavl.datastructuresvisualizationbackend.entity.vector.ArrayVectorState;
 import org.gpavl.datastructuresvisualizationbackend.entity.MemorySnapshot;
+import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.MemorySnapshotDto;
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVector;
 import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorCreateRequest;
@@ -91,7 +93,18 @@ public class ArrayVectorService {
         arrayVectorState.setCount(arrayVector.getCount());
         arrayVectorState.setCapacity(arrayVector.getCapacity());
         arrayVectorState.setArray(Arrays.stream(arrayVector.getArray()).filter(Objects::nonNull).toList());
-        arrayVectorState.setSteps(arrayVector.getSteps().stream().map(ArrayVectorService::convertToMemorySnapshot).toList());
+
+        MemoryHistory memoryHistory = new MemoryHistory();
+        List<MemorySnapshot> memorySnapshots = arrayVector
+                .getMemoryHistory()
+                .getMemorySnapshots()
+                .stream()
+                .map(ArrayVectorService::convertToMemorySnapshot)
+                .toList();
+
+        memoryHistory.setMemorySnapshots(memorySnapshots);
+        arrayVectorState.setMemoryHistory(memoryHistory);
+
         return arrayVectorState;
     }
 
@@ -100,7 +113,18 @@ public class ArrayVectorService {
         response.setCount(state.getCount());
         response.setCapacity(state.getCapacity());
         response.setArray(state.getArray());
-        response.setSteps(state.getSteps().stream().map(ArrayVectorService::convertToMemorySnapshotDto).toList());
+
+        MemoryHistoryDto memoryHistory = new MemoryHistoryDto();
+        List<MemorySnapshotDto> memorySnapshots = state
+                .getMemoryHistory()
+                .getMemorySnapshots()
+                .stream()
+                .map(ArrayVectorService::convertToMemorySnapshotDto)
+                .toList();
+
+        memoryHistory.setMemorySnapshots(memorySnapshots);
+        response.setMemoryHistory(memoryHistory);
+
         return response;
     }
 
@@ -188,7 +212,18 @@ public class ArrayVectorService {
         }
 
         arrayVector.setArray(array);
-        arrayVector.setSteps(state.getSteps().stream().map(ArrayVectorService::convertToMemorySnapshotDto).collect(Collectors.toList()));
+
+        MemoryHistoryDto memoryHistory = new MemoryHistoryDto();
+        List<MemorySnapshotDto> memorySnapshots = state
+                .getMemoryHistory()
+                .getMemorySnapshots()
+                .stream()
+                .map(ArrayVectorService::convertToMemorySnapshotDto)
+                .toList();
+
+        memoryHistory.setMemorySnapshots(memorySnapshots);
+        arrayVector.setMemoryHistory(memoryHistory);
+
         return arrayVector;
     }
 }
