@@ -1,14 +1,15 @@
-package org.gpavl.datastructuresvisualizationbackend.model.arrayvector;
+package org.gpavl.datastructuresvisualizationbackend.model.vector.arrayvector;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
+import org.gpavl.datastructuresvisualizationbackend.model.vector.Vector;
 
 import java.util.*;
 
 @Getter
 @Setter
-public class ArrayVector {
+public class ArrayVector implements Vector {
 
     private static final int INITIAL_CAPACITY = 10;
 
@@ -51,19 +52,23 @@ public class ArrayVector {
         }
     }
 
+    @Override
     public int size() {
         return count;
     }
 
+    @Override
     public boolean isEmpty() {
         return count == 0;
     }
 
+    @Override
     public void clear() {
         count = 0;
         memoryHistory.addInstanceVariableToMemory("count", count);
     }
 
+    @Override
     public String get(int index) {
         if (index < 0 || index >= count) {
             throw new IllegalArgumentException("get: index out of range");
@@ -72,6 +77,7 @@ public class ArrayVector {
         return array[index];
     }
 
+    @Override
     public void set(int index, String element) {
         if (index < 0 || index >= count) {
             throw new IllegalArgumentException("set: index out of range");
@@ -81,10 +87,12 @@ public class ArrayVector {
         updateArrayInMemory();
     }
 
+    @Override
     public void add(String element) {
         insertAt(count, element);
     }
 
+    @Override
     public void insertAt(int index, String element) {
         if (count == capacity) {
             extendCapacity();
@@ -105,6 +113,7 @@ public class ArrayVector {
         memoryHistory.addInstanceVariableToMemory("count", count);
     }
 
+    @Override
     public void removeAt(int index) {
         if (index < 0 || index > count) {
             throw new IllegalArgumentException("insertAt: index out of range");

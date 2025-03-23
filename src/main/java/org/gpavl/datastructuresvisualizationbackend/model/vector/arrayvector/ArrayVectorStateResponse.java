@@ -1,4 +1,4 @@
-package org.gpavl.datastructuresvisualizationbackend.model.arrayvector;
+package org.gpavl.datastructuresvisualizationbackend.model.vector.arrayvector;
 
 import lombok.Data;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;

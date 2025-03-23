@@ -2,7 +2,7 @@ package org.gpavl.datastructuresvisualizationbackend.validation.impl;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorCreateRequest;
+import org.gpavl.datastructuresvisualizationbackend.model.vector.arrayvector.ArrayVectorCreateRequest;
 import org.gpavl.datastructuresvisualizationbackend.validation.annotation.ValidArrayVectorCreateRequest;
 
 public class ArrayVectorCreateRequestValidator implements ConstraintValidator<ValidArrayVectorCreateRequest, ArrayVectorCreateRequest> {

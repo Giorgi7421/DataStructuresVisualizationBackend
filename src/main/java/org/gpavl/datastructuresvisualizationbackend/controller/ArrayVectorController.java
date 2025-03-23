@@ -2,8 +2,8 @@ package org.gpavl.datastructuresvisualizationbackend.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorCreateRequest;
-import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorStateResponse;
+import org.gpavl.datastructuresvisualizationbackend.model.vector.arrayvector.ArrayVectorCreateRequest;
+import org.gpavl.datastructuresvisualizationbackend.model.vector.arrayvector.ArrayVectorStateResponse;
 import org.gpavl.datastructuresvisualizationbackend.service.ArrayVectorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

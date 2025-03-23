@@ -7,9 +7,9 @@ import org.gpavl.datastructuresvisualizationbackend.entity.vector.ArrayVectorSta
 import org.gpavl.datastructuresvisualizationbackend.entity.MemorySnapshot;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.MemorySnapshotDto;
-import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVector;
-import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorCreateRequest;
-import org.gpavl.datastructuresvisualizationbackend.model.arrayvector.ArrayVectorStateResponse;
+import org.gpavl.datastructuresvisualizationbackend.model.vector.arrayvector.ArrayVector;
+import org.gpavl.datastructuresvisualizationbackend.model.vector.arrayvector.ArrayVectorCreateRequest;
+import org.gpavl.datastructuresvisualizationbackend.model.vector.arrayvector.ArrayVectorStateResponse;
 import org.gpavl.datastructuresvisualizationbackend.repository.ArrayVectorRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.function.*;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
