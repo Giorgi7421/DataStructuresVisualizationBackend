@@ -3,14 +3,16 @@ package org.gpavl.datastructuresvisualizationbackend.service;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.function.TriConsumer;
 import org.gpavl.datastructuresvisualizationbackend.entity.MemoryHistory;
-import org.gpavl.datastructuresvisualizationbackend.entity.vector.ArrayVectorState;
+import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
 import org.gpavl.datastructuresvisualizationbackend.entity.MemorySnapshot;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.MemorySnapshotDto;
-import org.gpavl.datastructuresvisualizationbackend.model.vector.arrayvector.ArrayVector;
-import org.gpavl.datastructuresvisualizationbackend.model.vector.arrayvector.ArrayVectorCreateRequest;
-import org.gpavl.datastructuresvisualizationbackend.model.vector.arrayvector.ArrayVectorStateResponse;
-import org.gpavl.datastructuresvisualizationbackend.repository.ArrayVectorRepository;
+import org.gpavl.datastructuresvisualizationbackend.model.Response;
+import org.gpavl.datastructuresvisualizationbackend.model.vector.ArrayVector;
+import org.gpavl.datastructuresvisualizationbackend.model.vector.VectorCreateRequest;
+import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
+import org.gpavl.datastructuresvisualizationbackend.util.Converter;
+import org.gpavl.datastructuresvisualizationbackend.util.QuadConsumer;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -22,62 +24,62 @@ import java.util.function.*;
 @AllArgsConstructor
 public class ArrayVectorService {
 
-    private ArrayVectorRepository arrayVectorRepository;
+    private DataStructureRepository arrayVectorRepository;
 
-    public ArrayVectorStateResponse createArrayVector(ArrayVectorCreateRequest arrayVectorCreateRequest) {
+    public Response createArrayVector(VectorCreateRequest arrayVectorCreateRequest) {
         ArrayVector arrayVector = buildArrayVector(arrayVectorCreateRequest);
-        ArrayVectorState state = convertToArrayVectorState(arrayVector, arrayVectorCreateRequest.getName());
+        DataStructureState state = Converter.convertToDataStructureState(arrayVector, arrayVectorCreateRequest.getName());
 
-        ArrayVectorState result;
+        DataStructureState result;
         try {
             result = arrayVectorRepository.save(state);
         } catch (DataIntegrityViolationException ex) {
             throw new DuplicateKeyException("Vector with that name already exists");
         }
 
-        return convertToResponse(result);
+        return Converter.convertToResponse(result);
     }
 
-    public ArrayVectorStateResponse findByName(String name) {
-        Optional<ArrayVectorState> optionalState = arrayVectorRepository.findByName(name);
+    public Response findByName(String name) {
+        Optional<DataStructureState> optionalState = arrayVectorRepository.findByName(name);
 
-        ArrayVectorState state = optionalState.orElseThrow();
-        return convertToResponse(state);
+        DataStructureState state = optionalState.orElseThrow();
+        return Converter.convertToResponse(state);
     }
 
-    public int size(String name) {
-        return executeNoArgumentGetOperation(name, ArrayVector::size);
+    public Response size(String name) {
+        return executeNoArgumentOperation(name, ArrayVector::size);
     }
 
-    public boolean isEmpty(String name) {
-        return executeNoArgumentGetOperation(name, ArrayVector::isEmpty);
+    public Response isEmpty(String name) {
+        return executeNoArgumentOperation(name, ArrayVector::isEmpty);
     }
 
-    public ArrayVectorStateResponse clear(String name) {
-        return executeNoArgumentSetOperation(name, ArrayVector::clear);
+    public Response clear(String name) {
+        return executeNoArgumentOperation(name, ArrayVector::clear);
     }
 
-    public String get(String name, int index) {
-        return executeOneArgumentGetOperation(name, ArrayVector::get, index);
+    public Response get(String name, int index) {
+        return executeOneArgumentOperation(name, ArrayVector::get, index);
     }
 
-    public ArrayVectorStateResponse set(String name, int index, String element) {
-        return executeTwoArgumentSetOperation(name, ArrayVector::set, index, element);
+    public Response set(String name, int index, String element) {
+        return executeTwoArgumentOperation(name, ArrayVector::set, index, element);
     }
 
-    public ArrayVectorStateResponse add(String name, String element) {
-        return executeOneArgumentSetOperation(name, ArrayVector::add, element);
+    public Response add(String name, String element) {
+        return executeOneArgumentOperation(name, ArrayVector::add, element);
     }
 
-    public ArrayVectorStateResponse insertAt(String name, int index, String element) {
-        return executeTwoArgumentSetOperation(name, ArrayVector::insertAt, index, element);
+    public Response insertAt(String name, int index, String element) {
+        return executeThreeArgumentOperation(name, ArrayVector::insertAt, index, element, null);
     }
 
-    public ArrayVectorStateResponse removeAt(String name, int index) {
-        return executeOneArgumentSetOperation(name, ArrayVector::removeAt, index);
+    public Response removeAt(String name, int index) {
+        return executeOneArgumentOperation(name, ArrayVector::removeAt, index);
     }
 
-    private ArrayVector buildArrayVector(ArrayVectorCreateRequest arrayVectorCreateRequest) {
+    private ArrayVector buildArrayVector(VectorCreateRequest arrayVectorCreateRequest) {
         return isDefaultConstructionRequest(arrayVectorCreateRequest) ?
                 new ArrayVector() :
                 new ArrayVector(
@@ -86,142 +88,63 @@ public class ArrayVectorService {
                 );
     }
 
-    private ArrayVectorState convertToArrayVectorState(ArrayVector arrayVector, String name) {
-        ArrayVectorState arrayVectorState = new ArrayVectorState();
-        arrayVectorState.setName(name);
-        arrayVectorState.setCount(arrayVector.getCount());
-        arrayVectorState.setCapacity(arrayVector.getCapacity());
-        arrayVectorState.setArray(Arrays.stream(arrayVector.getArray()).filter(Objects::nonNull).toList());
-
-        MemoryHistory memoryHistory = new MemoryHistory();
-        List<MemorySnapshot> memorySnapshots = arrayVector
-                .getMemoryHistory()
-                .getMemorySnapshots()
-                .stream()
-                .map(ArrayVectorService::convertToMemorySnapshot)
-                .toList();
-
-        memoryHistory.setMemorySnapshots(memorySnapshots);
-        arrayVectorState.setMemoryHistory(memoryHistory);
-
-        return arrayVectorState;
-    }
-
-    private ArrayVectorStateResponse convertToResponse(ArrayVectorState state) {
-        ArrayVectorStateResponse response = new ArrayVectorStateResponse();
-        response.setCount(state.getCount());
-        response.setCapacity(state.getCapacity());
-        response.setArray(state.getArray());
-
-        MemoryHistoryDto memoryHistory = new MemoryHistoryDto();
-        List<MemorySnapshotDto> memorySnapshots = state
-                .getMemoryHistory()
-                .getMemorySnapshots()
-                .stream()
-                .map(ArrayVectorService::convertToMemorySnapshotDto)
-                .toList();
-
-        memoryHistory.setMemorySnapshots(memorySnapshots);
-        response.setMemoryHistory(memoryHistory);
-
-        return response;
-    }
-
-    private <R> R executeNoArgumentGetOperation(String name, Function<ArrayVector, R> operation) {
-        ArrayVectorState state = getArrayVectorState(name);
+    private <U, V, R> Response executeThreeArgumentOperation(String name, QuadConsumer<ArrayVector, U, V, R> operation, U firstArgument, V secondArgument, R thirdArgument) {
+        DataStructureState state = getArrayVectorState(name);
         ArrayVector arrayVector = convertToArrayVector(state);
-        return operation.apply(arrayVector);
+        operation.accept(arrayVector, firstArgument, secondArgument, thirdArgument);
+        DataStructureState newState = Converter.convertToDataStructureState(arrayVector, name);
+        newState.setId(state.getId());
+        DataStructureState result = arrayVectorRepository.save(newState);
+        return Converter.convertToResponse(result);
     }
 
-    private static MemorySnapshot convertToMemorySnapshot(MemorySnapshotDto memorySnapshotDto) {
-        MemorySnapshot memorySnapshot = new MemorySnapshot();
-        memorySnapshot.setLocalVariables(new HashMap<>(memorySnapshotDto.getLocalVariables()));
-        memorySnapshot.setInstanceVariables(new HashMap<>(memorySnapshotDto.getInstanceVariables()));
-        memorySnapshot.setAddressObjectMap(new HashMap<>(memorySnapshotDto.getAddressObjectMap()));
-        memorySnapshot.setMessage(memorySnapshotDto.getMessage());
-        return memorySnapshot;
-    }
-
-    private static MemorySnapshotDto convertToMemorySnapshotDto(MemorySnapshot memorySnapshot) {
-        MemorySnapshotDto memorySnapshotdto = new MemorySnapshotDto();
-        memorySnapshotdto.setLocalVariables(new HashMap<>(memorySnapshot.getLocalVariables()));
-        memorySnapshotdto.setInstanceVariables(new HashMap<>(memorySnapshot.getInstanceVariables()));
-        memorySnapshotdto.setAddressObjectMap(new HashMap<>(memorySnapshot.getAddressObjectMap()));
-        memorySnapshotdto.setMessage(memorySnapshot.getMessage());
-        return memorySnapshotdto;
-    }
-
-    private <U, R> R executeOneArgumentGetOperation(String name, BiFunction<ArrayVector, U, R> operation, U argument) {
-        ArrayVectorState state = getArrayVectorState(name);
-        ArrayVector arrayVector = convertToArrayVector(state);
-        return operation.apply(arrayVector, argument);
-    }
-
-    private <U, V> ArrayVectorStateResponse executeTwoArgumentSetOperation(String name, TriConsumer<ArrayVector, U, V> operation, U firstArgument, V secondArgument) {
-        ArrayVectorState state = getArrayVectorState(name);
+    private <U, V> Response executeTwoArgumentOperation(String name, TriConsumer<ArrayVector, U, V> operation, U firstArgument, V secondArgument) {
+        DataStructureState state = getArrayVectorState(name);
         ArrayVector arrayVector = convertToArrayVector(state);
         operation.accept(arrayVector, firstArgument, secondArgument);
-        ArrayVectorState newState = convertToArrayVectorState(arrayVector, name);
+        DataStructureState newState = Converter.convertToDataStructureState(arrayVector, name);
         newState.setId(state.getId());
-        ArrayVectorState result = arrayVectorRepository.save(newState);
-        return convertToResponse(result);
+        DataStructureState result = arrayVectorRepository.save(newState);
+        return Converter.convertToResponse(result);
     }
 
-    private <U> ArrayVectorStateResponse executeOneArgumentSetOperation(String name, BiConsumer<ArrayVector, U> operation, U argument) {
-        ArrayVectorState state = getArrayVectorState(name);
+    private <U> Response executeOneArgumentOperation(String name, BiConsumer<ArrayVector, U> operation, U argument) {
+        DataStructureState state = getArrayVectorState(name);
         ArrayVector arrayVector = convertToArrayVector(state);
         operation.accept(arrayVector, argument);
-        ArrayVectorState newState = convertToArrayVectorState(arrayVector, name);
+        DataStructureState newState = Converter.convertToDataStructureState(arrayVector, name);
         newState.setId(state.getId());
-        ArrayVectorState result = arrayVectorRepository.save(newState);
-        return convertToResponse(result);
+        DataStructureState result = arrayVectorRepository.save(newState);
+        return Converter.convertToResponse(result);
     }
 
-    private ArrayVectorStateResponse executeNoArgumentSetOperation(String name, Consumer<ArrayVector> operation) {
-        ArrayVectorState state = getArrayVectorState(name);
+    private Response executeNoArgumentOperation(String name, Consumer<ArrayVector> operation) {
+        DataStructureState state = getArrayVectorState(name);
         ArrayVector arrayVector = convertToArrayVector(state);
         operation.accept(arrayVector);
-        ArrayVectorState newState = convertToArrayVectorState(arrayVector, name);
+        DataStructureState newState = Converter.convertToDataStructureState(arrayVector, name);
         newState.setId(state.getId());
-        ArrayVectorState result = arrayVectorRepository.save(newState);
-        return convertToResponse(result);
+        DataStructureState result = arrayVectorRepository.save(newState);
+        return Converter.convertToResponse(result);
     }
 
-    private boolean isDefaultConstructionRequest(ArrayVectorCreateRequest arrayVectorCreateRequest) {
+    private boolean isDefaultConstructionRequest(VectorCreateRequest arrayVectorCreateRequest) {
         return arrayVectorCreateRequest.getAmount() == null
                 && arrayVectorCreateRequest.getValue() == null;
     }
 
-    private ArrayVectorState getArrayVectorState(String name) {
-        Optional<ArrayVectorState> optionalState = arrayVectorRepository.findByName(name);
+    private DataStructureState getArrayVectorState(String name) {
+        Optional<DataStructureState> optionalState = arrayVectorRepository.findByName(name);
         return optionalState.orElseThrow();
     }
 
-    private ArrayVector convertToArrayVector(ArrayVectorState state) {
-        int capacity = state.getCapacity();
-        List<String> stateArray = state.getArray();
-
+    private ArrayVector convertToArrayVector(DataStructureState state) {
         ArrayVector arrayVector = new ArrayVector();
-        arrayVector.setCapacity(capacity);
-        arrayVector.setCount(state.getCount());
-
-        String[] array = new String[capacity];
-        for (int i = 0; i < stateArray.size(); i++) {
-            array[i] = stateArray.get(i);
-        }
-
-        arrayVector.setArray(array);
-
-        MemoryHistoryDto memoryHistory = new MemoryHistoryDto();
-        List<MemorySnapshotDto> memorySnapshots = state
-                .getMemoryHistory()
-                .getMemorySnapshots()
-                .stream()
-                .map(ArrayVectorService::convertToMemorySnapshotDto)
-                .toList();
-
-        memoryHistory.setMemorySnapshots(memorySnapshots);
-        arrayVector.setMemoryHistory(memoryHistory);
+        MemoryHistoryDto memoryHistoryDto = new MemoryHistoryDto();
+        memoryHistoryDto.setOperationHistoryList(
+                state.getMemoryHistory().getOperationHistoryList().stream().map(Converter::convertToOperationHistoryDto).toList()
+        );
+        arrayVector.setMemoryHistory(memoryHistoryDto);
 
         return arrayVector;
     }

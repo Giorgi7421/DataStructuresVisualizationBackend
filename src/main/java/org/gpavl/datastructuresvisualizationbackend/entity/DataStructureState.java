@@ -1,25 +1,26 @@
 package org.gpavl.datastructuresvisualizationbackend.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
 @Table(schema = "structure")
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
-public class MemoryHistory {
-
+@AllArgsConstructor
+public class DataStructureState {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "memory_history_id")
-    @OrderColumn(name = "list_order")
-    private List<OperationHistory> operationHistoryList;
+    @Column(unique = true)
+    private String name;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "structure_state_id")
+    private MemoryHistory memoryHistory;
 }

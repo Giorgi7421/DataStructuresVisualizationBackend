@@ -1,6 +1,6 @@
 package org.gpavl.datastructuresvisualizationbackend.model;
 
-import org.gpavl.datastructuresvisualizationbackend.model.vector.arrayvector.ArrayVector;
+import org.gpavl.datastructuresvisualizationbackend.model.vector.ArrayVector;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

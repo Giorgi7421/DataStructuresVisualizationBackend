@@ -14,6 +14,7 @@ public class MemorySnapshotDto {
     private Map<String, Object> instanceVariables;
     private Map<String, Object> addressObjectMap;
 
+    private Object getResult;
     private String message;
 
     public MemorySnapshotDto() {
