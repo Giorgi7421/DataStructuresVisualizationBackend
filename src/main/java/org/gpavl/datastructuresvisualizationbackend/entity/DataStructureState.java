@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.gpavl.datastructuresvisualizationbackend.model.Type;
 
 @Entity
 @Table(schema = "structure")
@@ -19,6 +20,8 @@ public class DataStructureState {
 
     @Column(unique = true)
     private String name;
+
+    private Type type;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "structure_state_id")

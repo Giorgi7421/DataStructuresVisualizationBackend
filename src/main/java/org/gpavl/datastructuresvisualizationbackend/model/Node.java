@@ -5,16 +5,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MemoryNode {
+public class Node {
 
     private String value;
     private String nextAddress;
 
-    public MemoryNode() {
+    public Node() {
 
     }
 
-    public MemoryNode(String value) {
+    public Node(String value) {
         this.value = value;
     }
 }

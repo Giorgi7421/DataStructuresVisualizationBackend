@@ -5,13 +5,9 @@ import org.gpavl.datastructuresvisualizationbackend.entity.MemoryHistory;
 import org.gpavl.datastructuresvisualizationbackend.entity.MemorySnapshot;
 import org.gpavl.datastructuresvisualizationbackend.entity.OperationHistory;
 import org.gpavl.datastructuresvisualizationbackend.model.*;
-import org.gpavl.datastructuresvisualizationbackend.model.vector.ArrayVector;
-import org.gpavl.datastructuresvisualizationbackend.service.ArrayVectorService;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public class Converter {
 
@@ -21,16 +17,22 @@ public class Converter {
 
         MemoryHistoryDto memoryHistoryDto = new MemoryHistoryDto();
         memoryHistoryDto.setOperationHistoryList(
-                state.getMemoryHistory().getOperationHistoryList().stream().map(Converter::convertToOperationHistoryDto).toList()
+                state
+                        .getMemoryHistory()
+                        .getOperationHistoryList()
+                        .stream()
+                        .map(Converter::convertToOperationHistoryDto)
+                        .toList()
         );
 
         response.setMemoryHistory(memoryHistoryDto);
         return response;
     }
 
-    public static DataStructureState convertToDataStructureState(DataStructure dataStructure, String name) {
+    public static DataStructureState convertToDataStructureState(DataStructure dataStructure, String name, Type type) {
         DataStructureState dataStructureState = new DataStructureState();
         dataStructureState.setName(name);
+        dataStructureState.setType(type);
 
         MemoryHistory memoryHistory = new MemoryHistory();
         List<OperationHistory> operationHistoryList = dataStructure
