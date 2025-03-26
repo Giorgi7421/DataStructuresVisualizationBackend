@@ -14,15 +14,14 @@ public class ArrayVector extends DataStructure {
 
     private static final int INITIAL_CAPACITY = 10;
 
-    private MemoryHistoryDto memoryHistory;
-
     public ArrayVector() {
         memoryHistory = new MemoryHistoryDto();
         OperationHistoryDto operationHistory = new OperationHistoryDto("ArrayVector", Collections.emptyMap());
 
         operationHistory.addInstanceVariable("capacity", INITIAL_CAPACITY);
         operationHistory.addInstanceVariable("count", 0);
-        String newAddress = operationHistory.addNewObject(toList(new String[INITIAL_CAPACITY]));
+        List<String> array = Collections.nCopies(INITIAL_CAPACITY, null);
+        String newAddress = operationHistory.addNewObject(array);
         operationHistory.addInstanceVariable("array", newAddress);
 
         memoryHistory.addOperationHistory(operationHistory);
@@ -44,13 +43,14 @@ public class ArrayVector extends DataStructure {
 
         operationHistory.addInstanceVariable("count", amount);
 
-        String[] array = new String[capacity];
-        String newAddress = operationHistory.addNewObject(toList(array));
+        List<String> array = Collections.nCopies(INITIAL_CAPACITY, null);
+        String newAddress = operationHistory.addNewObject(array);
         operationHistory.addInstanceVariable("array", newAddress);
 
         for (int i = 0; i < amount; i++) {
-            array[i] = element;
-            updateArray(array);
+            array = new ArrayList<>(array);
+            array.set(i, element);
+            updateArray(array, operationHistory);
         }
 
         operationHistory.removeLocalVariable("amount");
@@ -90,8 +90,8 @@ public class ArrayVector extends DataStructure {
         }
 
         operationHistory.addLocalVariable("index", index);
-        String[] array = getArray(operationHistory);
-        operationHistory.addResult(array[index]);
+        List<String> array = getArray(operationHistory);
+        operationHistory.addResult(array.get(index));
         operationHistory.removeLocalVariable("index");
 
         memoryHistory.addOperationHistory(operationHistory);
@@ -115,10 +115,11 @@ public class ArrayVector extends DataStructure {
         operationHistory.addLocalVariable("index", index);
         operationHistory.addLocalVariable("element", element);
 
-        String[] array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory);
 
-        array[index] = element;
-        updateArray(array);
+        array = new ArrayList<>(array);
+        array.set(index, element);
+        updateArray(array, operationHistory);
         operationHistory.removeLocalVariable("index");
         operationHistory.removeLocalVariable("element");
 
@@ -158,15 +159,17 @@ public class ArrayVector extends DataStructure {
             extendCapacity(operationHistory);
         }
 
-        String[] array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory);
 
         for (int i = count; i > index; i--) {
-            array[i] = array[i - 1];
-            updateArray(array);
+            array = new ArrayList<>(array);
+            array.set(i, array.get(i - 1));
+            updateArray(array, operationHistory);
         }
 
-        array[index] = element;
-        updateArray(array);
+        array = new ArrayList<>(array);
+        array.set(index, element);
+        updateArray(array, operationHistory);
         count++;
         operationHistory.addInstanceVariable("count", count);
 
@@ -185,11 +188,12 @@ public class ArrayVector extends DataStructure {
             throw new IllegalArgumentException("index out of range");
         }
 
-        String[] array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory);
 
         for (int i = index; i < count - 1; i++) {
-            array[i] = array[i + 1];
-            updateArray(array);
+            array = new ArrayList<>(array);
+            array.set(i, array.get(i + 1));
+            updateArray(array, operationHistory);
         }
         count--;
         operationHistory.addInstanceVariable("count", count);
@@ -197,7 +201,7 @@ public class ArrayVector extends DataStructure {
     }
 
     private void extendCapacity(OperationHistoryDto operationHistory) {
-        String[] oldArray = getArray(operationHistory);
+        List<String> oldArray = getArray(operationHistory);
         String arrayAddress = (String) operationHistory.getInstanceVariableValue("array");
         operationHistory.addLocalVariable("oldArray", arrayAddress);
 
@@ -205,15 +209,16 @@ public class ArrayVector extends DataStructure {
         capacity *= 2;
         operationHistory.addInstanceVariable("capacity", capacity);
 
-        String[] array = new String[capacity];
-        String newAddress = operationHistory.addNewObject(toList(array));
+        List<String> array = Collections.nCopies(capacity, null);
+        String newAddress = operationHistory.addNewObject(array);
         operationHistory.addInstanceVariable("array", newAddress);
 
         int count = getCount(operationHistory);
 
         for (int i = 0; i < count; i++) {
-            array[i] = oldArray[i];
-            updateArray(array);
+            array = new ArrayList<>(array);
+            array.set(i, oldArray.get(i));
+            updateArray(array, operationHistory);
             if (i == count - 1) {
                 operationHistory.addMessage("Extending the capacity is completed");
             }
@@ -222,19 +227,14 @@ public class ArrayVector extends DataStructure {
         operationHistory.freeLocalVariable("oldArray", "Deleted old array to avoid memory leaks");
     }
 
-    private List<String> toList(String[] array) {
-        return Arrays.stream(array).filter(Objects::nonNull).toList();
-    }
-
-    private void updateArray(String[] array) {
-        OperationHistoryDto lastOperationHistory = memoryHistory.getLastOperationHistory();
-        String arrayAddress = (String) lastOperationHistory.getInstanceVariableValue("array");
-        lastOperationHistory.updateObject(arrayAddress, toList(array));
+    private void updateArray(List<String> array, OperationHistoryDto operationHistoryDto) {
+        String arrayAddress = (String) operationHistoryDto.getInstanceVariableValue("array");
+        operationHistoryDto.updateObject(arrayAddress, array);
     }
 
     private OperationHistoryDto getLastMemorySnapshot(String operationName) {
         return new OperationHistoryDto(
-                "clear",
+                operationName,
                 Collections.emptyMap(),
                 memoryHistory.getLastMemorySnapshot()
         );
@@ -272,8 +272,8 @@ public class ArrayVector extends DataStructure {
         return (int) operationHistory.getInstanceVariableValue("capacity");
     }
 
-    private String[] getArray(OperationHistoryDto operationHistory) {
+    private List<String> getArray(OperationHistoryDto operationHistory) {
         String arrayAddress = (String) operationHistory.getInstanceVariableValue("array");
-        return  (String[]) operationHistory.getObject(arrayAddress);
+        return  (List<String>) operationHistory.getObject(arrayAddress);
     }
 }

@@ -24,6 +24,6 @@ public class DataStructureState {
     private Type type;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "structure_state_id")
+    @JoinColumn(name = "memory_history_id")
     private MemoryHistory memoryHistory;
 }

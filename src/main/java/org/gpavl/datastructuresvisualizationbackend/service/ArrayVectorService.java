@@ -15,6 +15,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -152,7 +153,7 @@ public class ArrayVectorService {
         ArrayVector arrayVector = new ArrayVector();
         MemoryHistoryDto memoryHistoryDto = new MemoryHistoryDto();
         memoryHistoryDto.setOperationHistoryList(
-                state.getMemoryHistory().getOperationHistoryList().stream().map(Converter::convertToOperationHistoryDto).toList()
+                state.getMemoryHistory().getOperationHistoryList().stream().map(Converter::convertToOperationHistoryDto).collect(Collectors.toList())
         );
         arrayVector.setMemoryHistory(memoryHistoryDto);
 

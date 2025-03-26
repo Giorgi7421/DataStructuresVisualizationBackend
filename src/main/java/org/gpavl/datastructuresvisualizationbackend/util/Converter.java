@@ -8,6 +8,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Converter {
 
@@ -54,7 +55,7 @@ public class Converter {
         operationHistory.setOperationName(operationHistoryDto.getOperationName());
         operationHistory.setParameters(operationHistoryDto.getParameters());
         operationHistory.setMemorySnapshots(
-                operationHistoryDto.getMemorySnapshots().stream().map(Converter::convertToMemorySnapshot).toList()
+                operationHistoryDto.getMemorySnapshots().stream().map(Converter::convertToMemorySnapshot).collect(Collectors.toList())
         );
         return operationHistory;
     }

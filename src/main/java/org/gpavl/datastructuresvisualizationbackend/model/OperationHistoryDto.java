@@ -1,5 +1,6 @@
 package org.gpavl.datastructuresvisualizationbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -103,6 +104,7 @@ public class OperationHistoryDto {
         return getCurrentMemorySnapshot().getLocalVariables().get(variableName);
     }
 
+    @JsonIgnore
     public MemorySnapshotDto getCurrentMemorySnapshot() {
         return !memorySnapshots.isEmpty()
                 ? new MemorySnapshotDto(memorySnapshots.getLast())
