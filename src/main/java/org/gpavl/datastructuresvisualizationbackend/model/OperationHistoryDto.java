@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,14 +22,14 @@ public class OperationHistoryDto {
     public OperationHistoryDto(String operationName, Map<String ,Object> parameters) {
         memorySnapshots = new ArrayList<>();
         this.operationName = operationName;
-        this.parameters = parameters;
+        this.parameters = new HashMap<>(parameters);
     }
 
     public OperationHistoryDto(String operationName, Map<String ,Object> parameters, MemorySnapshotDto memorySnapshot) {
         memorySnapshots = new ArrayList<>();
         memorySnapshots.add(memorySnapshot);
         this.operationName = operationName;
-        this.parameters = parameters;
+        this.parameters = new HashMap<>(parameters);
     }
 
     public void addResult(Object result) {

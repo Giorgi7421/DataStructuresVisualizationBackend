@@ -23,7 +23,7 @@ public class Converter {
                         .getOperationHistoryList()
                         .stream()
                         .map(Converter::convertToOperationHistoryDto)
-                        .toList()
+                        .collect(Collectors.toList())
         );
 
         response.setMemoryHistory(memoryHistoryDto);
@@ -41,7 +41,7 @@ public class Converter {
                 .getOperationHistoryList()
                 .stream()
                 .map(Converter::convertToOperationHistory)
-                .toList();
+                .collect(Collectors.toList());
 
         memoryHistory.setOperationHistoryList(operationHistoryList);
 
@@ -53,7 +53,7 @@ public class Converter {
     public static OperationHistory convertToOperationHistory(OperationHistoryDto operationHistoryDto) {
         OperationHistory operationHistory = new OperationHistory();
         operationHistory.setOperationName(operationHistoryDto.getOperationName());
-        operationHistory.setParameters(operationHistoryDto.getParameters());
+        operationHistory.setParameters(new HashMap<>(operationHistoryDto.getParameters()));
         operationHistory.setMemorySnapshots(
                 operationHistoryDto.getMemorySnapshots().stream().map(Converter::convertToMemorySnapshot).collect(Collectors.toList())
         );
@@ -71,8 +71,7 @@ public class Converter {
                 .getMemorySnapshots()
                         .stream()
                         .map(Converter::convertToMemorySnapshotDto)
-                        .toList()
-        );
+                        .collect(Collectors.toList()));
 
         return operationHistoryDto;
     }
