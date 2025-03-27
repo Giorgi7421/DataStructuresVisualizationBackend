@@ -82,6 +82,7 @@ public class Converter {
         memorySnapshot.setInstanceVariables(new HashMap<>(memorySnapshotDto.getInstanceVariables()));
         memorySnapshot.setAddressObjectMap(new HashMap<>(memorySnapshotDto.getAddressObjectMap()));
         memorySnapshot.setMessage(memorySnapshotDto.getMessage());
+        memorySnapshot.setGetResult(memorySnapshotDto.getGetResult());
         return memorySnapshot;
     }
 
@@ -91,6 +92,7 @@ public class Converter {
         memorySnapshotdto.setInstanceVariables(new HashMap<>(memorySnapshot.getInstanceVariables()));
         memorySnapshotdto.setAddressObjectMap(new HashMap<>(memorySnapshot.getAddressObjectMap()));
         memorySnapshotdto.setMessage(memorySnapshot.getMessage());
+        memorySnapshotdto.setGetResult(memorySnapshot.getGetResult());
         return memorySnapshotdto;
     }
 }

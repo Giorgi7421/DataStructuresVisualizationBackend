@@ -146,7 +146,9 @@ public class ArrayVector extends DataStructure {
         );
 
         operationHistory.addLocalVariable("index", index);
-        operationHistory.addLocalVariable("element", element);
+        if (caller == null) {
+            operationHistory.addLocalVariable("element", element);
+        }
 
         int count = getCount(operationHistory);
         int capacity = getCapacity(operationHistory);
@@ -198,6 +200,8 @@ public class ArrayVector extends DataStructure {
         count--;
         operationHistory.addInstanceVariable("count", count);
         operationHistory.removeLocalVariable("index");
+
+        memoryHistory.addOperationHistory(operationHistory);
     }
 
     private void extendCapacity(OperationHistoryDto operationHistory) {

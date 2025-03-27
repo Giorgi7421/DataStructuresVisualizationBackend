@@ -40,6 +40,7 @@ public class MemorySnapshot {
     @Convert(converter = ObjectToJsonConverter.class)
     private Map<String, Object> addressObjectMap;
 
-    @Setter
+    @Convert(converter = ObjectToJsonConverter.class)
+    private Object getResult;
     private String message;
 }
