@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.gpavl.datastructuresvisualizationbackend.model.DataStructure;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.OperationHistoryDto;
+import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 
 import java.util.*;
 
@@ -60,7 +61,7 @@ public class ArrayVector extends DataStructure {
     }
 
     public void size() {
-        OperationHistoryDto operationHistory = getLastMemorySnapshot("size");
+        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("size", memoryHistory);
         int size = getCount(operationHistory);
         operationHistory.addResult(size);
 
@@ -68,7 +69,7 @@ public class ArrayVector extends DataStructure {
     }
 
     public void isEmpty() {
-        OperationHistoryDto operationHistory = getLastMemorySnapshot("isEmpty");
+        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("isEmpty", memoryHistory);
         int size = getCount(operationHistory);
         boolean isEmpty = size == 0;
         operationHistory.addResult(isEmpty);
@@ -77,13 +78,13 @@ public class ArrayVector extends DataStructure {
     }
 
     public void clear() {
-        OperationHistoryDto operationHistory = getLastMemorySnapshot("clear");
+        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("clear", memoryHistory);
         operationHistory.addInstanceVariable("count", 0);
         memoryHistory.addOperationHistory(operationHistory);
     }
 
     public void get(int index) {
-        OperationHistoryDto operationHistory = getLastMemorySnapshot("get", "index", index);
+        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("get", memoryHistory, "index", index);
         int count = getCount(operationHistory);
         if (index < 0 || index >= count) {
             throw new IllegalArgumentException("index out of range");
@@ -98,8 +99,9 @@ public class ArrayVector extends DataStructure {
     }
 
     public void set(int index, String element) {
-        OperationHistoryDto operationHistory = getLastMemorySnapshot(
+        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot(
                 "set",
+                memoryHistory,
                 "index",
                 index,
                 "element",
@@ -127,7 +129,7 @@ public class ArrayVector extends DataStructure {
     }
 
     public void add(String element) {
-        OperationHistoryDto operationHistory = getLastMemorySnapshot("add", "element", element);
+        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("add", memoryHistory, "element", element);
         int count = getCount(operationHistory);
 
         operationHistory.addLocalVariable("element", element);
@@ -137,8 +139,9 @@ public class ArrayVector extends DataStructure {
     public void insertAt(int index, String element, OperationHistoryDto caller) {
         OperationHistoryDto operationHistory = caller != null
                 ? caller
-                : getLastMemorySnapshot(
+                : MemoryUtils.getLastMemorySnapshot(
                 "insertAt",
+                memoryHistory,
                 "index",
                 index,
                 "element",
@@ -182,7 +185,7 @@ public class ArrayVector extends DataStructure {
     }
 
     public void removeAt(int index) {
-        OperationHistoryDto operationHistory = getLastMemorySnapshot("removeAt", "index", index);
+        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("removeAt", memoryHistory, "index", index);
         operationHistory.addLocalVariable("index", index);
 
         int count = getCount(operationHistory);
@@ -234,38 +237,6 @@ public class ArrayVector extends DataStructure {
     private void updateArray(List<String> array, OperationHistoryDto operationHistoryDto) {
         String arrayAddress = (String) operationHistoryDto.getInstanceVariableValue("array");
         operationHistoryDto.updateObject(arrayAddress, array);
-    }
-
-    private OperationHistoryDto getLastMemorySnapshot(String operationName) {
-        return new OperationHistoryDto(
-                operationName,
-                Collections.emptyMap(),
-                memoryHistory.getLastMemorySnapshot()
-        );
-    }
-
-    private OperationHistoryDto getLastMemorySnapshot(String operationName, String parameterName, Object parameterValue) {
-        return new OperationHistoryDto(
-                operationName,
-                Map.of(parameterName, parameterValue),
-                memoryHistory.getLastMemorySnapshot()
-        );
-    }
-
-    private OperationHistoryDto getLastMemorySnapshot(String operationName,
-                                                      String firstParameterName,
-                                                      Object firstParameterValue,
-                                                      String secondParameterName,
-                                                      Object secondParameterValue) {
-        return new OperationHistoryDto(
-                operationName,
-                Map.of(firstParameterName,
-                        firstParameterValue,
-                        secondParameterName,
-                        secondParameterValue
-                ),
-                memoryHistory.getLastMemorySnapshot()
-        );
     }
 
     private int getCount(OperationHistoryDto operationHistory) {

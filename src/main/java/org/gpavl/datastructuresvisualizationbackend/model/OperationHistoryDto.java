@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.gpavl.datastructuresvisualizationbackend.util.AddressUtils.generateNewAddress;
+import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.generateNewAddress;
 
 @Getter
 @Setter
@@ -30,6 +30,11 @@ public class OperationHistoryDto {
         memorySnapshots.add(memorySnapshot);
         this.operationName = operationName;
         this.parameters = new HashMap<>(parameters);
+    }
+
+    public String getNextNodeAddress(String nodeAddress) {
+        Node node = (Node) getObject(nodeAddress);
+        return node.getNextAddress();
     }
 
     public void addResult(Object result) {
