@@ -100,6 +100,7 @@ public class LinkedListVector extends DataStructure {
 
     public void clear() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("clear", memoryHistory);
+        operationHistory.addInstanceVariable("count", 0);
 
         String currentNodeAddress = (String) operationHistory.getInstanceVariableValue("start");
         operationHistory.addLocalVariable(
@@ -107,7 +108,6 @@ public class LinkedListVector extends DataStructure {
                 currentNodeAddress
         );
 
-        operationHistory.addInstanceVariable("count", 0);
 
         operationHistory.addInstanceVariable("start", null);
         operationHistory.addInstanceVariable("end", null);
@@ -129,13 +129,19 @@ public class LinkedListVector extends DataStructure {
 
     public void get(int index) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("get", memoryHistory, "index", index);
+        int count = getCount(operationHistory);
+
+        if (index < 0 || index >= count) {
+            throw new IllegalArgumentException("index out of range");
+        }
 
         operationHistory.addLocalVariable("index", index);
 
         String targetNodeAddress = getNodeAtIndex(index, operationHistory);
 
         operationHistory.addLocalVariable("targetNode", targetNodeAddress);
-        Node targetNode = (Node) operationHistory.getObject(targetNodeAddress);
+        operationHistory.removeLocalVariable("current");
+        Node targetNode = MemoryUtils.convertToNode(operationHistory.getObject(targetNodeAddress));
         String value = targetNode.getValue();
 
         operationHistory.addResult(value);
@@ -155,13 +161,20 @@ public class LinkedListVector extends DataStructure {
                 element
         );
 
+        int count = getCount(operationHistory);
+
+        if (index < 0 || index >= count) {
+            throw new IllegalArgumentException("index out of range");
+        }
+
         operationHistory.addLocalVariable("index", index);
         operationHistory.addLocalVariable("element", element);
 
         String targetNodeAddress = getNodeAtIndex(index, operationHistory);
         operationHistory.addLocalVariable("targetNode", targetNodeAddress);
+        operationHistory.removeLocalVariable("current");
 
-        Node targetNode = (Node) operationHistory.getObject(targetNodeAddress);
+        Node targetNode = MemoryUtils.convertToNode(operationHistory.getObject(targetNodeAddress));
         targetNode.setValue(element);
 
         operationHistory.updateObject(targetNodeAddress, targetNode);
@@ -185,10 +198,10 @@ public class LinkedListVector extends DataStructure {
         String end = getEnd(operationHistory);
 
         if (count != 0) {
-            Node endNode = (Node) operationHistory.getObject(end);
+            Node endNode = MemoryUtils.convertToNode(operationHistory.getObject(end));
 
             endNode.setNextAddress(address);
-            operationHistory.updateObject(end, newNode);
+            operationHistory.updateObject(end, endNode);
         }else {
             operationHistory.addInstanceVariable("start", address);
         }
@@ -211,6 +224,11 @@ public class LinkedListVector extends DataStructure {
                 "element",
                 element
         );
+        int count = getCount(operationHistory);
+
+        if (index < 0 || index > count) {
+            throw new IllegalArgumentException("index out of range");
+        }
 
         operationHistory.addLocalVariable("index", index);
         operationHistory.addLocalVariable("element", element);
@@ -220,47 +238,58 @@ public class LinkedListVector extends DataStructure {
 
         String targetNode;
 
-        int count = getCount(operationHistory);
         String start = getStart(operationHistory);
 
         if (index == 0) {
             if (count != 0) {
-                targetNode = start;
-                operationHistory.addLocalVariable("targetNode", start);
+                operationHistory.addLocalVariable("oldStart", start);
+                operationHistory.addInstanceVariable("start", address);
+                newNode = new Node(element);
+                newNode.setNextAddress(start);
+                operationHistory.updateObject(address, newNode);
+                count++;
+                operationHistory.addInstanceVariable("count", count);
+                operationHistory.removeLocalVariable("oldStart");
             }else {
                 operationHistory.addInstanceVariable("start", address);
                 operationHistory.addInstanceVariable("end", address);
                 count++;
                 operationHistory.addInstanceVariable("count", count);
-                operationHistory.removeLocalVariable("newNode");
-                operationHistory.removeLocalVariable("index");
-                operationHistory.removeLocalVariable("element");
-                return;
             }
+
+            operationHistory.removeLocalVariable("newNode");
+            operationHistory.removeLocalVariable("element");
+            operationHistory.removeLocalVariable("index");
+            return;
         }else {
             targetNode = getNodeAtIndex(index - 1, operationHistory);
             operationHistory.addLocalVariable("targetNode", targetNode);
+            operationHistory.removeLocalVariable("current");
         }
 
         String nextNode = operationHistory.getNextNodeAddress(targetNode);
         operationHistory.addLocalVariable("nextNode", nextNode);
 
-        Node target = (Node) operationHistory.getObject(targetNode);
+        Node target = MemoryUtils.convertToNode(operationHistory.getObject(targetNode));
         target.setNextAddress(address);
         operationHistory.updateObject(targetNode, target);
 
         if (nextNode != null) {
+            newNode = new Node(element);
             newNode.setNextAddress(nextNode);
             operationHistory.updateObject(address, newNode);
+        }else {
+            operationHistory.addInstanceVariable("end", address);
         }
 
         count++;
         operationHistory.addInstanceVariable("count", count);
 
-        operationHistory.removeLocalVariable("newNode");
+        operationHistory.removeLocalVariable("nextNode");
         operationHistory.removeLocalVariable("targetNode");
-        operationHistory.removeLocalVariable("index");
+        operationHistory.removeLocalVariable("newNode");
         operationHistory.removeLocalVariable("element");
+        operationHistory.removeLocalVariable("index");
 
         memoryHistory.addOperationHistory(operationHistory);
     }
@@ -285,6 +314,7 @@ public class LinkedListVector extends DataStructure {
             String nodeWithAddress = getNodeAtIndex(index - 1, operationHistory);
             previousTargetNode = nodeWithAddress;
             operationHistory.addLocalVariable("previousTargetNode", nodeWithAddress);
+            operationHistory.removeLocalVariable("current");
         }
 
         String targetNode = operationHistory.getNextNodeAddress(previousTargetNode);
@@ -293,7 +323,7 @@ public class LinkedListVector extends DataStructure {
         String nextNode = operationHistory.getNextNodeAddress(targetNode);
         operationHistory.addLocalVariable("nextNode", nextNode);
 
-        Node previousTarget = (Node) operationHistory.getObject(previousTargetNode);
+        Node previousTarget = MemoryUtils.convertToNode(operationHistory.getObject(previousTargetNode));
         if (nextNode == null) {
             previousTarget.setNextAddress(null);
         }else {
@@ -326,6 +356,8 @@ public class LinkedListVector extends DataStructure {
             operationHistory.addLocalVariable("counter", counter);
         }
 
+        operationHistory.removeLocalVariable("counter");
+
         return currentNodeAddress;
     }
 
@@ -342,4 +374,9 @@ public class LinkedListVector extends DataStructure {
     }
 
     //TODO in remove, update start and end
+    //TODO local variable creation-removal order
+    //TODO check implementation correctness
+    //TODO don't update object, create new one
+    //TODO we need to maintain variables in the memory for presentation to be valid,
+    // shouldn't depend on actual variables in the program
 }

@@ -3,6 +3,7 @@ package org.gpavl.datastructuresvisualizationbackend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class OperationHistoryDto {
     }
 
     public String getNextNodeAddress(String nodeAddress) {
-        Node node = (Node) getObject(nodeAddress);
+        Node node = MemoryUtils.convertToNode(getObject(nodeAddress));
         return node.getNextAddress();
     }
 
@@ -47,9 +48,9 @@ public class OperationHistoryDto {
         memorySnapshots.getLast().setMessage(message);
     }
 
-    public Object getObject(String address) {
+    public Map<String, Object> getObject(String address) {
         MemorySnapshotDto currentMemorySnapshot = getCurrentMemorySnapshot();
-        return currentMemorySnapshot.getAddressObjectMap().get(address);
+        return (Map<String, Object>) currentMemorySnapshot.getAddressObjectMap().get(address);
     }
 
     public void addInstanceVariable(String variableName, Object variableValue) {

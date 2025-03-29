@@ -189,7 +189,7 @@ public class ArrayVector extends DataStructure {
         operationHistory.addLocalVariable("index", index);
 
         int count = getCount(operationHistory);
-        if (index < 0 || index > count) {
+        if (index < 0 || index >= count) {
             throw new IllegalArgumentException("index out of range");
         }
 

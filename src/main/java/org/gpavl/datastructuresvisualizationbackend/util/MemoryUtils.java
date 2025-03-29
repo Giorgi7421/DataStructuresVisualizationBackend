@@ -1,13 +1,24 @@
 package org.gpavl.datastructuresvisualizationbackend.util;
 
+import lombok.AllArgsConstructor;
+import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
+import org.gpavl.datastructuresvisualizationbackend.model.Node;
 import org.gpavl.datastructuresvisualizationbackend.model.OperationHistoryDto;
+import org.gpavl.datastructuresvisualizationbackend.model.Type;
+import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
+@Service
+@AllArgsConstructor
 public class MemoryUtils {
+
+    private DataStructureRepository dataStructureRepository;
 
     public static String generateNewAddress() {
         return "0x" + UUID
@@ -58,5 +69,17 @@ public class MemoryUtils {
                 ),
                 memoryHistory.getLastMemorySnapshot()
         );
+    }
+
+    public DataStructureState getDataStructureState(String name, Type type) {
+        Optional<DataStructureState> optionalState = dataStructureRepository.findByNameAndType(name, type);
+        return optionalState.orElseThrow();
+    }
+
+    public static Node convertToNode(Map<String, Object> obj) {
+        Node node = new Node();
+        node.setValue((String) obj.get("value"));
+        node.setNextAddress((String) obj.get("nextAddress"));
+        return node;
     }
 }
