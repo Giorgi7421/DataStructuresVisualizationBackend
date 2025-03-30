@@ -99,8 +99,8 @@ public class OperationHistoryDto {
 
     public void freeLocalVariable(String variableName, String message) {
         String address = (String) getLocalVariableValue(variableName);
-        removeLocalVariable(variableName);
         freeObject(address, message);
+        removeLocalVariable(variableName);
     }
 
     public Object getInstanceVariableValue(String variableName) {

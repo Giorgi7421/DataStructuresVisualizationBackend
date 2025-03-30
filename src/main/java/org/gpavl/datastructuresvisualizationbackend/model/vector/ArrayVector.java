@@ -54,8 +54,8 @@ public class ArrayVector extends DataStructure {
             updateArray(array, operationHistory);
         }
 
-        operationHistory.removeLocalVariable("amount");
         operationHistory.removeLocalVariable("element");
+        operationHistory.removeLocalVariable("amount");
 
         memoryHistory.addOperationHistory(operationHistory);
     }
@@ -122,8 +122,8 @@ public class ArrayVector extends DataStructure {
         array = new ArrayList<>(array);
         array.set(index, element);
         updateArray(array, operationHistory);
-        operationHistory.removeLocalVariable("index");
         operationHistory.removeLocalVariable("element");
+        operationHistory.removeLocalVariable("index");
 
         memoryHistory.addOperationHistory(operationHistory);
     }
@@ -178,8 +178,8 @@ public class ArrayVector extends DataStructure {
         count++;
         operationHistory.addInstanceVariable("count", count);
 
-        operationHistory.removeLocalVariable("index");
         operationHistory.removeLocalVariable("element");
+        operationHistory.removeLocalVariable("index");
 
         memoryHistory.addOperationHistory(operationHistory);
     }

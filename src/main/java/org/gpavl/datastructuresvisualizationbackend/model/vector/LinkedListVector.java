@@ -43,15 +43,14 @@ public class LinkedListVector extends DataStructure {
         operationHistory.addLocalVariable("amount", amount);
         operationHistory.addLocalVariable("element", element);
 
-        operationHistory.addInstanceVariable("count", amount);
-
         String start = createLinkedNodes(amount, element, operationHistory);
 
         operationHistory.addInstanceVariable("start", start);
+        operationHistory.addInstanceVariable("count", amount);
 
-        operationHistory.removeLocalVariable("firstNodeAddress");
-        operationHistory.removeLocalVariable("amount");
+        operationHistory.removeLocalVariable("firstNode");
         operationHistory.removeLocalVariable("element");
+        operationHistory.removeLocalVariable("amount");
 
         memoryHistory.addOperationHistory(operationHistory);
     }
@@ -67,16 +66,16 @@ public class LinkedListVector extends DataStructure {
             return address;
         }
         String nextNodeAddress = createLinkedNodes(amount - 1, element, operationHistory);
-        operationHistory.addLocalVariable("nextNodeAddress", nextNodeAddress);
+        operationHistory.addLocalVariable("nextNode", nextNodeAddress);
 
         Node currentNode = new Node();
         currentNode.setValue(element);
         currentNode.setNextAddress(nextNodeAddress);
 
         String resultAddress = operationHistory.addNewObject(currentNode);
-        operationHistory.addLocalVariable("firstNodeAddress", resultAddress);
+        operationHistory.addLocalVariable("firstNode", resultAddress);
 
-        operationHistory.removeLocalVariable("nextNodeAddress");
+        operationHistory.removeLocalVariable("nextNode");
 
         return resultAddress;
     }
@@ -145,8 +144,8 @@ public class LinkedListVector extends DataStructure {
         String value = targetNode.getValue();
 
         operationHistory.addResult(value);
-        operationHistory.removeLocalVariable("index");
         operationHistory.removeLocalVariable("targetNode");
+        operationHistory.removeLocalVariable("index");
 
         memoryHistory.addOperationHistory(operationHistory);
     }
@@ -179,8 +178,8 @@ public class LinkedListVector extends DataStructure {
 
         operationHistory.updateObject(targetNodeAddress, targetNode);
         operationHistory.removeLocalVariable("targetNode");
-        operationHistory.removeLocalVariable("index");
         operationHistory.removeLocalVariable("element");
+        operationHistory.removeLocalVariable("index");
 
         memoryHistory.addOperationHistory(operationHistory);
     }
@@ -308,8 +307,23 @@ public class LinkedListVector extends DataStructure {
         String previousTargetNode;
 
         if (index == 0) {
-            previousTargetNode = start;
-            operationHistory.addLocalVariable("previousTargetNode", start);
+            String target = start;
+            operationHistory.addLocalVariable("target", target);
+
+            String next = operationHistory.getNextNodeAddress(target);
+            operationHistory.addLocalVariable("next", next);
+
+            operationHistory.addInstanceVariable("start", next);
+
+            if (count == 1) {
+                operationHistory.addInstanceVariable("end", null);
+            }
+
+            operationHistory.freeLocalVariable("target", "Deletion of the node is completed");
+
+            operationHistory.removeLocalVariable("next");
+            operationHistory.removeLocalVariable("index");
+            return;
         }else {
             String nodeWithAddress = getNodeAtIndex(index - 1, operationHistory);
             previousTargetNode = nodeWithAddress;
@@ -326,15 +340,19 @@ public class LinkedListVector extends DataStructure {
         Node previousTarget = MemoryUtils.convertToNode(operationHistory.getObject(previousTargetNode));
         if (nextNode == null) {
             previousTarget.setNextAddress(null);
+
+            operationHistory.addInstanceVariable("end", previousTargetNode);
         }else {
             previousTarget.setNextAddress(nextNode);
         }
         operationHistory.updateObject(previousTargetNode, previousTarget);
 
         operationHistory.freeLocalVariable("targetNode", "Deletion of the node is completed");
-        operationHistory.removeLocalVariable("index");
-        operationHistory.removeLocalVariable("previousTargetNode");
         operationHistory.removeLocalVariable("nextNode");
+        operationHistory.removeLocalVariable("previousTargetNode");
+        operationHistory.removeLocalVariable("index");
+
+        memoryHistory.addOperationHistory(operationHistory);
     }
 
     private String getNodeAtIndex(int index, OperationHistoryDto operationHistory) {
@@ -375,7 +393,6 @@ public class LinkedListVector extends DataStructure {
 
     //TODO in remove, update start and end
     //TODO local variable creation-removal order
-    //TODO check implementation correctness
     //TODO don't update object, create new one
     //TODO we need to maintain variables in the memory for presentation to be valid,
     // shouldn't depend on actual variables in the program
