@@ -87,3 +87,4 @@ public class ArrayVectorController {
 
 //TODO think about api parameters vs request body
 //TODO ? add from what value the variable got assigned from in memory steps
+//TODO possible refactor to put common operation to many data structures in their own functions shared by them
