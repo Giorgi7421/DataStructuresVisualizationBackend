@@ -1,4 +1,4 @@
-package org.gpavl.datastructuresvisualizationbackend.service;
+package org.gpavl.datastructuresvisualizationbackend.service.vector;
 
 import lombok.AllArgsConstructor;
 import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
@@ -33,7 +33,7 @@ public class ArrayVectorService {
         try {
             result = dataStructureRepository.save(state);
         } catch (DataIntegrityViolationException ex) {
-            throw new DuplicateKeyException("Vector with that name already exists");
+            throw new DuplicateKeyException("Data structure with that name already exists");
         }
 
         return Converter.convertToResponse(result);

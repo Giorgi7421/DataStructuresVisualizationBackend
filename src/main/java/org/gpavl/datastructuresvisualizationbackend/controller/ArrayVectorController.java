@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.vector.VectorCreateRequest;
-import org.gpavl.datastructuresvisualizationbackend.service.ArrayVectorService;
+import org.gpavl.datastructuresvisualizationbackend.service.vector.ArrayVectorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -53,6 +53,11 @@ public class OperationHistoryDto {
         return (Map<String, Object>) currentMemorySnapshot.getAddressObjectMap().get(address);
     }
 
+    public List<String> getArray(String address) {
+        MemorySnapshotDto currentMemorySnapshot = getCurrentMemorySnapshot();
+        return (List<String>) currentMemorySnapshot.getAddressObjectMap().get(address);
+    }
+
     public void addInstanceVariable(String variableName, Object variableValue) {
         MemorySnapshotDto currentMemorySnapshot = getCurrentMemorySnapshot();
         currentMemorySnapshot.updateInstanceVariable(variableName, variableValue);

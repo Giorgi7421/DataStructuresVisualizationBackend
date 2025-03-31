@@ -249,6 +249,6 @@ public class ArrayVector extends DataStructure {
 
     private List<String> getArray(OperationHistoryDto operationHistory) {
         String arrayAddress = (String) operationHistory.getInstanceVariableValue("array");
-        return  (List<String>) operationHistory.getObject(arrayAddress);
+        return operationHistory.getArray(arrayAddress);
     }
 }
