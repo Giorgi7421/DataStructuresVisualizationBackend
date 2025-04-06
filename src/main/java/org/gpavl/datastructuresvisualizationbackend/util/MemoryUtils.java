@@ -9,10 +9,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -81,5 +78,40 @@ public class MemoryUtils {
         node.setValue((String) obj.get("value"));
         node.setNextAddress((String) obj.get("nextAddress"));
         return node;
+    }
+
+    public static int getCount(OperationHistoryDto operationHistory) {
+        return (int) operationHistory.getInstanceVariableValue("count");
+    }
+
+    public static int getCapacity(OperationHistoryDto operationHistory) {
+        return (int) operationHistory.getInstanceVariableValue("capacity");
+    }
+
+    public static List<String> getArray(OperationHistoryDto operationHistory) {
+        String arrayAddress = (String) operationHistory.getInstanceVariableValue("array");
+        return operationHistory.getArray(arrayAddress);
+    }
+
+    public static void updateArray(List<String> array, OperationHistoryDto operationHistoryDto) {
+        String arrayAddress = (String) operationHistoryDto.getInstanceVariableValue("array");
+        operationHistoryDto.updateObject(arrayAddress, array);
+    }
+
+    public static void size(MemoryHistoryDto memoryHistory) {
+        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("size", memoryHistory);
+        int size = getCount(operationHistory);
+        operationHistory.addResult(size);
+
+        memoryHistory.addOperationHistory(operationHistory);
+    }
+
+    public static void isEmpty(MemoryHistoryDto memoryHistory) {
+        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("isEmpty", memoryHistory);
+        int size = getCount(operationHistory);
+        boolean isEmpty = size == 0;
+        operationHistory.addResult(isEmpty);
+
+        memoryHistory.addOperationHistory(operationHistory);
     }
 }

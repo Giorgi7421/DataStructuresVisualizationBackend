@@ -9,6 +9,8 @@ import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 
 import java.util.*;
 
+import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.*;
+
 @Getter
 @Setter
 public class ArrayVector extends DataStructure {
@@ -61,20 +63,11 @@ public class ArrayVector extends DataStructure {
     }
 
     public void size() {
-        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("size", memoryHistory);
-        int size = getCount(operationHistory);
-        operationHistory.addResult(size);
-
-        memoryHistory.addOperationHistory(operationHistory);
+        MemoryUtils.size(memoryHistory);
     }
 
     public void isEmpty() {
-        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("isEmpty", memoryHistory);
-        int size = getCount(operationHistory);
-        boolean isEmpty = size == 0;
-        operationHistory.addResult(isEmpty);
-
-        memoryHistory.addOperationHistory(operationHistory);
+        MemoryUtils.isEmpty(memoryHistory);
     }
 
     public void clear() {
@@ -232,23 +225,5 @@ public class ArrayVector extends DataStructure {
         }
 
         operationHistory.freeLocalVariable("oldArray", "Deleted old array to avoid memory leaks");
-    }
-
-    private void updateArray(List<String> array, OperationHistoryDto operationHistoryDto) {
-        String arrayAddress = (String) operationHistoryDto.getInstanceVariableValue("array");
-        operationHistoryDto.updateObject(arrayAddress, array);
-    }
-
-    private int getCount(OperationHistoryDto operationHistory) {
-       return (int) operationHistory.getInstanceVariableValue("count");
-    }
-
-    private int getCapacity(OperationHistoryDto operationHistory) {
-        return (int) operationHistory.getInstanceVariableValue("capacity");
-    }
-
-    private List<String> getArray(OperationHistoryDto operationHistory) {
-        String arrayAddress = (String) operationHistory.getInstanceVariableValue("array");
-        return operationHistory.getArray(arrayAddress);
     }
 }

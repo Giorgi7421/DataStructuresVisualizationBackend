@@ -11,6 +11,8 @@ import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 import java.util.Collections;
 import java.util.Map;
 
+import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.getCount;
+
 @Getter
 @Setter
 public class LinkedListVector extends DataStructure {
@@ -81,20 +83,11 @@ public class LinkedListVector extends DataStructure {
     }
 
     public void size() {
-        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("size", memoryHistory);
-        int size = getCount(operationHistory);
-        operationHistory.addResult(size);
-
-        memoryHistory.addOperationHistory(operationHistory);
+        MemoryUtils.size(memoryHistory);
     }
 
     public void isEmpty() {
-        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("isEmpty", memoryHistory);
-        int size = getCount(operationHistory);
-        boolean isEmpty = size == 0;
-        operationHistory.addResult(isEmpty);
-
-        memoryHistory.addOperationHistory(operationHistory);
+        MemoryUtils.isEmpty(memoryHistory);
     }
 
     public void clear() {
@@ -377,10 +370,6 @@ public class LinkedListVector extends DataStructure {
         operationHistory.removeLocalVariable("counter");
 
         return currentNodeAddress;
-    }
-
-    private int getCount(OperationHistoryDto operationHistory) {
-        return (int) operationHistory.getInstanceVariableValue("count");
     }
 
     private String getStart(OperationHistoryDto operationHistory) {
