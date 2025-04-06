@@ -55,7 +55,7 @@ public class ArrayStackController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/peek/{name}")
+    @GetMapping("/peek/{name}")
     public ResponseEntity<Response> peek(@PathVariable String name) {
         Response response = arrayStackService.peek(name);
         return ResponseEntity.ok(response);

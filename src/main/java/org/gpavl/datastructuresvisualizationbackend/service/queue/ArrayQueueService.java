@@ -1,10 +1,11 @@
-package org.gpavl.datastructuresvisualizationbackend.service.stack;
+package org.gpavl.datastructuresvisualizationbackend.service.queue;
 
 import lombok.AllArgsConstructor;
 import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
+import org.gpavl.datastructuresvisualizationbackend.model.queue.ArrayQueue;
 import org.gpavl.datastructuresvisualizationbackend.model.stack.ArrayStack;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
@@ -18,15 +19,15 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class ArrayStackService {
+public class ArrayQueueService {
 
     private DataStructureRepository dataStructureRepository;
     private OperationUtils operationUtils;
     private MemoryUtils memoryUtils;
 
     public Response create(String name) {
-        ArrayStack arrayStack = new ArrayStack();
-        DataStructureState state = Converter.convertToDataStructureState(arrayStack, name, Type.ARRAY_STACK);
+        ArrayQueue arrayQueue = new ArrayQueue();
+        DataStructureState state = Converter.convertToDataStructureState(arrayQueue, name, Type.ARRAY_QUEUE);
 
         DataStructureState result;
         try {
@@ -39,78 +40,78 @@ public class ArrayStackService {
     }
 
     public Response findByName(String name) {
-        return Converter.convertToResponse(memoryUtils.getDataStructureState(name, Type.ARRAY_STACK));
+        return Converter.convertToResponse(memoryUtils.getDataStructureState(name, Type.ARRAY_QUEUE));
     }
 
     public Response size(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_STACK);
-        ArrayStack arrayStack = convertToArrayStack(state);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_QUEUE);
+        ArrayQueue arrayQueue = convertToArrayQueue(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayStack,
-                ArrayStack::size
+                arrayQueue,
+                ArrayQueue::size
         );
     }
 
     public Response isEmpty(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_STACK);
-        ArrayStack arrayStack = convertToArrayStack(state);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_QUEUE);
+        ArrayQueue arrayQueue = convertToArrayQueue(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayStack,
-                ArrayStack::isEmpty
+                arrayQueue,
+                ArrayQueue::isEmpty
         );
     }
 
     public Response clear(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_STACK);
-        ArrayStack arrayStack = convertToArrayStack(state);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_QUEUE);
+        ArrayQueue arrayQueue = convertToArrayQueue(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayStack,
-                ArrayStack::clear
+                arrayQueue,
+                ArrayQueue::clear
         );
     }
 
-    public Response push(String name, String element) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_STACK);
-        ArrayStack arrayStack = convertToArrayStack(state);
+    public Response enqueue(String name, String element) {
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_QUEUE);
+        ArrayQueue arrayQueue = convertToArrayQueue(state);
         return operationUtils.executeOneArgumentOperation(
                 state,
-                arrayStack,
-                ArrayStack::push,
+                arrayQueue,
+                ArrayQueue::enqueue,
                 element
         );
     }
 
-    public Response pop(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_STACK);
-        ArrayStack arrayStack = convertToArrayStack(state);
+    public Response dequeue(String name) {
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_QUEUE);
+        ArrayQueue arrayQueue = convertToArrayQueue(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayStack,
-                ArrayStack::pop
+                arrayQueue,
+                ArrayQueue::dequeue
         );
     }
 
     public Response peek(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_STACK);
-        ArrayStack arrayStack = convertToArrayStack(state);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_QUEUE);
+        ArrayQueue arrayQueue = convertToArrayQueue(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayStack,
-                ArrayStack::peek
+                arrayQueue,
+                ArrayQueue::peek
         );
     }
 
-    private ArrayStack convertToArrayStack(DataStructureState state) {
-        ArrayStack arrayStack = new ArrayStack();
+    private ArrayQueue convertToArrayQueue(DataStructureState state) {
+        ArrayQueue arrayQueue = new ArrayQueue();
         MemoryHistoryDto memoryHistoryDto = new MemoryHistoryDto();
         memoryHistoryDto.setOperationHistoryList(
                 state.getMemoryHistory().getOperationHistoryList().stream().map(Converter::convertToOperationHistoryDto).collect(Collectors.toList())
         );
-        arrayStack.setMemoryHistory(memoryHistoryDto);
+        arrayQueue.setMemoryHistory(memoryHistoryDto);
 
-        return arrayStack;
+        return arrayQueue;
     }
 }

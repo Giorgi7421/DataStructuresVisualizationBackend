@@ -1,11 +1,13 @@
 package org.gpavl.datastructuresvisualizationbackend.service.stack;
 
+import io.swagger.v3.oas.models.links.Link;
 import lombok.AllArgsConstructor;
 import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.model.stack.ArrayStack;
+import org.gpavl.datastructuresvisualizationbackend.model.stack.LinkedListStack;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
@@ -18,15 +20,15 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class ArrayStackService {
+public class LinkedListStackService {
 
     private DataStructureRepository dataStructureRepository;
     private OperationUtils operationUtils;
     private MemoryUtils memoryUtils;
 
     public Response create(String name) {
-        ArrayStack arrayStack = new ArrayStack();
-        DataStructureState state = Converter.convertToDataStructureState(arrayStack, name, Type.ARRAY_STACK);
+        LinkedListStack linkedListStack = new LinkedListStack();
+        DataStructureState state = Converter.convertToDataStructureState(linkedListStack, name, Type.LINKED_LIST_STACK);
 
         DataStructureState result;
         try {
@@ -39,78 +41,78 @@ public class ArrayStackService {
     }
 
     public Response findByName(String name) {
-        return Converter.convertToResponse(memoryUtils.getDataStructureState(name, Type.ARRAY_STACK));
+        return Converter.convertToResponse(memoryUtils.getDataStructureState(name, Type.LINKED_LIST_STACK));
     }
 
     public Response size(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_STACK);
-        ArrayStack arrayStack = convertToArrayStack(state);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.LINKED_LIST_STACK);
+        LinkedListStack linkedListStack = convertToLinkedListStack(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayStack,
-                ArrayStack::size
+                linkedListStack,
+                LinkedListStack::size
         );
     }
 
     public Response isEmpty(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_STACK);
-        ArrayStack arrayStack = convertToArrayStack(state);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.LINKED_LIST_STACK);
+        LinkedListStack linkedListStack = convertToLinkedListStack(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayStack,
-                ArrayStack::isEmpty
+                linkedListStack,
+                LinkedListStack::isEmpty
         );
     }
 
     public Response clear(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_STACK);
-        ArrayStack arrayStack = convertToArrayStack(state);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.LINKED_LIST_STACK);
+        LinkedListStack linkedListStack = convertToLinkedListStack(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayStack,
-                ArrayStack::clear
+                linkedListStack,
+                LinkedListStack::clear
         );
     }
 
     public Response push(String name, String element) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_STACK);
-        ArrayStack arrayStack = convertToArrayStack(state);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.LINKED_LIST_STACK);
+        LinkedListStack linkedListStack = convertToLinkedListStack(state);
         return operationUtils.executeOneArgumentOperation(
                 state,
-                arrayStack,
-                ArrayStack::push,
+                linkedListStack,
+                LinkedListStack::push,
                 element
         );
     }
 
     public Response pop(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_STACK);
-        ArrayStack arrayStack = convertToArrayStack(state);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.LINKED_LIST_STACK);
+        LinkedListStack linkedListStack = convertToLinkedListStack(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayStack,
-                ArrayStack::pop
+                linkedListStack,
+                LinkedListStack::pop
         );
     }
 
     public Response peek(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_STACK);
-        ArrayStack arrayStack = convertToArrayStack(state);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.LINKED_LIST_STACK);
+        LinkedListStack linkedListStack = convertToLinkedListStack(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayStack,
-                ArrayStack::peek
+                linkedListStack,
+                LinkedListStack::peek
         );
     }
 
-    private ArrayStack convertToArrayStack(DataStructureState state) {
-        ArrayStack arrayStack = new ArrayStack();
+    private LinkedListStack convertToLinkedListStack(DataStructureState state) {
+        LinkedListStack linkedListStack = new LinkedListStack();
         MemoryHistoryDto memoryHistoryDto = new MemoryHistoryDto();
         memoryHistoryDto.setOperationHistoryList(
                 state.getMemoryHistory().getOperationHistoryList().stream().map(Converter::convertToOperationHistoryDto).collect(Collectors.toList())
         );
-        arrayStack.setMemoryHistory(memoryHistoryDto);
+        linkedListStack.setMemoryHistory(memoryHistoryDto);
 
-        return arrayStack;
+        return linkedListStack;
     }
 }
