@@ -6,7 +6,6 @@ import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.model.vector.LinkedListVector;
-import org.gpavl.datastructuresvisualizationbackend.model.vector.VectorCreateRequest;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
@@ -25,9 +24,9 @@ public class LinkedListVectorService {
     private OperationUtils operationUtils;
     private MemoryUtils memoryUtils;
 
-    public Response create(VectorCreateRequest vectorCreateRequest) {
-        LinkedListVector linkedListVector = buildVector(vectorCreateRequest);
-        DataStructureState state = Converter.convertToDataStructureState(linkedListVector, vectorCreateRequest.getName(), Type.LINKED_LIST_VECTOR);
+    public Response create(String name) {
+        LinkedListVector linkedListVector = new LinkedListVector();
+        DataStructureState state = Converter.convertToDataStructureState(linkedListVector, name, Type.LINKED_LIST_VECTOR);
 
         DataStructureState result;
         try {
@@ -139,19 +138,5 @@ public class LinkedListVectorService {
         linkedListVector.setMemoryHistory(memoryHistoryDto);
 
         return linkedListVector;
-    }
-
-    private LinkedListVector buildVector(VectorCreateRequest vectorCreateRequest) {
-        return isDefaultConstructionRequest(vectorCreateRequest) ?
-                new LinkedListVector() :
-                new LinkedListVector(
-                        vectorCreateRequest.getAmount(),
-                        vectorCreateRequest.getValue()
-                );
-    }
-
-    private boolean isDefaultConstructionRequest(VectorCreateRequest vectorCreateRequest) {
-        return vectorCreateRequest.getAmount() == null
-                && vectorCreateRequest.getValue() == null;
     }
 }

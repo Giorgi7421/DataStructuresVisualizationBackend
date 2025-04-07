@@ -6,7 +6,6 @@ import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.model.vector.ArrayVector;
-import org.gpavl.datastructuresvisualizationbackend.model.vector.VectorCreateRequest;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
@@ -25,9 +24,9 @@ public class ArrayVectorService {
     private OperationUtils operationUtils;
     private MemoryUtils memoryUtils;
 
-    public Response create(VectorCreateRequest vectorCreateRequest) {
-        ArrayVector arrayVector = buildVector(vectorCreateRequest);
-        DataStructureState state = Converter.convertToDataStructureState(arrayVector, vectorCreateRequest.getName(), Type.ARRAY_VECTOR);
+    public Response create(String name) {
+        ArrayVector arrayVector = new ArrayVector();
+        DataStructureState state = Converter.convertToDataStructureState(arrayVector, name, Type.ARRAY_VECTOR);
 
         DataStructureState result;
         try {
@@ -129,20 +128,6 @@ public class ArrayVectorService {
                 ArrayVector::removeAt,
                 index
         );
-    }
-
-    private ArrayVector buildVector(VectorCreateRequest vectorCreateRequest) {
-        return isDefaultConstructionRequest(vectorCreateRequest) ?
-                new ArrayVector() :
-                new ArrayVector(
-                        vectorCreateRequest.getAmount(),
-                        vectorCreateRequest.getValue()
-                );
-    }
-
-    private boolean isDefaultConstructionRequest(VectorCreateRequest vectorCreateRequest) {
-        return vectorCreateRequest.getAmount() == null
-                && vectorCreateRequest.getValue() == null;
     }
 
     private ArrayVector convertToArrayVector(DataStructureState state) {

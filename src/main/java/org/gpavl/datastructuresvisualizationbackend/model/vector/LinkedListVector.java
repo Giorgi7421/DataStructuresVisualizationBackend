@@ -9,7 +9,6 @@ import org.gpavl.datastructuresvisualizationbackend.model.OperationHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 
 import java.util.Collections;
-import java.util.Map;
 
 import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.getCount;
 
@@ -27,59 +26,6 @@ public class LinkedListVector extends DataStructure {
         operationHistory.addInstanceVariable("end", null);
 
         memoryHistory.addOperationHistory(operationHistory);
-    }
-
-    public LinkedListVector(int amount, String element) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Illegal amount of elements");
-        }
-
-        memoryHistory = new MemoryHistoryDto();
-        OperationHistoryDto operationHistory = new OperationHistoryDto(
-                "LinkedListVector",
-                Map.of("amount", amount,
-                        "element", element
-                )
-        );
-
-        operationHistory.addLocalVariable("amount", amount);
-        operationHistory.addLocalVariable("element", element);
-
-        String start = createLinkedNodes(amount, element, operationHistory);
-
-        operationHistory.addInstanceVariable("start", start);
-        operationHistory.addInstanceVariable("count", amount);
-
-        operationHistory.removeLocalVariable("firstNode");
-        operationHistory.removeLocalVariable("element");
-        operationHistory.removeLocalVariable("amount");
-
-        memoryHistory.addOperationHistory(operationHistory);
-    }
-
-    private String createLinkedNodes(int amount, String element, OperationHistoryDto operationHistory) {
-        if (amount == 1) {
-            Node newNode = new Node(element);
-            String address = operationHistory.addNewObject(newNode);
-            operationHistory.addLocalVariable("newNode", address);
-
-            operationHistory.addInstanceVariable("end", address);
-            operationHistory.removeLocalVariable("newNode");
-            return address;
-        }
-        String nextNodeAddress = createLinkedNodes(amount - 1, element, operationHistory);
-        operationHistory.addLocalVariable("nextNode", nextNodeAddress);
-
-        Node currentNode = new Node();
-        currentNode.setValue(element);
-        currentNode.setNextAddress(nextNodeAddress);
-
-        String resultAddress = operationHistory.addNewObject(currentNode);
-        operationHistory.addLocalVariable("firstNode", resultAddress);
-
-        operationHistory.removeLocalVariable("nextNode");
-
-        return resultAddress;
     }
 
     public void size() {

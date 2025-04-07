@@ -5,7 +5,7 @@ import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
-import org.gpavl.datastructuresvisualizationbackend.model.queue.ArrayQueue;
+import org.gpavl.datastructuresvisualizationbackend.model.queue.LinkedListQueue;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
@@ -18,15 +18,15 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class ArrayQueueService {
+public class LinkedListQueueService {
 
     private DataStructureRepository dataStructureRepository;
     private OperationUtils operationUtils;
     private MemoryUtils memoryUtils;
 
     public Response create(String name) {
-        ArrayQueue arrayQueue = new ArrayQueue();
-        DataStructureState state = Converter.convertToDataStructureState(arrayQueue, name, Type.ARRAY_QUEUE);
+        LinkedListQueue linkedListQueue = new LinkedListQueue();
+        DataStructureState state = Converter.convertToDataStructureState(linkedListQueue, name, Type.LINKED_LIST_QUEUE);
 
         DataStructureState result;
         try {
@@ -39,78 +39,78 @@ public class ArrayQueueService {
     }
 
     public Response findByName(String name) {
-        return Converter.convertToResponse(memoryUtils.getDataStructureState(name, Type.ARRAY_QUEUE));
+        return Converter.convertToResponse(memoryUtils.getDataStructureState(name, Type.LINKED_LIST_QUEUE));
     }
 
     public Response size(String name) {
         DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_QUEUE);
-        ArrayQueue arrayQueue = convertToArrayQueue(state);
+        LinkedListQueue linkedListQueue = convertToLinkedListQueue(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayQueue,
-                ArrayQueue::size
+                linkedListQueue,
+                LinkedListQueue::size
         );
     }
 
     public Response isEmpty(String name) {
         DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_QUEUE);
-        ArrayQueue arrayQueue = convertToArrayQueue(state);
+        LinkedListQueue linkedListQueue = convertToLinkedListQueue(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayQueue,
-                ArrayQueue::isEmpty
+                linkedListQueue,
+                LinkedListQueue::isEmpty
         );
     }
 
     public Response clear(String name) {
         DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_QUEUE);
-        ArrayQueue arrayQueue = convertToArrayQueue(state);
+        LinkedListQueue linkedListQueue = convertToLinkedListQueue(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayQueue,
-                ArrayQueue::clear
+                linkedListQueue,
+                LinkedListQueue::clear
         );
     }
 
     public Response enqueue(String name, String element) {
         DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_QUEUE);
-        ArrayQueue arrayQueue = convertToArrayQueue(state);
+        LinkedListQueue linkedListQueue = convertToLinkedListQueue(state);
         return operationUtils.executeOneArgumentOperation(
                 state,
-                arrayQueue,
-                ArrayQueue::enqueue,
+                linkedListQueue,
+                LinkedListQueue::enqueue,
                 element
         );
     }
 
     public Response dequeue(String name) {
         DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_QUEUE);
-        ArrayQueue arrayQueue = convertToArrayQueue(state);
+        LinkedListQueue linkedListQueue = convertToLinkedListQueue(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayQueue,
-                ArrayQueue::dequeue
+                linkedListQueue,
+                LinkedListQueue::dequeue
         );
     }
 
     public Response peek(String name) {
         DataStructureState state = memoryUtils.getDataStructureState(name, Type.ARRAY_QUEUE);
-        ArrayQueue arrayQueue = convertToArrayQueue(state);
+        LinkedListQueue linkedListQueue = convertToLinkedListQueue(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                arrayQueue,
-                ArrayQueue::peek
+                linkedListQueue,
+                LinkedListQueue::peek
         );
     }
 
-    private ArrayQueue convertToArrayQueue(DataStructureState state) {
-        ArrayQueue arrayQueue = new ArrayQueue();
+    private LinkedListQueue convertToLinkedListQueue(DataStructureState state) {
+        LinkedListQueue linkedListQueue = new LinkedListQueue();
         MemoryHistoryDto memoryHistoryDto = new MemoryHistoryDto();
         memoryHistoryDto.setOperationHistoryList(
                 state.getMemoryHistory().getOperationHistoryList().stream().map(Converter::convertToOperationHistoryDto).collect(Collectors.toList())
         );
-        arrayQueue.setMemoryHistory(memoryHistoryDto);
+        linkedListQueue.setMemoryHistory(memoryHistoryDto);
 
-        return arrayQueue;
+        return linkedListQueue;
     }
 }

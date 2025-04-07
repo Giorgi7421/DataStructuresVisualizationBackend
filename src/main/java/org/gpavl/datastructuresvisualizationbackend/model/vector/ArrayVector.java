@@ -30,38 +30,6 @@ public class ArrayVector extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
-    public ArrayVector(int amount, String element) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Illegal amount of elements");
-        }
-
-        memoryHistory = new MemoryHistoryDto();
-        OperationHistoryDto operationHistory = new OperationHistoryDto("ArrayVector", Map.of("amount", amount, "element", element));
-
-        operationHistory.addLocalVariable("amount", amount);
-        operationHistory.addLocalVariable("element", element);
-
-        int capacity = Math.max(amount, INITIAL_CAPACITY);
-        operationHistory.addInstanceVariable("capacity", capacity);
-
-        operationHistory.addInstanceVariable("count", amount);
-
-        List<String> array = Collections.nCopies(INITIAL_CAPACITY, null);
-        String newAddress = operationHistory.addNewObject(array);
-        operationHistory.addInstanceVariable("array", newAddress);
-
-        for (int i = 0; i < amount; i++) {
-            array = new ArrayList<>(array);
-            array.set(i, element);
-            updateArray(array, operationHistory);
-        }
-
-        operationHistory.removeLocalVariable("element");
-        operationHistory.removeLocalVariable("amount");
-
-        memoryHistory.addOperationHistory(operationHistory);
-    }
-
     public void size() {
         MemoryUtils.size(memoryHistory);
     }
