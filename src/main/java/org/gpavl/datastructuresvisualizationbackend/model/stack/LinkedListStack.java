@@ -1,6 +1,5 @@
 package org.gpavl.datastructuresvisualizationbackend.model.stack;
 
-import org.gpavl.datastructuresvisualizationbackend.model.DataStructure;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.Node;
 import org.gpavl.datastructuresvisualizationbackend.model.OperationHistoryDto;
@@ -11,7 +10,7 @@ import java.util.Collections;
 import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.convertToNode;
 import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.getCount;
 
-public class LinkedListStack extends DataStructure {
+public class LinkedListStack extends Stack {
 
     public LinkedListStack() {
         memoryHistory = new MemoryHistoryDto();
@@ -23,14 +22,17 @@ public class LinkedListStack extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void size() {
         MemoryUtils.size(memoryHistory);
     }
 
+    @Override
     public void isEmpty() {
         MemoryUtils.isEmpty(memoryHistory);
     }
 
+    @Override
     public void clear() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("clear", memoryHistory);
 
@@ -44,6 +46,7 @@ public class LinkedListStack extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void push(String element) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("push", memoryHistory, "element", element);
         operationHistory.addLocalVariable("element", element);
@@ -66,6 +69,7 @@ public class LinkedListStack extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void pop() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("pop", memoryHistory);
 
@@ -99,6 +103,7 @@ public class LinkedListStack extends DataStructure {
         operationHistory.removeLocalVariable("result");
     }
 
+    @Override
     public void peek() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("peek", memoryHistory);
 

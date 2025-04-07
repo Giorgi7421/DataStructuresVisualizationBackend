@@ -1,6 +1,5 @@
 package org.gpavl.datastructuresvisualizationbackend.model.queue;
 
-import org.gpavl.datastructuresvisualizationbackend.model.DataStructure;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.Node;
 import org.gpavl.datastructuresvisualizationbackend.model.OperationHistoryDto;
@@ -11,7 +10,7 @@ import java.util.Collections;
 import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.convertToNode;
 import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.getCount;
 
-public class LinkedListQueue extends DataStructure {
+public class LinkedListQueue extends Queue {
 
     public LinkedListQueue() {
         memoryHistory = new MemoryHistoryDto();
@@ -24,14 +23,17 @@ public class LinkedListQueue extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void size() {
         MemoryUtils.size(memoryHistory);
     }
 
+    @Override
     public void isEmpty() {
         MemoryUtils.isEmpty(memoryHistory);
     }
 
+    @Override
     public void clear() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("clear", memoryHistory);
 
@@ -45,6 +47,7 @@ public class LinkedListQueue extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void enqueue(String element) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("enqueue", memoryHistory, "element", element);
         operationHistory.addLocalVariable("element", element);
@@ -83,6 +86,7 @@ public class LinkedListQueue extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void dequeue() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("dequeue", memoryHistory);
 
@@ -91,6 +95,7 @@ public class LinkedListQueue extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void peek() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("peek", memoryHistory);
 

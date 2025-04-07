@@ -1,6 +1,5 @@
 package org.gpavl.datastructuresvisualizationbackend.model.queue;
 
-import org.gpavl.datastructuresvisualizationbackend.model.DataStructure;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.OperationHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
@@ -11,7 +10,7 @@ import java.util.List;
 
 import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.*;
 
-public class ArrayQueue extends DataStructure {
+public class ArrayQueue extends Queue {
 
     private static final int INITIAL_CAPACITY = 10;
 
@@ -29,6 +28,7 @@ public class ArrayQueue extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void size() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("size", memoryHistory);
 
@@ -38,6 +38,7 @@ public class ArrayQueue extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void isEmpty() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("isEmpty", memoryHistory);
 
@@ -49,6 +50,7 @@ public class ArrayQueue extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void clear() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("clear", memoryHistory);
 
@@ -58,6 +60,7 @@ public class ArrayQueue extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void enqueue(String element) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("enqueue", memoryHistory, "element", element);
 
@@ -86,6 +89,7 @@ public class ArrayQueue extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void dequeue() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("dequeue", memoryHistory);
 
@@ -110,6 +114,7 @@ public class ArrayQueue extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void peek() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("peek", memoryHistory);
 

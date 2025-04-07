@@ -2,9 +2,11 @@ package org.gpavl.datastructuresvisualizationbackend.controller;
 
 import lombok.AllArgsConstructor;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
+import org.gpavl.datastructuresvisualizationbackend.model.Type;
+import org.gpavl.datastructuresvisualizationbackend.model.stack.ArrayStack;
+import org.gpavl.datastructuresvisualizationbackend.model.stack.LinkedListStack;
 import org.gpavl.datastructuresvisualizationbackend.model.stack.StackType;
-import org.gpavl.datastructuresvisualizationbackend.service.stack.ArrayStackService;
-import org.gpavl.datastructuresvisualizationbackend.service.stack.LinkedListStackService;
+import org.gpavl.datastructuresvisualizationbackend.service.StackService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class StackController {
 
-    private ArrayStackService arrayStackService;
-    private LinkedListStackService linkedListStackService;
+    private StackService stackService;
 
     @PostMapping("/create/{type}/{name}")
     public ResponseEntity<Response> createStack(
@@ -22,8 +23,17 @@ public class StackController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> arrayStackService.create(name);
-            case LinkedList -> linkedListStackService.create(name);
+            case Array -> stackService.create(
+                    Type.ARRAY_STACK,
+                    name,
+                    new ArrayStack()
+            );
+
+            case LinkedList -> stackService.create(
+                    Type.LINKED_LIST_STACK,
+                    name,
+                    new LinkedListStack()
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -35,8 +45,15 @@ public class StackController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> arrayStackService.findByName(name);
-            case LinkedList -> linkedListStackService.findByName(name);
+            case Array -> stackService.findByName(
+                    Type.ARRAY_STACK,
+                    name
+            );
+
+            case LinkedList -> stackService.findByName(
+                    Type.LINKED_LIST_STACK,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -48,8 +65,15 @@ public class StackController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> arrayStackService.size(name);
-            case LinkedList -> linkedListStackService.size(name);
+            case Array -> stackService.size(
+                    Type.ARRAY_STACK,
+                    name
+            );
+
+            case LinkedList -> stackService.size(
+                    Type.LINKED_LIST_STACK,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -61,8 +85,15 @@ public class StackController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> arrayStackService.isEmpty(name);
-            case LinkedList -> linkedListStackService.isEmpty(name);
+            case Array -> stackService.isEmpty(
+                    Type.ARRAY_STACK,
+                    name
+            );
+
+            case LinkedList -> stackService.isEmpty(
+                    Type.LINKED_LIST_STACK,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -74,8 +105,15 @@ public class StackController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> arrayStackService.clear(name);
-            case LinkedList -> linkedListStackService.clear(name);
+            case Array -> stackService.clear(
+                    Type.ARRAY_STACK,
+                    name
+            );
+
+            case LinkedList -> stackService.clear(
+                    Type.LINKED_LIST_STACK,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -88,8 +126,17 @@ public class StackController {
             @PathVariable String element
     ) {
         Response response = switch (type) {
-            case Array -> arrayStackService.push(name, element);
-            case LinkedList -> linkedListStackService.push(name, element);
+            case Array -> stackService.push(
+                    Type.ARRAY_STACK,
+                    name,
+                    element
+            );
+
+            case LinkedList -> stackService.push(
+                    Type.LINKED_LIST_STACK,
+                    name,
+                    element
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -101,8 +148,15 @@ public class StackController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> arrayStackService.pop(name);
-            case LinkedList -> linkedListStackService.pop(name);
+            case Array -> stackService.pop(
+                    Type.ARRAY_STACK,
+                    name
+            );
+
+            case LinkedList -> stackService.pop(
+                    Type.LINKED_LIST_STACK,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -114,8 +168,15 @@ public class StackController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> arrayStackService.peek(name);
-            case LinkedList -> linkedListStackService.peek(name);
+            case Array -> stackService.peek(
+                    Type.ARRAY_STACK,
+                    name
+            );
+
+            case LinkedList -> stackService.peek(
+                    Type.LINKED_LIST_STACK,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);

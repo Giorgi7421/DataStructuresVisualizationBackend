@@ -2,9 +2,11 @@ package org.gpavl.datastructuresvisualizationbackend.controller;
 
 import lombok.AllArgsConstructor;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
+import org.gpavl.datastructuresvisualizationbackend.model.Type;
+import org.gpavl.datastructuresvisualizationbackend.model.queue.ArrayQueue;
+import org.gpavl.datastructuresvisualizationbackend.model.queue.LinkedListQueue;
 import org.gpavl.datastructuresvisualizationbackend.model.queue.QueueType;
-import org.gpavl.datastructuresvisualizationbackend.service.queue.ArrayQueueService;
-import org.gpavl.datastructuresvisualizationbackend.service.queue.LinkedListQueueService;
+import org.gpavl.datastructuresvisualizationbackend.service.QueueService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class QueueController {
 
-    private ArrayQueueService arrayQueueService;
-    private LinkedListQueueService linkedListQueueService;
+    private QueueService queueService;
 
     @PostMapping("/create/{type}/{name}")
     public ResponseEntity<Response> createQueue(
@@ -22,8 +23,17 @@ public class QueueController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> arrayQueueService.create(name);
-            case LinkedList -> linkedListQueueService.create(name);
+            case ARRAY -> queueService.create(
+                    Type.ARRAY_QUEUE,
+                    name,
+                    new ArrayQueue()
+            );
+
+            case LINKED_LIST -> queueService.create(
+                    Type.LINKED_LIST_QUEUE,
+                    name,
+                    new LinkedListQueue()
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -35,8 +45,15 @@ public class QueueController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> arrayQueueService.findByName(name);
-            case LinkedList -> linkedListQueueService.findByName(name);
+            case ARRAY -> queueService.findByName(
+                    Type.ARRAY_QUEUE,
+                    name
+            );
+
+            case LINKED_LIST -> queueService.findByName(
+                    Type.LINKED_LIST_QUEUE,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -48,8 +65,15 @@ public class QueueController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> arrayQueueService.size(name);
-            case LinkedList -> linkedListQueueService.size(name);
+            case ARRAY -> queueService.size(
+                    Type.ARRAY_QUEUE,
+                    name
+            );
+
+            case LINKED_LIST -> queueService.size(
+                    Type.LINKED_LIST_QUEUE,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -61,8 +85,15 @@ public class QueueController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> arrayQueueService.isEmpty(name);
-            case LinkedList -> linkedListQueueService.isEmpty(name);
+            case ARRAY -> queueService.isEmpty(
+                    Type.ARRAY_QUEUE,
+                    name
+            );
+
+            case LINKED_LIST -> queueService.isEmpty(
+                    Type.LINKED_LIST_QUEUE,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -74,8 +105,15 @@ public class QueueController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> arrayQueueService.clear(name);
-            case LinkedList -> linkedListQueueService.clear(name);
+            case ARRAY -> queueService.clear(
+                    Type.ARRAY_QUEUE,
+                    name
+            );
+
+            case LINKED_LIST -> queueService.clear(
+                    Type.LINKED_LIST_QUEUE,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -88,8 +126,17 @@ public class QueueController {
             @PathVariable String element
     ) {
         Response response = switch (type) {
-            case Array -> arrayQueueService.enqueue(name, element);
-            case LinkedList -> linkedListQueueService.enqueue(name, element);
+            case ARRAY -> queueService.enqueue(
+                    Type.ARRAY_QUEUE,
+                    name,
+                    element
+            );
+
+            case LINKED_LIST -> queueService.enqueue(
+                    Type.LINKED_LIST_QUEUE,
+                    name,
+                    element
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -101,8 +148,15 @@ public class QueueController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> arrayQueueService.dequeue(name);
-            case LinkedList -> linkedListQueueService.dequeue(name);
+            case ARRAY -> queueService.dequeue(
+                    Type.ARRAY_QUEUE,
+                    name
+            );
+
+            case LINKED_LIST -> queueService.dequeue(
+                    Type.LINKED_LIST_QUEUE,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -114,8 +168,15 @@ public class QueueController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> arrayQueueService.peek(name);
-            case LinkedList -> linkedListQueueService.peek(name);
+            case ARRAY -> queueService.peek(
+                    Type.ARRAY_QUEUE,
+                    name
+            );
+
+            case LINKED_LIST -> queueService.peek(
+                    Type.LINKED_LIST_QUEUE,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);

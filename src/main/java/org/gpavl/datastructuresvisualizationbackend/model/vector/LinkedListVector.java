@@ -2,7 +2,6 @@ package org.gpavl.datastructuresvisualizationbackend.model.vector;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.gpavl.datastructuresvisualizationbackend.model.DataStructure;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.Node;
 import org.gpavl.datastructuresvisualizationbackend.model.OperationHistoryDto;
@@ -14,7 +13,7 @@ import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.getC
 
 @Getter
 @Setter
-public class LinkedListVector extends DataStructure {
+public class LinkedListVector extends Vector {
 
     public LinkedListVector() {
         memoryHistory = new MemoryHistoryDto();
@@ -28,14 +27,17 @@ public class LinkedListVector extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void size() {
         MemoryUtils.size(memoryHistory);
     }
 
+    @Override
     public void isEmpty() {
         MemoryUtils.isEmpty(memoryHistory);
     }
 
+    @Override
     public void clear() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("clear", memoryHistory);
         operationHistory.addInstanceVariable("count", 0);
@@ -65,6 +67,7 @@ public class LinkedListVector extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void get(int index) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("get", memoryHistory, "index", index);
         int count = getCount(operationHistory);
@@ -89,6 +92,7 @@ public class LinkedListVector extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void set(int index, String element) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot(
                 "set",
@@ -123,6 +127,7 @@ public class LinkedListVector extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void add(String element) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("add", memoryHistory, "element", element);
 
@@ -153,6 +158,7 @@ public class LinkedListVector extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void insertAt(int index, String element) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot(
                 "insertAt",
@@ -232,6 +238,7 @@ public class LinkedListVector extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void removeAt(int index) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("removeAt", memoryHistory, "index", index);
 

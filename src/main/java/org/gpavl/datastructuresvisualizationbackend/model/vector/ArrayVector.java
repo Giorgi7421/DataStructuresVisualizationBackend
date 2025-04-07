@@ -2,18 +2,19 @@ package org.gpavl.datastructuresvisualizationbackend.model.vector;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.gpavl.datastructuresvisualizationbackend.model.DataStructure;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.OperationHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.*;
 
 @Getter
 @Setter
-public class ArrayVector extends DataStructure {
+public class ArrayVector extends Vector {
 
     private static final int INITIAL_CAPACITY = 10;
 
@@ -30,20 +31,24 @@ public class ArrayVector extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void size() {
         MemoryUtils.size(memoryHistory);
     }
 
+    @Override
     public void isEmpty() {
         MemoryUtils.isEmpty(memoryHistory);
     }
 
+    @Override
     public void clear() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("clear", memoryHistory);
         operationHistory.addInstanceVariable("count", 0);
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void get(int index) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("get", memoryHistory, "index", index);
         int count = getCount(operationHistory);
@@ -59,6 +64,7 @@ public class ArrayVector extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void set(int index, String element) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot(
                 "set",
@@ -89,18 +95,21 @@ public class ArrayVector extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void add(String element) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("add", memoryHistory, "element", element);
         int count = getCount(operationHistory);
 
         operationHistory.addLocalVariable("element", element);
-        insertAt(count, element, operationHistory);
+        insertAtWrapper(operationHistory, count, element);
+
+        memoryHistory.addOperationHistory(operationHistory);
     }
 
-    public void insertAt(int index, String element, OperationHistoryDto caller) {
-        OperationHistoryDto operationHistory = caller != null
-                ? caller
-                : MemoryUtils.getLastMemorySnapshot(
+    @Override
+    public void insertAt(int index, String element) {
+        OperationHistoryDto operationHistory =
+                MemoryUtils.getLastMemorySnapshot(
                 "insertAt",
                 memoryHistory,
                 "index",
@@ -109,11 +118,12 @@ public class ArrayVector extends DataStructure {
                 element
         );
 
-        operationHistory.addLocalVariable("index", index);
-        if (caller == null) {
-            operationHistory.addLocalVariable("element", element);
-        }
+        insertAtWrapper(operationHistory, index, element);
 
+        memoryHistory.addOperationHistory(operationHistory);
+    }
+
+    private void insertAtWrapper(OperationHistoryDto operationHistory, int index, String element) {
         int count = getCount(operationHistory);
         int capacity = getCapacity(operationHistory);
 
@@ -141,10 +151,9 @@ public class ArrayVector extends DataStructure {
 
         operationHistory.removeLocalVariable("element");
         operationHistory.removeLocalVariable("index");
-
-        memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void removeAt(int index) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("removeAt", memoryHistory, "index", index);
         operationHistory.addLocalVariable("index", index);

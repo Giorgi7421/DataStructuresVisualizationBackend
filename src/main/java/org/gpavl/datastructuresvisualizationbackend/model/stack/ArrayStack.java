@@ -1,6 +1,5 @@
 package org.gpavl.datastructuresvisualizationbackend.model.stack;
 
-import org.gpavl.datastructuresvisualizationbackend.model.DataStructure;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.OperationHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
@@ -11,7 +10,7 @@ import java.util.List;
 
 import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.*;
 
-public class ArrayStack extends DataStructure {
+public class ArrayStack extends Stack {
 
     private static final int INITIAL_CAPACITY = 10;
 
@@ -28,20 +27,24 @@ public class ArrayStack extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void size() {
         MemoryUtils.size(memoryHistory);
     }
 
+    @Override
     public void isEmpty() {
         MemoryUtils.isEmpty(memoryHistory);
     }
 
+    @Override
     public void clear() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("clear", memoryHistory);
         operationHistory.addInstanceVariable("count", 0);
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void push(String element) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("push", memoryHistory, "element", element);
         operationHistory.addLocalVariable("element", element);
@@ -65,6 +68,7 @@ public class ArrayStack extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void pop() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("pop", memoryHistory);
 
@@ -83,6 +87,7 @@ public class ArrayStack extends DataStructure {
         memoryHistory.addOperationHistory(operationHistory);
     }
 
+    @Override
     public void peek() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("peek", memoryHistory);
 
