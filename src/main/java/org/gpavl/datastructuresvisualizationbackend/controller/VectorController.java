@@ -18,18 +18,18 @@ public class VectorController {
     private VectorService vectorService;
 
     @PostMapping("/create/{type}/{name}")
-    public ResponseEntity<Response> createVector(
+    public ResponseEntity<Response> create(
             @PathVariable VectorType type,
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> vectorService.create(
+            case ARRAY -> vectorService.create(
                     Type.ARRAY_VECTOR,
                     name,
                     new ArrayVector()
             );
 
-            case LinkedList -> vectorService.create(
+            case LINKED_LIST -> vectorService.create(
                     Type.LINKED_LIST_VECTOR,
                     name,
                     new LinkedListVector()
@@ -40,17 +40,17 @@ public class VectorController {
     }
 
     @GetMapping("/find/{type}/{name}")
-    public ResponseEntity<Response> findVector(
+    public ResponseEntity<Response> find(
             @PathVariable VectorType type,
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> vectorService.findByName(
+            case ARRAY -> vectorService.findByName(
                     Type.ARRAY_VECTOR,
                     name
             );
 
-            case LinkedList -> vectorService.findByName(
+            case LINKED_LIST -> vectorService.findByName(
                     Type.LINKED_LIST_VECTOR,
                     name
             );
@@ -65,12 +65,12 @@ public class VectorController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> vectorService.size(
+            case ARRAY -> vectorService.size(
                     Type.ARRAY_VECTOR,
                     name
             );
 
-            case LinkedList -> vectorService.size(
+            case LINKED_LIST -> vectorService.size(
                     Type.LINKED_LIST_VECTOR,
                     name
             );
@@ -85,12 +85,12 @@ public class VectorController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> vectorService.isEmpty(
+            case ARRAY -> vectorService.isEmpty(
                     Type.ARRAY_VECTOR,
                     name
             );
 
-            case LinkedList -> vectorService.isEmpty(
+            case LINKED_LIST -> vectorService.isEmpty(
                     Type.LINKED_LIST_VECTOR,
                     name
             );
@@ -105,12 +105,12 @@ public class VectorController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> vectorService.clear(
+            case ARRAY -> vectorService.clear(
                     Type.ARRAY_VECTOR,
                     name
             );
 
-            case LinkedList -> vectorService.clear(
+            case LINKED_LIST -> vectorService.clear(
                     Type.LINKED_LIST_VECTOR,
                     name
             );
@@ -126,13 +126,13 @@ public class VectorController {
             @PathVariable int index
     ) {
         Response response = switch (type) {
-            case Array -> vectorService.get(
+            case ARRAY -> vectorService.get(
                     Type.ARRAY_VECTOR,
                     name,
                     index
             );
 
-            case LinkedList -> vectorService.get(
+            case LINKED_LIST -> vectorService.get(
                     Type.LINKED_LIST_VECTOR,
                     name,
                     index
@@ -150,14 +150,14 @@ public class VectorController {
             @PathVariable String element
     ) {
         Response response = switch (type) {
-            case Array -> vectorService.set(
+            case ARRAY -> vectorService.set(
                     Type.ARRAY_VECTOR,
                     name,
                     index,
                     element
             );
 
-            case LinkedList -> vectorService.set(
+            case LINKED_LIST -> vectorService.set(
                     Type.LINKED_LIST_VECTOR,
                     name,
                     index,
@@ -175,13 +175,13 @@ public class VectorController {
             @PathVariable String element
     ) {
         Response response = switch (type) {
-            case Array -> vectorService.add(
+            case ARRAY -> vectorService.add(
                     Type.ARRAY_VECTOR,
                     name,
                     element
             );
 
-            case LinkedList -> vectorService.add(
+            case LINKED_LIST -> vectorService.add(
                     Type.LINKED_LIST_VECTOR,
                     name,
                     element
@@ -200,14 +200,14 @@ public class VectorController {
             @PathVariable String element
     ) {
         Response response = switch (type) {
-            case Array -> vectorService.insertAt(
+            case ARRAY -> vectorService.insertAt(
                     Type.ARRAY_VECTOR,
                     name,
                     index,
                     element
             );
 
-            case LinkedList -> vectorService.insertAt(
+            case LINKED_LIST -> vectorService.insertAt(
                     Type.LINKED_LIST_VECTOR,
                     name,
                     index,
@@ -225,12 +225,12 @@ public class VectorController {
             @PathVariable int index
     ) {
         Response response = switch (type) {
-            case Array -> vectorService.removeAt(
+            case ARRAY -> vectorService.removeAt(
                     Type.ARRAY_VECTOR,
                     name,
                     index
             );
-            case LinkedList -> vectorService.removeAt(
+            case LINKED_LIST -> vectorService.removeAt(
                     Type.LINKED_LIST_VECTOR,
                     name,
                     index

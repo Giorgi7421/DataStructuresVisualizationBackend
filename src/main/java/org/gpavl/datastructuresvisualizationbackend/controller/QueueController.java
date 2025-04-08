@@ -18,7 +18,7 @@ public class QueueController {
     private QueueService queueService;
 
     @PostMapping("/create/{type}/{name}")
-    public ResponseEntity<Response> createQueue(
+    public ResponseEntity<Response> create(
             @PathVariable QueueType type,
             @PathVariable String name
     ) {
@@ -40,7 +40,7 @@ public class QueueController {
     }
 
     @GetMapping("/find/{type}/{name}")
-    public ResponseEntity<Response> findQueue(
+    public ResponseEntity<Response> find(
             @PathVariable QueueType type,
             @PathVariable String name
     ) {

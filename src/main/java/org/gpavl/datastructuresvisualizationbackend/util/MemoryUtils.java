@@ -93,7 +93,12 @@ public class MemoryUtils {
         return operationHistory.getArray(arrayAddress);
     }
 
-    public static void updateArray(List<String> array, OperationHistoryDto operationHistoryDto) {
+    public static List<Integer> getIntArray(OperationHistoryDto operationHistory) {
+        String arrayAddress = (String) operationHistory.getInstanceVariableValue("array");
+        return operationHistory.getIntArray(arrayAddress);
+    }
+
+    public static <T> void updateArray(List<T> array, OperationHistoryDto operationHistoryDto) {
         String arrayAddress = (String) operationHistoryDto.getInstanceVariableValue("array");
         operationHistoryDto.updateObject(arrayAddress, array);
     }

@@ -18,18 +18,18 @@ public class StackController {
     private StackService stackService;
 
     @PostMapping("/create/{type}/{name}")
-    public ResponseEntity<Response> createStack(
+    public ResponseEntity<Response> create(
             @PathVariable StackType type,
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> stackService.create(
+            case ARRAY -> stackService.create(
                     Type.ARRAY_STACK,
                     name,
                     new ArrayStack()
             );
 
-            case LinkedList -> stackService.create(
+            case LINKED_LIST -> stackService.create(
                     Type.LINKED_LIST_STACK,
                     name,
                     new LinkedListStack()
@@ -40,17 +40,17 @@ public class StackController {
     }
 
     @GetMapping("/find/{type}/{name}")
-    public ResponseEntity<Response> findStack(
+    public ResponseEntity<Response> find(
             @PathVariable StackType type,
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> stackService.findByName(
+            case ARRAY -> stackService.findByName(
                     Type.ARRAY_STACK,
                     name
             );
 
-            case LinkedList -> stackService.findByName(
+            case LINKED_LIST -> stackService.findByName(
                     Type.LINKED_LIST_STACK,
                     name
             );
@@ -65,12 +65,12 @@ public class StackController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> stackService.size(
+            case ARRAY -> stackService.size(
                     Type.ARRAY_STACK,
                     name
             );
 
-            case LinkedList -> stackService.size(
+            case LINKED_LIST -> stackService.size(
                     Type.LINKED_LIST_STACK,
                     name
             );
@@ -85,12 +85,12 @@ public class StackController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> stackService.isEmpty(
+            case ARRAY -> stackService.isEmpty(
                     Type.ARRAY_STACK,
                     name
             );
 
-            case LinkedList -> stackService.isEmpty(
+            case LINKED_LIST -> stackService.isEmpty(
                     Type.LINKED_LIST_STACK,
                     name
             );
@@ -105,12 +105,12 @@ public class StackController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> stackService.clear(
+            case ARRAY -> stackService.clear(
                     Type.ARRAY_STACK,
                     name
             );
 
-            case LinkedList -> stackService.clear(
+            case LINKED_LIST -> stackService.clear(
                     Type.LINKED_LIST_STACK,
                     name
             );
@@ -126,13 +126,13 @@ public class StackController {
             @PathVariable String element
     ) {
         Response response = switch (type) {
-            case Array -> stackService.push(
+            case ARRAY -> stackService.push(
                     Type.ARRAY_STACK,
                     name,
                     element
             );
 
-            case LinkedList -> stackService.push(
+            case LINKED_LIST -> stackService.push(
                     Type.LINKED_LIST_STACK,
                     name,
                     element
@@ -148,12 +148,12 @@ public class StackController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> stackService.pop(
+            case ARRAY -> stackService.pop(
                     Type.ARRAY_STACK,
                     name
             );
 
-            case LinkedList -> stackService.pop(
+            case LINKED_LIST -> stackService.pop(
                     Type.LINKED_LIST_STACK,
                     name
             );
@@ -168,12 +168,12 @@ public class StackController {
             @PathVariable String name
     ) {
         Response response = switch (type) {
-            case Array -> stackService.peek(
+            case ARRAY -> stackService.peek(
                     Type.ARRAY_STACK,
                     name
             );
 
-            case LinkedList -> stackService.peek(
+            case LINKED_LIST -> stackService.peek(
                     Type.LINKED_LIST_STACK,
                     name
             );

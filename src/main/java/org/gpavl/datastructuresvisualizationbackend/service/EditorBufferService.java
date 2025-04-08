@@ -4,9 +4,8 @@ import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
-import org.gpavl.datastructuresvisualizationbackend.model.queue.ArrayQueue;
-import org.gpavl.datastructuresvisualizationbackend.model.queue.LinkedListQueue;
-import org.gpavl.datastructuresvisualizationbackend.model.queue.Queue;
+import org.gpavl.datastructuresvisualizationbackend.model.editorbuffer.ArrayEditorBuffer;
+import org.gpavl.datastructuresvisualizationbackend.model.editorbuffer.EditorBuffer;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
@@ -18,12 +17,12 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
-public class QueueService extends DataStructureService {
+public class EditorBufferService extends DataStructureService {
 
     private final OperationUtils operationUtils;
-    private final Map<Type, Supplier<Queue>> typeMap;
+    private final Map<Type, Supplier<EditorBuffer>> typeMap;
 
-    public QueueService(
+    public EditorBufferService(
             DataStructureRepository dataStructureRepository,
             MemoryUtils memoryUtils,
             OperationUtils operationUtils
@@ -32,80 +31,82 @@ public class QueueService extends DataStructureService {
         this.operationUtils = operationUtils;
 
         typeMap = Map.of(
-                Type.ARRAY_QUEUE, ArrayQueue::new,
-                Type.LINKED_LIST_QUEUE, LinkedListQueue::new
+                Type.ARRAY_EDITOR_BUFFER, ArrayEditorBuffer::new
+                //Type.TWO_STACK_EDITOR_BUFFER, TwoStackEditorBuffer::new,
+                //Type.LINKED_LIST_EDITOR_BUFFER, LinkedListEditorBuffer::new,
+                //Type.DOUBLY_LINKED_LIST_EDITOR_BUFFER, DoublyLinkedListEditorBuffer::new
         );
     }
 
-    public Response size(Type type, String name) {
+    public Response moveCursorForward(Type type, String name) {
         DataStructureState state = memoryUtils.getDataStructureState(name, type);
-        Queue queue = convertToQueue(state, type);
+        EditorBuffer editorBuffer = convertToEditorBuffer(state, type);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                queue,
-                Queue::size
+                editorBuffer,
+                EditorBuffer::moveCursorForward
         );
     }
 
-    public Response isEmpty(Type type, String name) {
+    public Response moveCursorBackward(Type type, String name) {
         DataStructureState state = memoryUtils.getDataStructureState(name, type);
-        Queue queue = convertToQueue(state, type);
+        EditorBuffer editorBuffer = convertToEditorBuffer(state, type);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                queue,
-                Queue::isEmpty
+                editorBuffer,
+                EditorBuffer::moveCursorBackward
         );
     }
 
-    public Response clear(Type type, String name) {
+    public Response moveCursorToStart(Type type, String name) {
         DataStructureState state = memoryUtils.getDataStructureState(name, type);
-        Queue queue = convertToQueue(state, type);
+        EditorBuffer editorBuffer = convertToEditorBuffer(state, type);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                queue,
-                Queue::clear
+                editorBuffer,
+                EditorBuffer::moveCursorToStart
         );
     }
 
-    public Response enqueue(Type type, String name, String element) {
+    public Response moveCursorToEnd(Type type, String name) {
         DataStructureState state = memoryUtils.getDataStructureState(name, type);
-        Queue queue = convertToQueue(state, type);
+        EditorBuffer editorBuffer = convertToEditorBuffer(state, type);
+        return operationUtils.executeNoArgumentOperation(
+                state,
+                editorBuffer,
+                EditorBuffer::moveCursorToEnd
+        );
+    }
+
+    public Response insertCharacter(Type type, String name, char character) {
+        DataStructureState state = memoryUtils.getDataStructureState(name, type);
+        EditorBuffer editorBuffer = convertToEditorBuffer(state, type);
         return operationUtils.executeOneArgumentOperation(
                 state,
-                queue,
-                Queue::enqueue,
-                element
+                editorBuffer,
+                EditorBuffer::insertCharacter,
+                character
         );
     }
 
-    public Response dequeue(Type type, String name) {
+    public Response deleteCharacter(Type type, String name) {
         DataStructureState state = memoryUtils.getDataStructureState(name, type);
-        Queue queue = convertToQueue(state, type);
+        EditorBuffer editorBuffer = convertToEditorBuffer(state, type);
         return operationUtils.executeNoArgumentOperation(
                 state,
-                queue,
-                Queue::dequeue
+                editorBuffer,
+                EditorBuffer::deleteCharacter
         );
     }
 
-    public Response peek(Type type, String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, type);
-        Queue queue = convertToQueue(state, type);
-        return operationUtils.executeNoArgumentOperation(
-                state,
-                queue,
-                Queue::peek
-        );
-    }
-
-    private Queue convertToQueue(DataStructureState state, Type type) {
-        Queue queue = typeMap.get(type).get();
+    private EditorBuffer convertToEditorBuffer(DataStructureState state, Type type) {
+        EditorBuffer editorBuffer = typeMap.get(type).get();
         MemoryHistoryDto memoryHistoryDto = new MemoryHistoryDto();
         memoryHistoryDto.setOperationHistoryList(
                 state.getMemoryHistory().getOperationHistoryList().stream().map(Converter::convertToOperationHistoryDto).collect(Collectors.toList())
         );
-        queue.setMemoryHistory(memoryHistoryDto);
+        editorBuffer.setMemoryHistory(memoryHistoryDto);
 
-        return queue;
+        return editorBuffer;
     }
 }

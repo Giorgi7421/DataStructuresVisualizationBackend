@@ -47,7 +47,7 @@ public class LinkedListVectorTest {
     @MethodSource("elementsStream")
     public void testAdd(List<String> elementsToAdd) {
         LinkedListVector vector = new LinkedListVector();
-        for(String element : elementsToAdd) {
+        for (String element : elementsToAdd) {
             vector.add(element);
         }
 
@@ -67,7 +67,7 @@ public class LinkedListVectorTest {
     @MethodSource("elementsStream")
     public void testGet(List<String> elementsToAdd) {
         LinkedListVector vector = new LinkedListVector();
-        for(String element : elementsToAdd) {
+        for (String element : elementsToAdd) {
             vector.add(element);
         }
 
@@ -80,7 +80,7 @@ public class LinkedListVectorTest {
     @MethodSource("elementsStream")
     public void testSet(List<String> elementsToAdd) {
         LinkedListVector vector = new LinkedListVector();
-        for(String element : elementsToAdd) {
+        for (String element : elementsToAdd) {
             vector.add(element);
         }
 
@@ -99,7 +99,7 @@ public class LinkedListVectorTest {
     @MethodSource("elementsStream")
     public void testInsertAt(List<String> elementsToAdd) {
         LinkedListVector vector = new LinkedListVector();
-        for(String element : elementsToAdd) {
+        for (String element : elementsToAdd) {
             vector.add(element);
         }
 
