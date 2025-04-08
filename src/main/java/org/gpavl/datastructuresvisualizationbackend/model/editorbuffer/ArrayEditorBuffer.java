@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.*;
-import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.updateArray;
 
 public class ArrayEditorBuffer extends EditorBuffer {
 
