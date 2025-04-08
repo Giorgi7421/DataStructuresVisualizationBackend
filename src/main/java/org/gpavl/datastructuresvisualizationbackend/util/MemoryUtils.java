@@ -88,8 +88,8 @@ public class MemoryUtils {
         return (int) operationHistory.getInstanceVariableValue("capacity");
     }
 
-    public static List<String> getArray(OperationHistoryDto operationHistory) {
-        String arrayAddress = (String) operationHistory.getInstanceVariableValue("array");
+    public static List<String> getArray(OperationHistoryDto operationHistory, String name) {
+        String arrayAddress = (String) operationHistory.getInstanceVariableValue(name);
         return operationHistory.getArray(arrayAddress);
     }
 
@@ -98,8 +98,8 @@ public class MemoryUtils {
         return operationHistory.getIntArray(arrayAddress);
     }
 
-    public static <T> void updateArray(List<T> array, OperationHistoryDto operationHistoryDto) {
-        String arrayAddress = (String) operationHistoryDto.getInstanceVariableValue("array");
+    public static <T> void updateArray(List<T> array, OperationHistoryDto operationHistoryDto, String name) {
+        String arrayAddress = (String) operationHistoryDto.getInstanceVariableValue(name);
         operationHistoryDto.updateObject(arrayAddress, array);
     }
 

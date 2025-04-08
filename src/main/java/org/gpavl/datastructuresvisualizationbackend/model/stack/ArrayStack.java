@@ -56,10 +56,10 @@ public class ArrayStack extends Stack {
             extendCapacity(operationHistory);
         }
 
-        List<String> array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory, "array");
         array = new ArrayList<>(array);
         array.set(count, element);
-        updateArray(array, operationHistory);
+        updateArray(array, operationHistory, "array");
         count++;
         operationHistory.addInstanceVariable("count", count);
 
@@ -81,7 +81,7 @@ public class ArrayStack extends Stack {
         count--;
         operationHistory.addInstanceVariable("count", count);
 
-        List<String> array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory, "array");
         operationHistory.addResult(array.get(count));
 
         memoryHistory.addOperationHistory(operationHistory);
@@ -97,14 +97,14 @@ public class ArrayStack extends Stack {
             throw new IllegalArgumentException("Attempting to peek at an empty stack");
         }
 
-        List<String> array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory, "array");
         operationHistory.addResult(array.get(count - 1));
 
         memoryHistory.addOperationHistory(operationHistory);
     }
 
     private void extendCapacity(OperationHistoryDto operationHistory) {
-        List<String> oldArray = getArray(operationHistory);
+        List<String> oldArray = getArray(operationHistory, "array");
         String arrayAddress = (String) operationHistory.getInstanceVariableValue("array");
         operationHistory.addLocalVariable("oldArray", arrayAddress);
 
@@ -121,7 +121,7 @@ public class ArrayStack extends Stack {
         for (int i = 0; i < count; i++) {
             array = new ArrayList<>(array);
             array.set(i, oldArray.get(i));
-            updateArray(array, operationHistory);
+            updateArray(array, operationHistory, "array");
             if (i == count - 1) {
                 operationHistory.addMessage("Extending the capacity is completed");
             }

@@ -77,10 +77,10 @@ public class ArrayQueue extends Queue {
         capacity = getCapacity(operationHistory);
         tail = (int) operationHistory.getInstanceVariableValue("tail");
 
-        List<String> array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory, "array");
         List<String> newArray = new ArrayList<>(array);
         newArray.set(tail, element);
-        updateArray(newArray, operationHistory);
+        updateArray(newArray, operationHistory, "array");
 
         int newTail = (tail + 1) % capacity;
         operationHistory.addInstanceVariable("tail", newTail);
@@ -100,7 +100,7 @@ public class ArrayQueue extends Queue {
             throw new IllegalArgumentException("Attempting to dequeue an empty queue");
         }
 
-        List<String> array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory, "array");
         String result = array.get(head);
         operationHistory.addLocalVariable("result", result);
 
@@ -125,7 +125,7 @@ public class ArrayQueue extends Queue {
             throw new IllegalArgumentException("Attempting to peek an empty queue");
         }
 
-        List<String> array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory, "array");
         String result = array.get(head);
 
         operationHistory.addResult(result);
@@ -144,7 +144,7 @@ public class ArrayQueue extends Queue {
 
         operationHistory.addInstanceVariable("capacity", capacity);
 
-        List<String> oldArray = getArray(operationHistory);
+        List<String> oldArray = getArray(operationHistory, "array");
         String arrayAddress = (String) operationHistory.getInstanceVariableValue("array");
         operationHistory.addLocalVariable("oldArray", arrayAddress);
 
@@ -155,7 +155,7 @@ public class ArrayQueue extends Queue {
         for (int i = 0; i < count; i++) {
             array = new ArrayList<>(array);
             array.set(i, oldArray.get((head + i) & capacity));
-            updateArray(array, operationHistory);
+            updateArray(array, operationHistory, "array");
             if (i == count - 1) {
                 operationHistory.addMessage("Extending the capacity is completed");
             }

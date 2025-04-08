@@ -88,16 +88,16 @@ public class ArrayEditorBuffer extends EditorBuffer {
             extendCapacity(operationHistory);
         }
 
-        List<String> array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory, "array");
 
         for (int i = length; i > cursor; i--) {
             array = new ArrayList<>(array);
             array.set(i, array.get(i - 1));
-            updateArray(array, operationHistory);
+            updateArray(array, operationHistory, "array");
         }
         array = new ArrayList<>(array);
         array.set(cursor, String.valueOf(character));
-        updateArray(array, operationHistory);
+        updateArray(array, operationHistory, "array");
 
         length++;
         operationHistory.addInstanceVariable("length", length);
@@ -116,13 +116,13 @@ public class ArrayEditorBuffer extends EditorBuffer {
         int length = getLength(operationHistory);
         int cursor = getCursor(operationHistory);
 
-        List<String> array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory, "array");
 
         if (cursor < length) {
             for (int i = cursor + 1; i < length; i++) {
                 array = new ArrayList<>(array);
                 array.set(i - 1, array.get(i));
-                updateArray(array, operationHistory);
+                updateArray(array, operationHistory, "array");
             }
             length--;
             operationHistory.addInstanceVariable("length", length);
@@ -130,7 +130,7 @@ public class ArrayEditorBuffer extends EditorBuffer {
     }
 
     private void extendCapacity(OperationHistoryDto operationHistory) {
-        List<String> oldArray = getArray(operationHistory);
+        List<String> oldArray = getArray(operationHistory, "array");
         String arrayAddress = (String) operationHistory.getInstanceVariableValue("array");
         operationHistory.addLocalVariable("oldArray", arrayAddress);
 
@@ -147,7 +147,7 @@ public class ArrayEditorBuffer extends EditorBuffer {
         for (int i = 0; i < count; i++) {
             array = new ArrayList<>(array);
             array.set(i, oldArray.get(i));
-            updateArray(array, operationHistory);
+            updateArray(array, operationHistory, "array");
             if (i == count - 1) {
                 operationHistory.addMessage("Extending the capacity is completed");
             }

@@ -57,7 +57,7 @@ public class ArrayVector extends Vector {
         }
 
         operationHistory.addLocalVariable("index", index);
-        List<String> array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory, "array");
         operationHistory.addResult(array.get(index));
         operationHistory.removeLocalVariable("index");
 
@@ -84,11 +84,11 @@ public class ArrayVector extends Vector {
         operationHistory.addLocalVariable("index", index);
         operationHistory.addLocalVariable("element", element);
 
-        List<String> array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory, "array");
 
         array = new ArrayList<>(array);
         array.set(index, element);
-        updateArray(array, operationHistory);
+        updateArray(array, operationHistory, "array");
         operationHistory.removeLocalVariable("element");
         operationHistory.removeLocalVariable("index");
 
@@ -135,17 +135,17 @@ public class ArrayVector extends Vector {
             extendCapacity(operationHistory);
         }
 
-        List<String> array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory, "array");
 
         for (int i = count; i > index; i--) {
             array = new ArrayList<>(array);
             array.set(i, array.get(i - 1));
-            updateArray(array, operationHistory);
+            updateArray(array, operationHistory, "array");
         }
 
         array = new ArrayList<>(array);
         array.set(index, element);
-        updateArray(array, operationHistory);
+        updateArray(array, operationHistory, "array");
         count++;
         operationHistory.addInstanceVariable("count", count);
 
@@ -163,12 +163,12 @@ public class ArrayVector extends Vector {
             throw new IllegalArgumentException("index out of range");
         }
 
-        List<String> array = getArray(operationHistory);
+        List<String> array = getArray(operationHistory, "array");
 
         for (int i = index; i < count - 1; i++) {
             array = new ArrayList<>(array);
             array.set(i, array.get(i + 1));
-            updateArray(array, operationHistory);
+            updateArray(array, operationHistory, "array");
         }
         count--;
         operationHistory.addInstanceVariable("count", count);
@@ -178,7 +178,7 @@ public class ArrayVector extends Vector {
     }
 
     private void extendCapacity(OperationHistoryDto operationHistory) {
-        List<String> oldArray = getArray(operationHistory);
+        List<String> oldArray = getArray(operationHistory, "array");
         String arrayAddress = (String) operationHistory.getInstanceVariableValue("array");
         operationHistory.addLocalVariable("oldArray", arrayAddress);
 
@@ -195,7 +195,7 @@ public class ArrayVector extends Vector {
         for (int i = 0; i < count; i++) {
             array = new ArrayList<>(array);
             array.set(i, oldArray.get(i));
-            updateArray(array, operationHistory);
+            updateArray(array, operationHistory, "array");
             if (i == count - 1) {
                 operationHistory.addMessage("Extending the capacity is completed");
             }

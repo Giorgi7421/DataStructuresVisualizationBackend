@@ -6,6 +6,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.model.editorbuffer.ArrayEditorBuffer;
 import org.gpavl.datastructuresvisualizationbackend.model.editorbuffer.EditorBuffer;
+import org.gpavl.datastructuresvisualizationbackend.model.editorbuffer.TwoStackEditorBuffer;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
@@ -31,8 +32,8 @@ public class EditorBufferService extends DataStructureService {
         this.operationUtils = operationUtils;
 
         typeMap = Map.of(
-                Type.ARRAY_EDITOR_BUFFER, ArrayEditorBuffer::new
-                //Type.TWO_STACK_EDITOR_BUFFER, TwoStackEditorBuffer::new,
+                Type.ARRAY_EDITOR_BUFFER, ArrayEditorBuffer::new,
+                Type.TWO_STACK_EDITOR_BUFFER, TwoStackEditorBuffer::new
                 //Type.LINKED_LIST_EDITOR_BUFFER, LinkedListEditorBuffer::new,
                 //Type.DOUBLY_LINKED_LIST_EDITOR_BUFFER, DoublyLinkedListEditorBuffer::new
         );
