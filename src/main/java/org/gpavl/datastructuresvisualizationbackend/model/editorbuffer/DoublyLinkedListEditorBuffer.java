@@ -2,7 +2,6 @@ package org.gpavl.datastructuresvisualizationbackend.model.editorbuffer;
 
 import org.gpavl.datastructuresvisualizationbackend.model.DoublyLinkedNode;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
-import org.gpavl.datastructuresvisualizationbackend.model.Node;
 import org.gpavl.datastructuresvisualizationbackend.model.OperationHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 
@@ -10,7 +9,6 @@ import java.util.Collections;
 import java.util.Objects;
 
 import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.convertToDoublyLinkedNode;
-import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.convertToNode;
 
 public class DoublyLinkedListEditorBuffer extends EditorBuffer {
 

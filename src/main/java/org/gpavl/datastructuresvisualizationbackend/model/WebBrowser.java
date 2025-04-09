@@ -24,6 +24,8 @@ public class WebBrowser extends DataStructure {
     public void visit(String url) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("visit", memoryHistory, "url", url);
 
+        operationHistory.addLocalVariable("url", url);
+
         String currentAddress = (String) operationHistory.getInstanceVariableValue("current");
         DoublyLinkedNode current = convertToDoublyLinkedNode(operationHistory.getObject(currentAddress));
 
@@ -31,7 +33,7 @@ public class WebBrowser extends DataStructure {
 
         while (nextAddress != null) {
             DoublyLinkedNode next = convertToDoublyLinkedNode(operationHistory.getObject(nextAddress));
-            operationHistory.addLocalVariable("toDelete", next);
+            operationHistory.addLocalVariable("toDelete", nextAddress);
 
             DoublyLinkedNode nw = new DoublyLinkedNode();
             nw.setValue(current.getValue());
@@ -62,6 +64,8 @@ public class WebBrowser extends DataStructure {
         curr.setNextAddress(newAddress);
 
         operationHistory.updateObject(currentAddress, curr);
+        operationHistory.addInstanceVariable("current", newAddress);
+        operationHistory.removeLocalVariable("url");
 
         memoryHistory.addOperationHistory(operationHistory);
     }
@@ -72,8 +76,8 @@ public class WebBrowser extends DataStructure {
         String currentAddress = (String) operationHistory.getInstanceVariableValue("current");
         DoublyLinkedNode current = convertToDoublyLinkedNode(operationHistory.getObject(currentAddress));
 
-        if (current.getNextAddress() != null) {
-            operationHistory.addInstanceVariable("current", current.getNextAddress());
+        if (current.getPreviousAddress() != null) {
+            operationHistory.addInstanceVariable("current", current.getPreviousAddress());
         }
 
         memoryHistory.addOperationHistory(operationHistory);
@@ -85,8 +89,8 @@ public class WebBrowser extends DataStructure {
         String currentAddress = (String) operationHistory.getInstanceVariableValue("current");
         DoublyLinkedNode current = convertToDoublyLinkedNode(operationHistory.getObject(currentAddress));
 
-        if (current.getPreviousAddress() != null) {
-            operationHistory.addInstanceVariable("current", current.getPreviousAddress());
+        if (current.getNextAddress() != null) {
+            operationHistory.addInstanceVariable("current", current.getNextAddress());
         }
 
         memoryHistory.addOperationHistory(operationHistory);
