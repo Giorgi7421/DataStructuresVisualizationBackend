@@ -2,10 +2,7 @@ package org.gpavl.datastructuresvisualizationbackend.util;
 
 import lombok.AllArgsConstructor;
 import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
-import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
-import org.gpavl.datastructuresvisualizationbackend.model.Node;
-import org.gpavl.datastructuresvisualizationbackend.model.OperationHistoryDto;
-import org.gpavl.datastructuresvisualizationbackend.model.Type;
+import org.gpavl.datastructuresvisualizationbackend.model.*;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.springframework.stereotype.Service;
 
@@ -78,6 +75,14 @@ public class MemoryUtils {
         node.setValue((String) obj.get("value"));
         node.setNextAddress((String) obj.get("nextAddress"));
         return node;
+    }
+
+    public static DoublyLinkedNode convertToDoublyLinkedNode(Map<String, Object> obj) {
+        DoublyLinkedNode doublyLinkedNode = new DoublyLinkedNode();
+        doublyLinkedNode.setValue((String) obj.get("value"));
+        doublyLinkedNode.setPreviousAddress((String) obj.get("previousAddress"));
+        doublyLinkedNode.setNextAddress((String) obj.get("nextAddress"));
+        return doublyLinkedNode;
     }
 
     public static int getCount(OperationHistoryDto operationHistory) {
