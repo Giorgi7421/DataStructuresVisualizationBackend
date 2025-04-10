@@ -98,8 +98,8 @@ public class MemoryUtils {
         return operationHistory.getArray(arrayAddress);
     }
 
-    public static List<Integer> getIntArray(OperationHistoryDto operationHistory) {
-        String arrayAddress = (String) operationHistory.getInstanceVariableValue("array");
+    public static List<Integer> getIntArray(OperationHistoryDto operationHistory, String name) {
+        String arrayAddress = (String) operationHistory.getInstanceVariableValue(name);
         return operationHistory.getIntArray(arrayAddress);
     }
 
