@@ -65,6 +65,29 @@ public class MemoryUtils {
         );
     }
 
+    public static OperationHistoryDto getLastMemorySnapshot(
+            String operationName,
+            MemoryHistoryDto memoryHistory,
+            String firstParameterName,
+            Object firstParameterValue,
+            String secondParameterName,
+            Object secondParameterValue,
+            String thirdParameterName,
+            Object thirdParameterValue
+    ) {
+        return new OperationHistoryDto(
+                operationName,
+                Map.of(firstParameterName,
+                        firstParameterValue,
+                        secondParameterName,
+                        secondParameterValue,
+                        thirdParameterName,
+                        thirdParameterValue
+                ),
+                memoryHistory.getLastMemorySnapshot()
+        );
+    }
+
     public DataStructureState getDataStructureState(String name, Type type) {
         Optional<DataStructureState> optionalState = dataStructureRepository.findByNameAndType(name, type);
         return optionalState.orElseThrow();
