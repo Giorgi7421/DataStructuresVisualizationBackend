@@ -6,6 +6,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.model.stack.ArrayStack;
 import org.gpavl.datastructuresvisualizationbackend.model.stack.LinkedListStack;
 import org.gpavl.datastructuresvisualizationbackend.model.stack.StackType;
+import org.gpavl.datastructuresvisualizationbackend.model.stack.TwoQueueStack;
 import org.gpavl.datastructuresvisualizationbackend.service.StackService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,12 @@ public class StackController {
                     name,
                     new LinkedListStack()
             );
+
+            case TWO_QUEUE -> stackService.create(
+                    Type.TWO_QUEUE_STACK,
+                    name,
+                    new TwoQueueStack()
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -52,6 +59,11 @@ public class StackController {
 
             case LINKED_LIST -> stackService.findByName(
                     Type.LINKED_LIST_STACK,
+                    name
+            );
+
+            case TWO_QUEUE -> stackService.findByName(
+                    Type.TWO_QUEUE_STACK,
                     name
             );
         };
@@ -74,6 +86,11 @@ public class StackController {
                     Type.LINKED_LIST_STACK,
                     name
             );
+
+            case TWO_QUEUE -> stackService.size(
+                    Type.TWO_QUEUE_STACK,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -94,6 +111,11 @@ public class StackController {
                     Type.LINKED_LIST_STACK,
                     name
             );
+
+            case TWO_QUEUE -> stackService.isEmpty(
+                    Type.TWO_QUEUE_STACK,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -112,6 +134,11 @@ public class StackController {
 
             case LINKED_LIST -> stackService.clear(
                     Type.LINKED_LIST_STACK,
+                    name
+            );
+
+            case TWO_QUEUE -> stackService.clear(
+                    Type.TWO_QUEUE_STACK,
                     name
             );
         };
@@ -137,6 +164,12 @@ public class StackController {
                     name,
                     element
             );
+
+            case TWO_QUEUE -> stackService.push(
+                    Type.TWO_QUEUE_STACK,
+                    name,
+                    element
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -157,6 +190,11 @@ public class StackController {
                     Type.LINKED_LIST_STACK,
                     name
             );
+
+            case TWO_QUEUE -> stackService.pop(
+                    Type.TWO_QUEUE_STACK,
+                    name
+            );
         };
 
         return ResponseEntity.ok(response);
@@ -175,6 +213,11 @@ public class StackController {
 
             case LINKED_LIST -> stackService.peek(
                     Type.LINKED_LIST_STACK,
+                    name
+            );
+
+            case TWO_QUEUE -> stackService.peek(
+                    Type.TWO_QUEUE_STACK,
                     name
             );
         };

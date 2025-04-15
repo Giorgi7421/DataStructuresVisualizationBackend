@@ -5,15 +5,12 @@ import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.model.set.MoveToFrontSet;
-import org.gpavl.datastructuresvisualizationbackend.model.vector.ArrayVector;
-import org.gpavl.datastructuresvisualizationbackend.model.vector.LinkedListVector;
-import org.gpavl.datastructuresvisualizationbackend.model.vector.Vector;
+import org.gpavl.datastructuresvisualizationbackend.model.set.Set;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 import org.gpavl.datastructuresvisualizationbackend.util.OperationUtils;
 import org.springframework.stereotype.Service;
-import org.gpavl.datastructuresvisualizationbackend.model.set.Set;
 
 import java.util.Map;
 import java.util.function.Supplier;

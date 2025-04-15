@@ -49,7 +49,7 @@ public class EditorBufferController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/find/{type}/{name}")
+    @GetMapping("/find/{type}/{name}")
     public ResponseEntity<Response> find(
             @PathVariable EditorBufferType type,
             @PathVariable String name

@@ -1,7 +1,6 @@
 package org.gpavl.datastructuresvisualizationbackend.controller;
 
 import lombok.AllArgsConstructor;
-import org.gpavl.datastructuresvisualizationbackend.model.BigInteger;
 import org.gpavl.datastructuresvisualizationbackend.model.Grid;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;

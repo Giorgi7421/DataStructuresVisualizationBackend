@@ -1,5 +1,5 @@
 package org.gpavl.datastructuresvisualizationbackend.model.stack;
 
 public enum StackType {
-    ARRAY, LINKED_LIST
+    ARRAY, LINKED_LIST, TWO_QUEUE
 }

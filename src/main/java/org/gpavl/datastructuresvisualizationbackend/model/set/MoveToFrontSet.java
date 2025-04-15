@@ -5,7 +5,9 @@ import org.gpavl.datastructuresvisualizationbackend.model.Node;
 import org.gpavl.datastructuresvisualizationbackend.model.OperationHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
 
 import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.convertToNode;
 

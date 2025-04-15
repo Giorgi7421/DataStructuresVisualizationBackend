@@ -1,7 +1,10 @@
 package org.gpavl.datastructuresvisualizationbackend.service;
 
 import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
-import org.gpavl.datastructuresvisualizationbackend.model.*;
+import org.gpavl.datastructuresvisualizationbackend.model.BigInteger;
+import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
+import org.gpavl.datastructuresvisualizationbackend.model.Response;
+import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;

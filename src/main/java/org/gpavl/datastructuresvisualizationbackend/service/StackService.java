@@ -7,6 +7,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.model.stack.ArrayStack;
 import org.gpavl.datastructuresvisualizationbackend.model.stack.LinkedListStack;
 import org.gpavl.datastructuresvisualizationbackend.model.stack.Stack;
+import org.gpavl.datastructuresvisualizationbackend.model.stack.TwoQueueStack;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
@@ -33,7 +34,8 @@ public class StackService extends DataStructureService {
 
         typeMap = Map.of(
                 Type.ARRAY_STACK, ArrayStack::new,
-                Type.LINKED_LIST_STACK, LinkedListStack::new
+                Type.LINKED_LIST_STACK, LinkedListStack::new,
+                Type.TWO_QUEUE_STACK, TwoQueueStack::new
         );
     }
 
