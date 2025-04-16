@@ -27,37 +27,37 @@ public class DequeController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/pushBack/{name}/{element}")
+    @PatchMapping("/push-back/{name}/{element}")
     public ResponseEntity<Response> pushBack(@PathVariable String name, @PathVariable String element) {
         Response response = dequeService.pushBack(name, element);
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/popBack/{name}")
+    @PatchMapping("/pop-back/{name}")
     public ResponseEntity<Response> popBack(@PathVariable String name) {
         Response response = dequeService.popBack(name);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/getBack/{name}")
+    @GetMapping("/get-back/{name}")
     public ResponseEntity<Response> getBack(@PathVariable String name) {
         Response response = dequeService.getBack(name);
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/pushFront/{name}/{element}")
+    @PatchMapping("/push-front/{name}/{element}")
     public ResponseEntity<Response> pushFront(@PathVariable String name, @PathVariable String element) {
         Response response = dequeService.pushFront(name, element);
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/popFront/{name}")
+    @PatchMapping("/pop-front/{name}")
     public ResponseEntity<Response> popFront(@PathVariable String name) {
         Response response = dequeService.popFront(name);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/getFront/{name}")
+    @GetMapping("/get-front/{name}")
     public ResponseEntity<Response> getFront(@PathVariable String name) {
         Response response = dequeService.getFront(name);
         return ResponseEntity.ok(response);
@@ -75,7 +75,7 @@ public class DequeController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/isEmpty/{name}")
+    @GetMapping("/is-empty/{name}")
     public ResponseEntity<Response> isEmpty(@PathVariable String name) {
         Response response = dequeService.isEmpty(name);
         return ResponseEntity.ok(response);
