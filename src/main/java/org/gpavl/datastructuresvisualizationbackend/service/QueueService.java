@@ -4,9 +4,7 @@ import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
-import org.gpavl.datastructuresvisualizationbackend.model.queue.ArrayQueue;
-import org.gpavl.datastructuresvisualizationbackend.model.queue.LinkedListQueue;
-import org.gpavl.datastructuresvisualizationbackend.model.queue.Queue;
+import org.gpavl.datastructuresvisualizationbackend.model.queue.*;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
@@ -33,7 +31,11 @@ public class QueueService extends DataStructureService {
 
         typeMap = Map.of(
                 Type.ARRAY_QUEUE, ArrayQueue::new,
-                Type.LINKED_LIST_QUEUE, LinkedListQueue::new
+                Type.LINKED_LIST_QUEUE, LinkedListQueue::new,
+                Type.UNSORTED_VECTOR_PRIORITY_QUEUE, UnsortedVectorPriorityQueue::new,
+                Type.SORTED_LINKED_LIST_PRIORITY_QUEUE, SortedLinkedListPriorityQueue::new,
+                Type.UNSORTED_DOUBLY_LINKED_LIST_PRIORITY_QUEUE, UnsortedDoublyLinkedListPriorityQueue::new,
+                Type.BINARY_HEAP_PRIORITY_QUEUE, BinaryHeapPriorityQueue::new
         );
     }
 
