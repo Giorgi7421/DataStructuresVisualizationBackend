@@ -1,6 +1,7 @@
-package org.gpavl.datastructuresvisualizationbackend.model.priorityqueue;
+package org.gpavl.datastructuresvisualizationbackend.model.queue;
 
-public class BinaryHeapPriorityQueue extends PriorityQueue {
+public class BinaryHeapPriorityQueue extends Queue {
+
     @Override
     public void size() {
 
@@ -12,7 +13,12 @@ public class BinaryHeapPriorityQueue extends PriorityQueue {
     }
 
     @Override
-    public void enqueue(String element, int priority) {
+    public void clear() {
+
+    }
+
+    @Override
+    public void enqueue(String element) {
 
     }
 
