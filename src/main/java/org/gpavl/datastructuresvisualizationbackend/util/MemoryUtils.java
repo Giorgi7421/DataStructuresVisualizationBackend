@@ -108,6 +108,14 @@ public class MemoryUtils {
         return doublyLinkedNode;
     }
 
+    public static TreeNode convertToTreeNode(Map<String, Object> obj) {
+        TreeNode treeNode = new TreeNode();
+        treeNode.setValue((String) obj.get("value"));
+        treeNode.setLeft((String) obj.get("left"));
+        treeNode.setRight((String) obj.get("right"));
+        return treeNode;
+    }
+
     public static int getCount(OperationHistoryDto operationHistory) {
         return (int) operationHistory.getInstanceVariableValue("count");
     }
