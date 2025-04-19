@@ -128,31 +128,4 @@ public class ArrayEditorBuffer extends EditorBuffer {
             operationHistory.addInstanceVariable("length", length);
         }
     }
-
-    private void extendCapacity(OperationHistoryDto operationHistory) {
-        List<String> oldArray = getArray(operationHistory, "array");
-        String arrayAddress = (String) operationHistory.getInstanceVariableValue("array");
-        operationHistory.addLocalVariable("oldArray", arrayAddress);
-
-        int capacity = getCapacity(operationHistory);
-        capacity *= 2;
-        operationHistory.addInstanceVariable("capacity", capacity);
-
-        List<String> array = Collections.nCopies(capacity, null);
-        String newAddress = operationHistory.addNewObject(array);
-        operationHistory.addInstanceVariable("array", newAddress);
-
-        int count = getCount(operationHistory);
-
-        for (int i = 0; i < count; i++) {
-            array = new ArrayList<>(array);
-            array.set(i, oldArray.get(i));
-            updateArray(array, operationHistory, "array");
-            if (i == count - 1) {
-                operationHistory.addMessage("Extending the capacity is completed");
-            }
-        }
-
-        operationHistory.freeLocalVariable("oldArray", "Deleted old array to avoid memory leaks");
-    }
 }
