@@ -29,18 +29,13 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 
-    public User registerUser(String username, String email, String password, Set<String> roles) {
+    public User registerUser(String username, String password, Set<String> roles) {
         if (userRepository.existsByUsername(username)) {
             throw new RuntimeException("Username is already taken");
         }
 
-        if (userRepository.existsByEmail(email)) {
-            throw new RuntimeException("Email is already in use");
-        }
-
         User user = new User();
         user.setUsername(username);
-        user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
 
         if (roles == null || roles.isEmpty()) {
