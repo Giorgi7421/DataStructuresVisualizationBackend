@@ -8,6 +8,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.tree.BSTree;
 import org.gpavl.datastructuresvisualizationbackend.model.tree.TreeType;
 import org.gpavl.datastructuresvisualizationbackend.service.TreeService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +18,7 @@ public class TreeController {
 
     private TreeService treeService;
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PostMapping("/create/{type}/{name}")
     public ResponseEntity<Response> create(
             @PathVariable TreeType type,
@@ -39,6 +41,7 @@ public class TreeController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/find/{type}/{name}")
     public ResponseEntity<Response> find(
             @PathVariable TreeType type,
@@ -59,6 +62,7 @@ public class TreeController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping ("/insert/{type}/{name}/{element}")
     public ResponseEntity<Response> insert(
             @PathVariable TreeType type,
@@ -82,6 +86,7 @@ public class TreeController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping ("/remove/{type}/{name}/{element}")
     public ResponseEntity<Response> remove(
             @PathVariable TreeType type,
@@ -105,6 +110,7 @@ public class TreeController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping ("/search/{type}/{name}/{element}")
     public ResponseEntity<Response> search(
             @PathVariable TreeType type,
@@ -128,6 +134,7 @@ public class TreeController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping ("/clear/{type}/{name}")
     public ResponseEntity<Response> clear(
             @PathVariable TreeType type,

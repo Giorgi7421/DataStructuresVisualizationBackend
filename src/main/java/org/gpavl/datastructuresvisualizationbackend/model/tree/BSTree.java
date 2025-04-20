@@ -6,7 +6,6 @@ import org.gpavl.datastructuresvisualizationbackend.model.TreeNode;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.convertToTreeNode;

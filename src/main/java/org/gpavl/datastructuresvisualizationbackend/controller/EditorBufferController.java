@@ -6,6 +6,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.model.editorbuffer.*;
 import org.gpavl.datastructuresvisualizationbackend.service.EditorBufferService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +16,7 @@ public class EditorBufferController {
 
     private EditorBufferService editorBufferService;
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PostMapping("/create/{type}/{name}")
     public ResponseEntity<Response> create(
             @PathVariable EditorBufferType type,
@@ -49,6 +51,7 @@ public class EditorBufferController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/find/{type}/{name}")
     public ResponseEntity<Response> find(
             @PathVariable EditorBufferType type,
@@ -79,6 +82,7 @@ public class EditorBufferController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/moveCursorForward/{type}/{name}")
     public ResponseEntity<Response> moveCursorForward(
             @PathVariable EditorBufferType type,
@@ -109,6 +113,7 @@ public class EditorBufferController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/moveCursorBackward/{type}/{name}")
     public ResponseEntity<Response> moveCursorBackward(
             @PathVariable EditorBufferType type,
@@ -139,6 +144,7 @@ public class EditorBufferController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/moveCursorToStart/{type}/{name}")
     public ResponseEntity<Response> moveCursorToStart(
             @PathVariable EditorBufferType type,
@@ -169,6 +175,7 @@ public class EditorBufferController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/moveCursorToEnd/{type}/{name}")
     public ResponseEntity<Response> moveCursorToEnd(
             @PathVariable EditorBufferType type,
@@ -199,6 +206,7 @@ public class EditorBufferController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/insertCharacter/{type}/{name}/{character}")
     public ResponseEntity<Response> insertCharacter(
             @PathVariable EditorBufferType type,
@@ -234,6 +242,7 @@ public class EditorBufferController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/deleteCharacter/{type}/{name}")
     public ResponseEntity<Response> deleteCharacter(
             @PathVariable EditorBufferType type,

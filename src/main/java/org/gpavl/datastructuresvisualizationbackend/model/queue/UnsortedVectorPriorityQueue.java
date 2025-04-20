@@ -6,7 +6,6 @@ import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.getArray;

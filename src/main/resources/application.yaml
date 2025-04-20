@@ -17,3 +17,9 @@ management:
     web:
       exposure:
         include: env
+
+jwt:
+  private:
+    key: classpath:app.key
+  public:
+    key: classpath:app.pub

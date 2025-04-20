@@ -9,6 +9,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.stack.StackType;
 import org.gpavl.datastructuresvisualizationbackend.model.stack.TwoQueueStack;
 import org.gpavl.datastructuresvisualizationbackend.service.StackService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +19,7 @@ public class StackController {
 
     private StackService stackService;
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PostMapping("/create/{type}/{name}")
     public ResponseEntity<Response> create(
             @PathVariable StackType type,
@@ -46,6 +48,7 @@ public class StackController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/find/{type}/{name}")
     public ResponseEntity<Response> find(
             @PathVariable StackType type,
@@ -71,6 +74,7 @@ public class StackController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/size/{type}/{name}")
     public ResponseEntity<Response> size(
             @PathVariable StackType type,
@@ -96,6 +100,7 @@ public class StackController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/is-empty/{type}/{name}")
     public ResponseEntity<Response> isEmpty(
             @PathVariable StackType type,
@@ -121,6 +126,7 @@ public class StackController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/clear/{type}/{name}")
     public ResponseEntity<Response> clear(
             @PathVariable StackType type,
@@ -146,6 +152,7 @@ public class StackController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/push/{type}/{name}/{element}")
     public ResponseEntity<Response> push(
             @PathVariable StackType type,
@@ -175,6 +182,7 @@ public class StackController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/pop/{type}/{name}")
     public ResponseEntity<Response> pop(
             @PathVariable StackType type,
@@ -200,6 +208,7 @@ public class StackController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/peek/{type}/{name}")
     public ResponseEntity<Response> peek(
             @PathVariable StackType type,

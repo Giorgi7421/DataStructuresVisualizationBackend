@@ -6,6 +6,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.model.queue.*;
 import org.gpavl.datastructuresvisualizationbackend.service.QueueService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +16,7 @@ public class QueueController {
 
     private QueueService queueService;
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PostMapping("/create/{type}/{name}")
     public ResponseEntity<Response> create(
             @PathVariable QueueType type,
@@ -61,6 +63,7 @@ public class QueueController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/find/{type}/{name}")
     public ResponseEntity<Response> find(
             @PathVariable QueueType type,
@@ -101,6 +104,7 @@ public class QueueController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/size/{type}/{name}")
     public ResponseEntity<Response> size(
             @PathVariable QueueType type,
@@ -141,6 +145,7 @@ public class QueueController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/is-empty/{type}/{name}")
     public ResponseEntity<Response> isEmpty(
             @PathVariable QueueType type,
@@ -181,6 +186,7 @@ public class QueueController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/clear/{type}/{name}")
     public ResponseEntity<Response> clear(
             @PathVariable QueueType type,
@@ -206,6 +212,7 @@ public class QueueController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/enqueue/{type}/{name}/{element}")
     public ResponseEntity<Response> enqueue(
             @PathVariable QueueType type,
@@ -253,6 +260,7 @@ public class QueueController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/dequeue/{type}/{name}")
     public ResponseEntity<Response> dequeue(
             @PathVariable QueueType type,
@@ -293,6 +301,7 @@ public class QueueController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/peek/{type}/{name}")
     public ResponseEntity<Response> peek(
             @PathVariable QueueType type,

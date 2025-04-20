@@ -2,8 +2,11 @@ package org.gpavl.datastructuresvisualizationbackend.util;
 
 import lombok.AllArgsConstructor;
 import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
+import org.gpavl.datastructuresvisualizationbackend.entity.User;
 import org.gpavl.datastructuresvisualizationbackend.model.*;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
+import org.gpavl.datastructuresvisualizationbackend.security.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -13,6 +16,7 @@ import java.util.*;
 public class MemoryUtils {
 
     private DataStructureRepository dataStructureRepository;
+    private UserService userService;
 
     public static String generateNewAddress() {
         return "0x" + UUID
@@ -89,7 +93,9 @@ public class MemoryUtils {
     }
 
     public DataStructureState getDataStructureState(String name, Type type) {
-        Optional<DataStructureState> optionalState = dataStructureRepository.findByNameAndType(name, type);
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userService.getCurrentUser(userName);
+        Optional<DataStructureState> optionalState = dataStructureRepository.findByNameAndUserAndType(name, currentUser, type);
         return optionalState.orElseThrow();
     }
 

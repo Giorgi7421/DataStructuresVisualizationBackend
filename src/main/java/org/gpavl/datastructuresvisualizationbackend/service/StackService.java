@@ -9,6 +9,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.stack.LinkedListStack;
 import org.gpavl.datastructuresvisualizationbackend.model.stack.Stack;
 import org.gpavl.datastructuresvisualizationbackend.model.stack.TwoQueueStack;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
+import org.gpavl.datastructuresvisualizationbackend.security.UserService;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 import org.gpavl.datastructuresvisualizationbackend.util.OperationUtils;
@@ -27,9 +28,10 @@ public class StackService extends DataStructureService {
     public StackService(
             DataStructureRepository dataStructureRepository,
             MemoryUtils memoryUtils,
+            UserService userService,
             OperationUtils operationUtils
     ) {
-        super(dataStructureRepository, memoryUtils);
+        super(dataStructureRepository, memoryUtils, userService);
         this.operationUtils = operationUtils;
 
         typeMap = Map.of(

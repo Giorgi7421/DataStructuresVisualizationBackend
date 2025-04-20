@@ -6,6 +6,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.model.WebBrowser;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
+import org.gpavl.datastructuresvisualizationbackend.security.UserService;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 import org.gpavl.datastructuresvisualizationbackend.util.OperationUtils;
@@ -21,9 +22,10 @@ public class WebBrowserService extends DataStructureService {
     public WebBrowserService(
             DataStructureRepository dataStructureRepository,
             MemoryUtils memoryUtils,
+            UserService userService,
             OperationUtils operationUtils
     ) {
-        super(dataStructureRepository, memoryUtils);
+        super(dataStructureRepository, memoryUtils, userService);
         this.operationUtils = operationUtils;
     }
 

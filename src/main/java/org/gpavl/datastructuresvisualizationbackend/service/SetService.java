@@ -7,6 +7,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.model.set.MoveToFrontSet;
 import org.gpavl.datastructuresvisualizationbackend.model.set.Set;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
+import org.gpavl.datastructuresvisualizationbackend.security.UserService;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 import org.gpavl.datastructuresvisualizationbackend.util.OperationUtils;
@@ -25,9 +26,10 @@ public class SetService extends DataStructureService {
     public SetService(
             DataStructureRepository dataStructureRepository,
             MemoryUtils memoryUtils,
+            UserService userService,
             OperationUtils operationUtils
     ) {
-        super(dataStructureRepository, memoryUtils);
+        super(dataStructureRepository, memoryUtils, userService);
         this.operationUtils = operationUtils;
 
         typeMap = Map.of(

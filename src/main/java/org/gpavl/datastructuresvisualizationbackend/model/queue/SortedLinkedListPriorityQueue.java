@@ -6,9 +6,9 @@ import org.gpavl.datastructuresvisualizationbackend.model.OperationHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 
 import java.util.Collections;
-import java.util.List;
 
-import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.*;
+import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.convertToNode;
+import static org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils.getCount;
 
 public class SortedLinkedListPriorityQueue extends Queue {
 

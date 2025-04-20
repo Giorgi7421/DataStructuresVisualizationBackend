@@ -6,6 +6,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.model.set.*;
 import org.gpavl.datastructuresvisualizationbackend.service.SetService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +16,7 @@ public class SetController {
 
     private SetService setService;
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PostMapping("/create/{type}/{name}")
     public ResponseEntity<Response> create(
             @PathVariable SetType type,
@@ -49,6 +51,7 @@ public class SetController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/find/{type}/{name}")
     public ResponseEntity<Response> find(
             @PathVariable SetType type,
@@ -79,6 +82,7 @@ public class SetController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/size/{type}/{name}")
     public ResponseEntity<Response> size(
             @PathVariable SetType type,
@@ -109,6 +113,7 @@ public class SetController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/is-empty/{type}/{name}")
     public ResponseEntity<Response> isEmpty(
             @PathVariable SetType type,
@@ -139,6 +144,7 @@ public class SetController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/clear/{type}/{name}")
     public ResponseEntity<Response> clear(
             @PathVariable SetType type,
@@ -169,6 +175,7 @@ public class SetController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping ("/add/{type}/{name}/{element}")
     public ResponseEntity<Response> add(
             @PathVariable SetType type,
@@ -204,6 +211,7 @@ public class SetController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping ("/remove/{type}/{name}/{element}")
     public ResponseEntity<Response> remove(
             @PathVariable SetType type,
@@ -239,6 +247,7 @@ public class SetController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping ("/contains/{type}/{name}/{element}")
     public ResponseEntity<Response> contains(
             @PathVariable SetType type,

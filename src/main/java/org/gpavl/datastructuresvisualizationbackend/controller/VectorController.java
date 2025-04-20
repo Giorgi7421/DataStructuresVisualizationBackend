@@ -8,6 +8,7 @@ import org.gpavl.datastructuresvisualizationbackend.model.vector.LinkedListVecto
 import org.gpavl.datastructuresvisualizationbackend.model.vector.VectorType;
 import org.gpavl.datastructuresvisualizationbackend.service.VectorService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +18,7 @@ public class VectorController {
 
     private VectorService vectorService;
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PostMapping("/create/{type}/{name}")
     public ResponseEntity<Response> create(
             @PathVariable VectorType type,
@@ -39,6 +41,7 @@ public class VectorController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/find/{type}/{name}")
     public ResponseEntity<Response> find(
             @PathVariable VectorType type,
@@ -59,6 +62,7 @@ public class VectorController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/size/{type}/{name}")
     public ResponseEntity<Response> size(
             @PathVariable VectorType type,
@@ -79,6 +83,7 @@ public class VectorController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/is-empty/{type}/{name}")
     public ResponseEntity<Response> isEmpty(
             @PathVariable VectorType type,
@@ -99,6 +104,7 @@ public class VectorController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/clear/{type}/{name}")
     public ResponseEntity<Response> clear(
             @PathVariable VectorType type,
@@ -119,6 +125,7 @@ public class VectorController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/get/{type}/{name}/{index}")
     public ResponseEntity<Response> get(
             @PathVariable VectorType type,
@@ -142,6 +149,7 @@ public class VectorController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping("/set/{type}/{name}/{index}/{element}")
     public ResponseEntity<Response> set(
             @PathVariable VectorType type,
@@ -168,6 +176,7 @@ public class VectorController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping ("/add/{type}/{name}/{element}")
     public ResponseEntity<Response> add(
             @PathVariable VectorType type,
@@ -192,6 +201,7 @@ public class VectorController {
         //TODO limit value length
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping ("/insert-at/{type}/{name}/{index}/{element}")
     public ResponseEntity<Response> insertAt(
             @PathVariable VectorType type,
@@ -218,6 +228,7 @@ public class VectorController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PatchMapping ("/remove-at/{type}/{name}/{index}")
     public ResponseEntity<Response> removeAt(
             @PathVariable VectorType type,
