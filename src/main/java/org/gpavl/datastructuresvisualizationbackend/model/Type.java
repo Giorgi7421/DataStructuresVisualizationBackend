@@ -30,5 +30,17 @@ public enum Type {
     ARRAY_EDITOR_BUFFER,
     TWO_STACK_EDITOR_BUFFER,
     LINKED_LIST_EDITOR_BUFFER,
-    DOUBLY_LINKED_LIST_EDITOR_BUFFER,
+    DOUBLY_LINKED_LIST_EDITOR_BUFFER;
+
+    public String getImplementation() {
+        String text = this.name();
+        int lastUnderscoreIndex = text.lastIndexOf("_");
+        return text.substring(0, lastUnderscoreIndex);
+    }
+
+    public String getDataStructure() {
+        String text = this.name();
+        int lastUnderscoreIndex = text.lastIndexOf("_");
+        return text.substring(lastUnderscoreIndex + 1);
+    }
 }
