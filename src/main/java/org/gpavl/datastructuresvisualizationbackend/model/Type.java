@@ -1,46 +1,84 @@
 package org.gpavl.datastructuresvisualizationbackend.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum Type {
-    ARRAY_VECTOR,
-    LINKED_LIST_VECTOR,
-    ARRAY_STACK,
-    LINKED_LIST_STACK,
-    TWO_QUEUE_STACK,
-    ARRAY_QUEUE,
-    LINKED_LIST_QUEUE,
-    ARRAY_MAP,
-    HASH_MAP,
-    TREE_MAP,
-    GRID,
-    DEQUEUE,
-    BS_TREE,
-    AVL_TREE,
-    EXPRESSION_TREE,
-    HASH_SET,
-    TREE_SET,
-    SMALL_INT_SET,
-    MOVE_TO_FRONT_SET,
-    UNSORTED_VECTOR_PRIORITY_QUEUE,
-    SORTED_LINKED_LIST_PRIORITY_QUEUE,
-    UNSORTED_DOUBLY_LINKED_LIST_PRIORITY_QUEUE,
-    BINARY_HEAP_PRIORITY_QUEUE,
-    BIG_INTEGER,
-    WEB_BROWSER,
-    FILE_SYSTEM,
-    ARRAY_EDITOR_BUFFER,
-    TWO_STACK_EDITOR_BUFFER,
-    LINKED_LIST_EDITOR_BUFFER,
-    DOUBLY_LINKED_LIST_EDITOR_BUFFER;
+    ARRAY_VECTOR(true, false),
+    LINKED_LIST_VECTOR(true, false),
+    ARRAY_STACK(true, false),
+    LINKED_LIST_STACK(true, false),
+    TWO_QUEUE_STACK(true, false),
+    ARRAY_QUEUE(true, false),
+    LINKED_LIST_QUEUE(true, false),
+    ARRAY_MAP(true, false),
+    HASH_MAP(true, false),
+    TREE_MAP(true, false),
+    GRID(false, true),
+    DEQUEUE(false, true),
+    BS_TREE(true, false),
+    AVL_TREE(true, false),
+    EXPRESSION_TREE(true, false),
+    HASH_SET(true, false),
+    TREE_SET(true, false),
+    SMALL_INT_SET(true, false),
+    MOVE_TO_FRONT_SET(true, false),
+    UNSORTED_VECTOR_PRIORITY_QUEUE(false, false),
+    SORTED_LINKED_LIST_PRIORITY_QUEUE(false, false),
+    UNSORTED_DOUBLY_LINKED_LIST_PRIORITY_QUEUE(false, false),
+    BINARY_HEAP_PRIORITY_QUEUE(false, false),
+    BIG_INTEGER(false, true),
+    WEB_BROWSER(false, true),
+    FILE_SYSTEM(false, true),
+    ARRAY_EDITOR_BUFFER(false, false),
+    TWO_STACK_EDITOR_BUFFER(false, false),
+    LINKED_LIST_EDITOR_BUFFER(false, false),
+    DOUBLY_LINKED_LIST_EDITOR_BUFFER(false, false);
+
+    private final boolean isLastUnderscoreSeparator;
+    private final boolean hasOneImplementation;
+
+    Type(boolean isLastUnderscoreSeparator, boolean hasOneImplementation) {
+        this.isLastUnderscoreSeparator = isLastUnderscoreSeparator;
+        this.hasOneImplementation = hasOneImplementation;
+    }
 
     public String getImplementation() {
+        if (hasOneImplementation) {
+            return null;
+        }
         String text = this.name();
-        int lastUnderscoreIndex = text.lastIndexOf("_");
-        return text.substring(0, lastUnderscoreIndex);
+        if (isLastUnderscoreSeparator) {
+            int lastUnderscoreIndex = text.lastIndexOf("_");
+            return text.substring(0, lastUnderscoreIndex);
+        }
+        int secondToLastIndex = getSecondToLastIndex(text);
+        return text.substring(0, secondToLastIndex);
     }
 
     public String getDataStructure() {
+        if (hasOneImplementation) {
+            return this.name();
+        }
+
         String text = this.name();
-        int lastUnderscoreIndex = text.lastIndexOf("_");
-        return text.substring(lastUnderscoreIndex + 1);
+        if (isLastUnderscoreSeparator) {
+            int lastUnderscoreIndex = text.lastIndexOf("_");
+            return text.substring(lastUnderscoreIndex + 1);
+        }
+
+        int secondToLastIndex = getSecondToLastIndex(text);
+        return text.substring(secondToLastIndex + 1);
+    }
+
+    private int getSecondToLastIndex(String text) {
+        List<Integer> indexes = new ArrayList<>();
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '_') {
+                indexes.add(i);
+            }
+        }
+
+        return indexes.get(indexes.size() - 2);
     }
 }
