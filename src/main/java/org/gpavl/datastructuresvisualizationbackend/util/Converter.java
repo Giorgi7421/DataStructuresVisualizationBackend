@@ -1,10 +1,8 @@
 package org.gpavl.datastructuresvisualizationbackend.util;
 
-import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
-import org.gpavl.datastructuresvisualizationbackend.entity.MemoryHistory;
-import org.gpavl.datastructuresvisualizationbackend.entity.MemorySnapshot;
-import org.gpavl.datastructuresvisualizationbackend.entity.OperationHistory;
+import org.gpavl.datastructuresvisualizationbackend.entity.*;
 import org.gpavl.datastructuresvisualizationbackend.model.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.HashMap;
 import java.util.List;

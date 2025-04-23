@@ -3,9 +3,12 @@ package org.gpavl.datastructuresvisualizationbackend.util;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.function.TriConsumer;
 import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
+import org.gpavl.datastructuresvisualizationbackend.entity.User;
 import org.gpavl.datastructuresvisualizationbackend.model.DataStructure;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
+import org.gpavl.datastructuresvisualizationbackend.security.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.function.BiConsumer;
@@ -16,6 +19,7 @@ import java.util.function.Consumer;
 public class OperationUtils {
 
     private DataStructureRepository dataStructureRepository;
+    private UserService userService;
 
     public <T extends DataStructure, U, V, R> Response executeThreeArgumentOperation(
             DataStructureState dataStructureState,
@@ -67,6 +71,11 @@ public class OperationUtils {
         );
 
         newState.setId(dataStructureState.getId());
+
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userService.getCurrentUser(userName);
+
+        newState.setUser(currentUser);
         DataStructureState result = dataStructureRepository.save(newState);
         return Converter.convertToResponse(result);
     }
