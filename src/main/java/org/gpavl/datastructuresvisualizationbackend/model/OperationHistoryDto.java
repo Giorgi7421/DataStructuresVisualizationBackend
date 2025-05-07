@@ -91,7 +91,12 @@ public class OperationHistoryDto {
 
     public void removeLocalVariable(String variableName) {
         MemorySnapshotDto memorySnapshotDto = getCurrentMemorySnapshot();
-        memorySnapshotDto.removeLocalVariable(variableName);
+        boolean removed = memorySnapshotDto.removeLocalVariable(variableName);
+
+        if (!removed) {
+            return;
+        }
+
         memorySnapshots.add(memorySnapshotDto);
     }
 

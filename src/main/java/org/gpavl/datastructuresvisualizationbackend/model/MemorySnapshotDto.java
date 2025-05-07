@@ -41,8 +41,9 @@ public class MemorySnapshotDto {
         addressObjectMap.put(address, value);
     }
 
-    public void removeLocalVariable(String variableName) {
-        localVariables.remove(variableName);
+    public boolean removeLocalVariable(String variableName) {
+        Object result = localVariables.remove(variableName);
+        return result != null;
     }
 
     public void removeInstanceVariable(String variableName) {
