@@ -8,7 +8,10 @@ import lombok.Setter;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
 
 @Entity
-@Table(schema = "structure")
+@Table(
+        schema = "structure",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"name", "user_id"})
+)
 @Setter
 @Getter
 @NoArgsConstructor
@@ -18,9 +21,7 @@ public class DataStructureState {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique = true)
     private String name;
-
     private Type type;
 
     @OneToOne(cascade = CascadeType.ALL)
