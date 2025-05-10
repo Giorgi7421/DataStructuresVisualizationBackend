@@ -79,6 +79,7 @@ public class SortedLinkedListPriorityQueue extends Queue {
 
             operationHistory.removeLocalVariable("prev");
             operationHistory.removeLocalVariable("current");
+            operationHistory.removeLocalVariable("element");
         }
 
         int count = getCount(operationHistory);
