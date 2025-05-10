@@ -30,7 +30,7 @@ public class DequeService extends DataStructureService {
     }
 
     public Response pushBack(String name, String element) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUEUE);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUE);
         Deque deque = convertToDeque(state);
         return operationUtils.executeOneArgumentOperation(
                 state,
@@ -41,7 +41,7 @@ public class DequeService extends DataStructureService {
     }
 
     public Response popBack(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUEUE);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUE);
         Deque deque = convertToDeque(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
@@ -51,7 +51,7 @@ public class DequeService extends DataStructureService {
     }
 
     public Response getBack(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUEUE);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUE);
         Deque deque = convertToDeque(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
@@ -61,7 +61,7 @@ public class DequeService extends DataStructureService {
     }
 
     public Response pushFront(String name, String element) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUEUE);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUE);
         Deque deque = convertToDeque(state);
         return operationUtils.executeOneArgumentOperation(
                 state,
@@ -72,7 +72,7 @@ public class DequeService extends DataStructureService {
     }
 
     public Response popFront(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUEUE);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUE);
         Deque deque = convertToDeque(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
@@ -82,7 +82,7 @@ public class DequeService extends DataStructureService {
     }
 
     public Response getFront(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUEUE);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUE);
         Deque deque = convertToDeque(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
@@ -92,7 +92,7 @@ public class DequeService extends DataStructureService {
     }
 
     public Response clear(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUEUE);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUE);
         Deque deque = convertToDeque(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
@@ -102,7 +102,7 @@ public class DequeService extends DataStructureService {
     }
 
     public Response size(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUEUE);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUE);
         Deque deque = convertToDeque(state);
         return operationUtils.executeNoArgumentOperation(
                 state,
@@ -112,7 +112,7 @@ public class DequeService extends DataStructureService {
     }
 
     public Response isEmpty(String name) {
-        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUEUE);
+        DataStructureState state = memoryUtils.getDataStructureState(name, Type.DEQUE);
         Deque deque = convertToDeque(state);
         return operationUtils.executeNoArgumentOperation(
                 state,

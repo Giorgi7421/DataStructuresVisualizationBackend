@@ -20,14 +20,14 @@ public class DequeController {
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PostMapping("/create/{name}")
     public ResponseEntity<Response> create(@PathVariable String name) {
-        Response response = dequeService.create(Type.DEQUEUE, name, new Deque());
+        Response response = dequeService.create(Type.DEQUE, name, new Deque());
         return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/find/{name}")
     public ResponseEntity<Response> find(@PathVariable String name) {
-        Response response = dequeService.findByName(Type.DEQUEUE, name);
+        Response response = dequeService.findByName(Type.DEQUE, name);
         return ResponseEntity.ok(response);
     }
 

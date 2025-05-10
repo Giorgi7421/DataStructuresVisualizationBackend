@@ -15,7 +15,7 @@ public enum Type {
     HASH_MAP(true, false),
     TREE_MAP(true, false),
     GRID(false, true),
-    DEQUEUE(false, true),
+    DEQUE(false, true),
     BS_TREE(true, false),
     AVL_TREE(true, false),
     EXPRESSION_TREE(true, false),
