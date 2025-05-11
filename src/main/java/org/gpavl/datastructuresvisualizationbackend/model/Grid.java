@@ -71,7 +71,7 @@ public class Grid extends DataStructure {
     public void numRows() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("numRows", memoryHistory);
 
-        int numRows = (int) operationHistory.getInstanceVariableValue("numRows");
+        int numRows = (int) operationHistory.getInstanceVariableValue("rows");
         operationHistory.addResult(numRows);
 
         memoryHistory.addOperationHistory(operationHistory);
@@ -80,7 +80,7 @@ public class Grid extends DataStructure {
     public void numColumns() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("numColumns", memoryHistory);
 
-        int numColumns = (int) operationHistory.getInstanceVariableValue("numColumns");
+        int numColumns = (int) operationHistory.getInstanceVariableValue("columns");
         operationHistory.addResult(numColumns);
 
         memoryHistory.addOperationHistory(operationHistory);
