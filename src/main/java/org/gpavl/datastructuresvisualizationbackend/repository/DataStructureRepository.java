@@ -13,4 +13,5 @@ import java.util.Optional;
 public interface DataStructureRepository extends JpaRepository<DataStructureState, Long> {
     Optional<DataStructureState> findByNameAndUserAndType(String name, User user, Type type);
     List<DataStructureState> findAllByUser(User user);
+    void deleteByNameAndUser(String name, User user);
 }

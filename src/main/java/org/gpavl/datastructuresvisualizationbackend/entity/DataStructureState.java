@@ -28,7 +28,7 @@ public class DataStructureState {
     @JoinColumn(name = "memory_history_id")
     private MemoryHistory memoryHistory;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }

@@ -14,10 +14,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
-public abstract class DataStructureService {
+public class DataStructureService {
 
     protected DataStructureRepository dataStructureRepository;
     protected MemoryUtils memoryUtils;
@@ -47,5 +48,13 @@ public abstract class DataStructureService {
 
     public Response findByName(Type type, String name) {
         return Converter.convertToResponse(memoryUtils.getDataStructureState(name, type));
+    }
+
+    @Transactional
+    public void deleteDataStructure(String name) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userService.getCurrentUser(username);
+
+        dataStructureRepository.deleteByNameAndUser(name, currentUser);
     }
 }
