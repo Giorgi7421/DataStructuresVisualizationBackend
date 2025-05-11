@@ -39,7 +39,7 @@ public class BigIntegerController {
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    @GetMapping("/isGreaterThan/{name}/{number}")
+    @GetMapping("/is-greater-than/{name}/{number}")
     public ResponseEntity<Response> isGreaterThan(@PathVariable String name, @PathVariable String number) {
         Response response = bigIntegerService.isGreaterThan(name, number);
         return ResponseEntity.ok(response);
