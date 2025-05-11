@@ -36,7 +36,7 @@ public class GridController {
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    @GetMapping("/inBounds/{name}/{row}/{column}")
+    @GetMapping("/in-bounds/{name}/{row}/{column}")
     public ResponseEntity<Response> inBounds(
             @PathVariable String name,
             @PathVariable int row,
@@ -47,14 +47,14 @@ public class GridController {
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    @GetMapping("/numRows/{name}")
+    @GetMapping("/num-rows/{name}")
     public ResponseEntity<Response> numRows(@PathVariable String name) {
         Response response = gridService.numRows(name);
         return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    @GetMapping("/numColumns/{name}")
+    @GetMapping("/num-columns/{name}")
     public ResponseEntity<Response> numColumns(@PathVariable String name) {
         Response response = gridService.numColumns(name);
         return ResponseEntity.ok(response);

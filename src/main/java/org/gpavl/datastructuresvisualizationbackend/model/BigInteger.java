@@ -184,6 +184,8 @@ public class BigInteger extends DataStructure {
         operationHistory.removeLocalVariable("b");
         operationHistory.removeLocalVariable("a");
         operationHistory.removeLocalVariable("number");
+
+        memoryHistory.addOperationHistory(operationHistory);
     }
 
     private void validateString(String number) {
