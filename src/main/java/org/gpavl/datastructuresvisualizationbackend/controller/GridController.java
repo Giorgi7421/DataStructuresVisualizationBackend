@@ -72,7 +72,7 @@ public class GridController {
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    @GetMapping("/set/{name}/{row}/{column}/{element}")
+    @PatchMapping("/set/{name}/{row}/{column}/{element}")
     public ResponseEntity<Response> set(
             @PathVariable String name,
             @PathVariable int row,
