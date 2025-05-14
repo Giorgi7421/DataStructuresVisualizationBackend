@@ -94,7 +94,7 @@ public class TwoStackEditorBuffer extends EditorBuffer {
         Deque<String> before = getBefore(operationHistory);
         Deque<String> after = getAfter(operationHistory);
 
-        while (!before.isEmpty()) {
+        while (!after.isEmpty()) {
             String character = after.pop();
             operationHistory.addLocalVariable("character", character);
             updateArray(new ArrayList<>(after), operationHistory, "after");
