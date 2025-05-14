@@ -84,7 +84,7 @@ public class EditorBufferController {
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    @PatchMapping("/moveCursorForward/{type}/{name}")
+    @PatchMapping("/move-cursor-forward/{type}/{name}")
     public ResponseEntity<Response> moveCursorForward(
             @PathVariable EditorBufferType type,
             @PathVariable String name
@@ -115,7 +115,7 @@ public class EditorBufferController {
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    @PatchMapping("/moveCursorBackward/{type}/{name}")
+    @PatchMapping("/move-cursor-backward/{type}/{name}")
     public ResponseEntity<Response> moveCursorBackward(
             @PathVariable EditorBufferType type,
             @PathVariable String name
@@ -146,7 +146,7 @@ public class EditorBufferController {
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    @PatchMapping("/moveCursorToStart/{type}/{name}")
+    @PatchMapping("/move-cursor-to-start/{type}/{name}")
     public ResponseEntity<Response> moveCursorToStart(
             @PathVariable EditorBufferType type,
             @PathVariable String name
@@ -177,7 +177,7 @@ public class EditorBufferController {
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    @PatchMapping("/moveCursorToEnd/{type}/{name}")
+    @PatchMapping("/move-cursor-to-end/{type}/{name}")
     public ResponseEntity<Response> moveCursorToEnd(
             @PathVariable EditorBufferType type,
             @PathVariable String name
@@ -208,7 +208,7 @@ public class EditorBufferController {
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    @PatchMapping("/insertCharacter/{type}/{name}/{character}")
+    @PatchMapping("/insert-character/{type}/{name}/{character}")
     public ResponseEntity<Response> insertCharacter(
             @PathVariable EditorBufferType type,
             @PathVariable String name,
@@ -244,7 +244,7 @@ public class EditorBufferController {
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    @PatchMapping("/deleteCharacter/{type}/{name}")
+    @PatchMapping("/delete-character/{type}/{name}")
     public ResponseEntity<Response> deleteCharacter(
             @PathVariable EditorBufferType type,
             @PathVariable String name
