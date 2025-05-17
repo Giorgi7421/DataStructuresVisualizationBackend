@@ -118,7 +118,13 @@ public class ArrayVector extends Vector {
                 element
         );
 
+        operationHistory.addLocalVariable("index", index);
+        operationHistory.addLocalVariable("element", element);
+
         insertAtWrapper(operationHistory, index, element);
+
+        operationHistory.removeLocalVariable("element");
+        operationHistory.removeLocalVariable("index");
 
         memoryHistory.addOperationHistory(operationHistory);
     }
