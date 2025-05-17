@@ -126,7 +126,7 @@ public class TwoQueueStack extends Stack {
 
     @Override
     public void peek() {
-        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("top", memoryHistory);
+        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("peek", memoryHistory);
 
         Queue<String> first = getFirst(operationHistory);
         Queue<String> second = getSecond(operationHistory);
