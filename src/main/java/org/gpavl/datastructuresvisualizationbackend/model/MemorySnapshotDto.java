@@ -42,8 +42,11 @@ public class MemorySnapshotDto {
     }
 
     public boolean removeLocalVariable(String variableName) {
-        Object result = localVariables.remove(variableName);
-        return result != null;
+        if (!localVariables.containsKey(variableName)) {
+            return false;
+        }
+        localVariables.remove(variableName);
+        return true;
     }
 
     public void removeInstanceVariable(String variableName) {

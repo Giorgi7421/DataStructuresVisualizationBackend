@@ -79,6 +79,7 @@ public class TwoQueueStack extends Stack {
         first.offer(element);
 
         updateArray(new ArrayList<>(first), operationHistory, "first");
+        operationHistory.removeLocalVariable("element");
 
         memoryHistory.addOperationHistory(operationHistory);
     }
