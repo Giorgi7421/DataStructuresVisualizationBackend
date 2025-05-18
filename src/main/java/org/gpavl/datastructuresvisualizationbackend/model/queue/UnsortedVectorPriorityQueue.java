@@ -81,14 +81,17 @@ public class UnsortedVectorPriorityQueue extends Queue {
         operationHistory.addLocalVariable("first", first);
 
         for (int i = 1; i < vector.size(); i++) {
+            operationHistory.addLocalVariable("currentIndex", i);
             if (vector.get(i).compareTo(first) < 0) {
-                first = vector.get(i);
-                operationHistory.addLocalVariable("first", first);
-
                 loc = i;
                 operationHistory.addLocalVariable("loc", i);
+
+                first = vector.get(i);
+                operationHistory.addLocalVariable("first", first);
             }
         }
+
+        operationHistory.removeLocalVariable("currentIndex");
 
         List<String> newVector = new ArrayList<>(vector);
         newVector.remove(loc);
