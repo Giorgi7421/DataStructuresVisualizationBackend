@@ -63,7 +63,11 @@ public class SortedLinkedListPriorityQueue extends Queue {
 
             while (current != null && currentNode.getValue().compareTo(element) <= 0) {
                 prev = current;
+                operationHistory.addLocalVariable("prev", prev);
+
                 current = currentNode.getNextAddress();
+                operationHistory.addLocalVariable("current", current);
+
                 currentNode = current != null ? convertToNode(operationHistory.getObject(current)) : null;
             }
 
@@ -79,12 +83,13 @@ public class SortedLinkedListPriorityQueue extends Queue {
 
             operationHistory.removeLocalVariable("prev");
             operationHistory.removeLocalVariable("current");
-            operationHistory.removeLocalVariable("element");
         }
 
         int count = getCount(operationHistory);
         count++;
         operationHistory.addInstanceVariable("count", count);
+
+        operationHistory.removeLocalVariable("element");
 
         memoryHistory.addOperationHistory(operationHistory);
     }
@@ -105,8 +110,8 @@ public class SortedLinkedListPriorityQueue extends Queue {
         String result = headNode.getValue();
         operationHistory.addLocalVariable("result", result);
 
-        String oldNode = headAddress;
-        operationHistory.addLocalVariable("oldNode", oldNode);
+        String oldHead = headAddress;
+        operationHistory.addLocalVariable("oldHead", oldHead);
 
         operationHistory.addInstanceVariable("head", headNode.getNextAddress());
         operationHistory.freeLocalVariable("oldHead", "oldHead freed");
