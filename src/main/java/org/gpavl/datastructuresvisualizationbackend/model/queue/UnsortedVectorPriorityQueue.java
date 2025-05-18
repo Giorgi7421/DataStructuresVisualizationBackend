@@ -115,18 +115,21 @@ public class UnsortedVectorPriorityQueue extends Queue {
             throw new IllegalArgumentException("Attempting to dequeue an empty queue");
         }
 
-        String result = vector.getFirst();
-        operationHistory.addLocalVariable("result", result);
+        String currentResult = vector.getFirst();
+        operationHistory.addLocalVariable("currentResult", currentResult);
 
         for (int i = 1; i < vector.size(); i++) {
-            if (vector.get(i).compareTo(result) < 0) {
-                result = vector.get(i);
-                operationHistory.addLocalVariable("result", result);
+            operationHistory.addLocalVariable("currentIndex", i);
+            if (vector.get(i).compareTo(currentResult) < 0) {
+                currentResult = vector.get(i);
+                operationHistory.addLocalVariable("currentResult", currentResult);
             }
         }
 
-        operationHistory.addResult(result);
-        operationHistory.removeLocalVariable("result");
+        operationHistory.removeLocalVariable("currentIndex");
+
+        operationHistory.addResult(currentResult);
+        operationHistory.removeLocalVariable("currentResult");
 
         memoryHistory.addOperationHistory(operationHistory);
     }
