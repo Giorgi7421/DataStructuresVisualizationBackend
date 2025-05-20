@@ -55,6 +55,8 @@ public class MoveToFrontSet extends Set {
             headAddress = (String) operationHistory.getInstanceVariableValue("head");
         }
 
+        operationHistory.addInstanceVariable("size", 0);
+
         memoryHistory.addOperationHistory(operationHistory);
     }
 
