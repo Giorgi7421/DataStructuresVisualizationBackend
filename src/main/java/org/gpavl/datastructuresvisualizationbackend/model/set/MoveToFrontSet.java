@@ -72,7 +72,10 @@ public class MoveToFrontSet extends Set {
             operationHistory.updateObject(address, newNode1);
 
             Node newNode2 = new Node(element);
-            newNode2.setNextAddress((String) operationHistory.getInstanceVariableValue("head"));
+            String nextAddress = (String) operationHistory.getInstanceVariableValue("head");
+            if (nextAddress != null) {
+                newNode2.setNextAddress(nextAddress);
+            }
             operationHistory.updateObject(address, newNode2);
 
             operationHistory.addInstanceVariable("head", address);
