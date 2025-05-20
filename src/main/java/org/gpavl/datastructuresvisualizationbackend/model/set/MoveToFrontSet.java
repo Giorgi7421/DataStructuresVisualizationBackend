@@ -35,7 +35,7 @@ public class MoveToFrontSet extends Set {
 
     @Override
     public void isEmpty() {
-        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("size", memoryHistory);
+        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("isEmpty", memoryHistory);
 
         int size = (int) operationHistory.getInstanceVariableValue("size");
         operationHistory.addResult(size == 0);
