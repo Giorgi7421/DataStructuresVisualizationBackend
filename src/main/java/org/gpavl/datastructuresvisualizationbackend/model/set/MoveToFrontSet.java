@@ -106,6 +106,8 @@ public class MoveToFrontSet extends Set {
             operationHistory.addInstanceVariable("size", size);
         }
 
+        operationHistory.removeLocalVariable("element");
+
         memoryHistory.addOperationHistory(operationHistory);
     }
 
