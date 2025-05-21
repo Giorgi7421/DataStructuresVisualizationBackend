@@ -90,18 +90,18 @@ public class Deque extends DataStructure {
         operationHistory.addLocalVariable("newNode", newAddress);
 
         String frontAddress = (String) operationHistory.getInstanceVariableValue("front");
-        String readAddress = (String) operationHistory.getInstanceVariableValue("rear");
+        String rearAddress = (String) operationHistory.getInstanceVariableValue("rear");
         if (frontAddress == null) {
             operationHistory.addInstanceVariable("front", newAddress);
             operationHistory.addInstanceVariable("rear", newAddress);
         }else {
             DoublyLinkedNode newNode1 = new DoublyLinkedNode(element);
-            newNode1.setPreviousAddress(readAddress);
+            newNode1.setPreviousAddress(rearAddress);
             operationHistory.updateObject(newAddress, newNode1);
 
-            DoublyLinkedNode rear = convertToDoublyLinkedNode(operationHistory.getObject(readAddress));
+            DoublyLinkedNode rear = convertToDoublyLinkedNode(operationHistory.getObject(rearAddress));
             rear.setNextAddress(newAddress);
-            operationHistory.updateObject(frontAddress, rear);
+            operationHistory.updateObject(rearAddress, rear);
 
             operationHistory.addInstanceVariable("rear", newAddress);
         }
@@ -140,20 +140,22 @@ public class Deque extends DataStructure {
             String next = front.getNextAddress();
             operationHistory.addInstanceVariable("front", next);
 
-            front = convertToDoublyLinkedNode(operationHistory.getObject(frontAddress));
+            front = convertToDoublyLinkedNode(operationHistory.getObject((String) operationHistory.getInstanceVariableValue("front")));
             front.setPreviousAddress(null);
 
-            operationHistory.updateObject(next, front);
+            operationHistory.updateObject((String) operationHistory.getInstanceVariableValue("front"), front);
         }
 
         operationHistory.freeLocalVariable("temp", "temp freed");
-        operationHistory.addResult(temp);
+        operationHistory.addResult(element);
 
         operationHistory.removeLocalVariable("temp");
 
         int size = (int) operationHistory.getInstanceVariableValue("size");
-        size++;
+        size--;
         operationHistory.addInstanceVariable("size", size);
+
+        operationHistory.removeLocalVariable("element");
 
         memoryHistory.addOperationHistory(operationHistory);
     }
@@ -218,19 +220,21 @@ public class Deque extends DataStructure {
             String prev = rear.getPreviousAddress();
             operationHistory.addInstanceVariable("rear", prev);
 
-            rear = convertToDoublyLinkedNode(operationHistory.getObject(rearAddress));
-            rear.setPreviousAddress(null);
+            rear = convertToDoublyLinkedNode(operationHistory.getObject((String) operationHistory.getInstanceVariableValue("rear")));
+            rear.setNextAddress(null);
 
-            operationHistory.updateObject(prev, rear);
+            operationHistory.updateObject((String) operationHistory.getInstanceVariableValue("rear"), rear);
         }
 
         operationHistory.freeLocalVariable("temp", "temp freed");
-        operationHistory.addResult(temp);
+        operationHistory.addResult(element);
 
         operationHistory.removeLocalVariable("temp");
 
         int size = (int) operationHistory.getInstanceVariableValue("size");
-        size++;
+        size--;
         operationHistory.addInstanceVariable("size", size);
+
+        operationHistory.removeLocalVariable("element");
     }
 }

@@ -50,7 +50,17 @@ public class OperationHistoryDto {
 
     public Map<String, Object> getObject(String address) {
         MemorySnapshotDto currentMemorySnapshot = getCurrentMemorySnapshot();
-        return (Map<String, Object>) currentMemorySnapshot.getAddressObjectMap().get(address);
+        Object obj = currentMemorySnapshot.getAddressObjectMap().get(address);
+
+        if (obj instanceof DoublyLinkedNode node) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("value", node.getValue());
+            result.put("previousAddress", node.getPreviousAddress());
+            result.put("nextAddress", node.getNextAddress());
+            return result;
+        }
+
+        return (Map<String, Object>) obj;
     }
 
     public List<String> getArray(String address) {
