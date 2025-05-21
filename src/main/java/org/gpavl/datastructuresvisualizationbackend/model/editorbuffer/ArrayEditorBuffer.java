@@ -24,7 +24,7 @@ public class ArrayEditorBuffer extends EditorBuffer {
         String newAddress = operationHistory.addNewObject(array);
         operationHistory.addInstanceVariable("array", newAddress);
 
-        operationHistory.addInstanceVariable("length", 0);
+        operationHistory.addInstanceVariable("count", 0);
         operationHistory.addInstanceVariable("cursor", 0);
 
         memoryHistory.addOperationHistory(operationHistory);
@@ -34,10 +34,10 @@ public class ArrayEditorBuffer extends EditorBuffer {
     public void moveCursorForward() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("moveCursorForward", memoryHistory);
 
-        int length = getLength(operationHistory);
+        int count = getCount(operationHistory);
         int cursor = getCursor(operationHistory);
 
-        if (cursor < length) {
+        if (cursor < count) {
             cursor++;
             operationHistory.addInstanceVariable("cursor", cursor);
         }
@@ -69,8 +69,8 @@ public class ArrayEditorBuffer extends EditorBuffer {
     @Override
     public void moveCursorToEnd() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("moveCursorToEnd", memoryHistory);
-        int length = getLength(operationHistory);
-        operationHistory.addInstanceVariable("cursor", length);
+        int count = getCount(operationHistory);
+        operationHistory.addInstanceVariable("cursor", count);
         memoryHistory.addOperationHistory(operationHistory);
     }
 
@@ -81,16 +81,16 @@ public class ArrayEditorBuffer extends EditorBuffer {
         operationHistory.addLocalVariable("character", character);
 
         int capacity = getCapacity(operationHistory);
-        int length = getLength(operationHistory);
+        int count = getCount(operationHistory);
         int cursor = getCursor(operationHistory);
 
-        if (length == capacity) {
+        if (count == capacity) {
             extendCapacity(operationHistory);
         }
 
         List<String> array = getArray(operationHistory, "array");
 
-        for (int i = length; i > cursor; i--) {
+        for (int i = count; i > cursor; i--) {
             array = new ArrayList<>(array);
             array.set(i, array.get(i - 1));
             updateArray(array, operationHistory, "array");
@@ -99,8 +99,8 @@ public class ArrayEditorBuffer extends EditorBuffer {
         array.set(cursor, String.valueOf(character));
         updateArray(array, operationHistory, "array");
 
-        length++;
-        operationHistory.addInstanceVariable("length", length);
+        count++;
+        operationHistory.addInstanceVariable("count", count);
         cursor++;
         operationHistory.addInstanceVariable("cursor", cursor);
 
@@ -113,19 +113,21 @@ public class ArrayEditorBuffer extends EditorBuffer {
     public void deleteCharacter() {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("deleteCharacter", memoryHistory);
 
-        int length = getLength(operationHistory);
+        int count = getCount(operationHistory);
         int cursor = getCursor(operationHistory);
 
         List<String> array = getArray(operationHistory, "array");
 
-        if (cursor < length) {
-            for (int i = cursor + 1; i < length; i++) {
+        if (cursor < count) {
+            for (int i = cursor + 1; i < count; i++) {
                 array = new ArrayList<>(array);
                 array.set(i - 1, array.get(i));
                 updateArray(array, operationHistory, "array");
             }
-            length--;
-            operationHistory.addInstanceVariable("length", length);
+            count--;
+            operationHistory.addInstanceVariable("count", count);
         }
+
+        memoryHistory.addOperationHistory(operationHistory);
     }
 }

@@ -5,10 +5,6 @@ import org.gpavl.datastructuresvisualizationbackend.model.OperationHistoryDto;
 
 public abstract class EditorBuffer extends DataStructure {
 
-    protected int getLength(OperationHistoryDto operationHistory) {
-        return (int) operationHistory.getInstanceVariableValue("length");
-    }
-
     protected int getCursor(OperationHistoryDto operationHistory) {
         return (int) operationHistory.getInstanceVariableValue("cursor");
     }
