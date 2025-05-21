@@ -19,12 +19,8 @@ public class DoublyLinkedListEditorBuffer extends EditorBuffer {
         DoublyLinkedNode node = new DoublyLinkedNode();
         String nodeAddress = operationHistory.addNewObject(node);
 
-        DoublyLinkedNode nwNode = new DoublyLinkedNode();
-        nwNode.setPreviousAddress(nodeAddress);
-        nwNode.setNextAddress(nodeAddress);
-
-        operationHistory.updateObject(nodeAddress, nwNode);
         operationHistory.addInstanceVariable("start", nodeAddress);
+        operationHistory.addInstanceVariable("end", nodeAddress);
         operationHistory.addInstanceVariable("cursor", nodeAddress);
 
         memoryHistory.addOperationHistory(operationHistory);
@@ -74,12 +70,10 @@ public class DoublyLinkedListEditorBuffer extends EditorBuffer {
 
     @Override
     public void moveCursorToEnd() {
-        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("moveCursorToStart", memoryHistory);
+        OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("moveCursorToEnd", memoryHistory);
 
-        String startAddress = (String) operationHistory.getInstanceVariableValue("start");
-        DoublyLinkedNode node = convertToDoublyLinkedNode(operationHistory.getObject(startAddress));
-
-        operationHistory.addInstanceVariable("cursor", node.getPreviousAddress());
+        String endAddress = (String) operationHistory.getInstanceVariableValue("end");
+        operationHistory.addInstanceVariable("cursor", endAddress);
 
         memoryHistory.addOperationHistory(operationHistory);
     }
@@ -91,6 +85,9 @@ public class DoublyLinkedListEditorBuffer extends EditorBuffer {
         operationHistory.addLocalVariable("character", character);
 
         String cursorAddress = (String) operationHistory.getInstanceVariableValue("cursor");
+        String endAddress = (String) operationHistory.getInstanceVariableValue("end");
+        boolean endMovingNeeded = cursorAddress.equals(endAddress);
+
         DoublyLinkedNode cursor = convertToDoublyLinkedNode(operationHistory.getObject(cursorAddress));
 
         DoublyLinkedNode cp = new DoublyLinkedNode();
@@ -119,6 +116,11 @@ public class DoublyLinkedListEditorBuffer extends EditorBuffer {
         operationHistory.updateObject(cursorAddress, newCursor);
 
         operationHistory.addInstanceVariable("cursor", cpAddress);
+
+        if (endMovingNeeded) {
+            DoublyLinkedNode endNode = convertToDoublyLinkedNode(operationHistory.getObject(endAddress));
+            operationHistory.addInstanceVariable("end", endNode.getNextAddress());
+        }
 
         operationHistory.removeLocalVariable("cp");
         operationHistory.removeLocalVariable("character");
