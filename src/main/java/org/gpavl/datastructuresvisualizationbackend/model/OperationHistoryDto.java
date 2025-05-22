@@ -99,6 +99,11 @@ public class OperationHistoryDto {
         memorySnapshots.add(currentMemorySnapshot);
     }
 
+    public void updateObjectInPlace(String address, Object object) {
+        MemorySnapshotDto currentMemorySnapshot = memorySnapshots.getLast();
+        currentMemorySnapshot.updateAddressObjectMap(address, object);
+    }
+
     public void removeLocalVariable(String variableName) {
         MemorySnapshotDto memorySnapshotDto = getCurrentMemorySnapshot();
         boolean removed = memorySnapshotDto.removeLocalVariable(variableName);
