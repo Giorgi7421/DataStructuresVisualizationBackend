@@ -109,7 +109,7 @@ public class UnsortedDoublyLinkedListPriorityQueue extends Queue {
             DoublyLinkedNode prv = convertToDoublyLinkedNode(operationHistory.getObject(minn.getPreviousAddress()));
             prv.setNextAddress(minn.getNextAddress());
 
-            operationHistory.updateObject(minn.getPreviousAddress(), prv);
+            operationHistory.updateObjectInPlace(minn.getPreviousAddress(), prv);
         }else {
             operationHistory.addInstanceVariable("head", minn.getNextAddress());
         }
@@ -118,7 +118,7 @@ public class UnsortedDoublyLinkedListPriorityQueue extends Queue {
             DoublyLinkedNode prv = convertToDoublyLinkedNode(operationHistory.getObject(minn.getNextAddress()));
             prv.setPreviousAddress(minn.getPreviousAddress());
 
-            operationHistory.updateObject(minn.getNextAddress(), prv);
+            operationHistory.updateObjectInPlace(minn.getNextAddress(), prv);
         }else {
             operationHistory.addInstanceVariable("tail", minn.getPreviousAddress());
         }
