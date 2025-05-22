@@ -78,9 +78,8 @@ public class WebBrowser extends DataStructure {
 
         if (current.getPreviousAddress() != null) {
             operationHistory.addInstanceVariable("current", current.getPreviousAddress());
+            memoryHistory.addOperationHistory(operationHistory);
         }
-
-        memoryHistory.addOperationHistory(operationHistory);
     }
 
     public void forward() {
@@ -91,8 +90,7 @@ public class WebBrowser extends DataStructure {
 
         if (current.getNextAddress() != null) {
             operationHistory.addInstanceVariable("current", current.getNextAddress());
+            memoryHistory.addOperationHistory(operationHistory);
         }
-
-        memoryHistory.addOperationHistory(operationHistory);
     }
 }
