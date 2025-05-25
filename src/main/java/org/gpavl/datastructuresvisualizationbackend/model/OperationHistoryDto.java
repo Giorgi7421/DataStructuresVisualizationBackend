@@ -75,14 +75,18 @@ public class OperationHistoryDto {
 
     public void addInstanceVariable(String variableName, Object variableValue) {
         MemorySnapshotDto currentMemorySnapshot = getCurrentMemorySnapshot();
-        currentMemorySnapshot.updateInstanceVariable(variableName, variableValue);
-        memorySnapshots.add(currentMemorySnapshot);
+        boolean equals = currentMemorySnapshot.updateInstanceVariable(variableName, variableValue);
+        if (!equals) {
+            memorySnapshots.add(currentMemorySnapshot);
+        }
     }
 
     public void addLocalVariable(String variableName, Object variableValue) {
         MemorySnapshotDto currentMemorySnapshot = getCurrentMemorySnapshot();
-        currentMemorySnapshot.updateLocalVariable(variableName, variableValue);
-        memorySnapshots.add(currentMemorySnapshot);
+        boolean equals = currentMemorySnapshot.updateLocalVariable(variableName, variableValue);
+        if (!equals) {
+            memorySnapshots.add(currentMemorySnapshot);
+        }
     }
 
     public String addNewObject(Object object) {
@@ -95,8 +99,10 @@ public class OperationHistoryDto {
 
     public void updateObject(String address, Object object) {
         MemorySnapshotDto currentMemorySnapshot = getCurrentMemorySnapshot();
-        currentMemorySnapshot.updateAddressObjectMap(address, object);
-        memorySnapshots.add(currentMemorySnapshot);
+        boolean equals = currentMemorySnapshot.updateAddressObjectMap(address, object);
+        if (!equals) {
+            memorySnapshots.add(currentMemorySnapshot);
+        }
     }
 
     public void updateObjectInPlace(String address, Object object) {

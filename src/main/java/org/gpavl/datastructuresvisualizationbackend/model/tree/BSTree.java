@@ -70,6 +70,8 @@ public class BSTree extends Tree {
         String rootAddress = (String) operationHistory.getInstanceVariableValue("root");
         clearWrapper(operationHistory, rootAddress);
 
+        operationHistory.addInstanceVariable("root", null);
+
         memoryHistory.addOperationHistory(operationHistory);
     }
 

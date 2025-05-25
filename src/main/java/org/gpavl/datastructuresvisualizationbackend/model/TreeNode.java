@@ -1,10 +1,12 @@
 package org.gpavl.datastructuresvisualizationbackend.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class TreeNode {
 
     private String value;

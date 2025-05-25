@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -29,16 +30,19 @@ public class MemorySnapshotDto {
         this.addressObjectMap = new HashMap<>(other.addressObjectMap);
     }
 
-    public void updateLocalVariable(String variableName, Object variableValue) {
-        localVariables.put(variableName, variableValue);
+    public boolean updateLocalVariable(String variableName, Object variableValue) {
+        Object obj = localVariables.put(variableName, variableValue);
+        return Objects.equals(obj, variableValue);
     }
 
-    public void updateInstanceVariable(String variableName, Object variableValue) {
-        instanceVariables.put(variableName, variableValue);
+    public boolean updateInstanceVariable(String variableName, Object variableValue) {
+        Object obj = instanceVariables.put(variableName, variableValue);
+        return Objects.equals(obj, variableValue);
     }
 
-    public void updateAddressObjectMap(String address, Object value) {
-        addressObjectMap.put(address, value);
+    public boolean updateAddressObjectMap(String address, Object value) {
+        Object obj = addressObjectMap.put(address, value);
+        return Objects.equals(obj, value);
     }
 
     public boolean removeLocalVariable(String variableName) {
