@@ -3,6 +3,7 @@ package org.gpavl.datastructuresvisualizationbackend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.gpavl.datastructuresvisualizationbackend.model.map.HashMapNode;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 
 import java.util.ArrayList;
@@ -57,6 +58,12 @@ public class OperationHistoryDto {
             result.put("value", node.getValue());
             result.put("previousAddress", node.getPreviousAddress());
             result.put("nextAddress", node.getNextAddress());
+            return result;
+        }else if (obj instanceof HashMapNode otherNode) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("key", otherNode.getKey());
+            result.put("value", otherNode.getValue());
+            result.put("linkAddress", otherNode.getLinkAddress());
             return result;
         }
 
