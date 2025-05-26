@@ -131,7 +131,7 @@ public class MapController {
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    @GetMapping("/clear/{type}/{name}")
+    @PatchMapping("/clear/{type}/{name}")
     public ResponseEntity<Response> clear(
             @PathVariable MapType type,
             @PathVariable String name
@@ -157,7 +157,7 @@ public class MapController {
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    @GetMapping("/put/{type}/{name}/{key}/{value}")
+    @PatchMapping("/put/{type}/{name}/{key}/{value}")
     public ResponseEntity<Response> put(
             @PathVariable MapType type,
             @PathVariable String name,
