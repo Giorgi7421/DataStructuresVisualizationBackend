@@ -31,13 +31,15 @@ public class MemorySnapshotDto {
     }
 
     public boolean updateLocalVariable(String variableName, Object variableValue) {
+        boolean containsKey = localVariables.containsKey(variableName);
         Object obj = localVariables.put(variableName, variableValue);
-        return Objects.equals(obj, variableValue);
+        return Objects.equals(obj, variableValue) && containsKey;
     }
 
     public boolean updateInstanceVariable(String variableName, Object variableValue) {
+        boolean containsKey = instanceVariables.containsKey(variableName);
         Object obj = instanceVariables.put(variableName, variableValue);
-        return Objects.equals(obj, variableValue);
+        return Objects.equals(obj, variableValue) && containsKey;
     }
 
     public boolean updateAddressObjectMap(String address, Object value) {
