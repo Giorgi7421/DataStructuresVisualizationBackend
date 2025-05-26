@@ -80,6 +80,9 @@ public class HashMap extends Map {
     public void put(String key, String value) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("put", memoryHistory, "key", key, "value", value);
 
+        operationHistory.addLocalVariable("key", key);
+        operationHistory.addLocalVariable("value", value);
+
         int nBuckets = (int) operationHistory.getInstanceVariableValue("nBuckets");
         List<String> buckets = getArray(operationHistory, "buckets");
 
@@ -116,12 +119,17 @@ public class HashMap extends Map {
         operationHistory.updateObject(targetNodeAddress, newNode1);
         operationHistory.removeLocalVariable("bucket");
 
+        operationHistory.removeLocalVariable("value");
+        operationHistory.removeLocalVariable("key");
+
         memoryHistory.addOperationHistory(operationHistory);
     }
 
     @Override
     public void get(String key) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("get", memoryHistory, "key", key);
+
+        operationHistory.addLocalVariable("key", key);
 
         int nBuckets = (int) operationHistory.getInstanceVariableValue("nBuckets");
 
@@ -142,12 +150,16 @@ public class HashMap extends Map {
         operationHistory.removeLocalVariable("targetNode");
         operationHistory.removeLocalVariable("bucket");
 
+        operationHistory.removeLocalVariable("key");
+
         memoryHistory.addOperationHistory(operationHistory);
     }
 
     @Override
     public void containsKey(String key) {
         OperationHistoryDto operationHistory = MemoryUtils.getLastMemorySnapshot("containsKey", memoryHistory, "key", key);
+
+        operationHistory.addLocalVariable("key", key);
 
         int nBuckets = (int) operationHistory.getInstanceVariableValue("nBuckets");
 
@@ -162,6 +174,8 @@ public class HashMap extends Map {
 
         operationHistory.removeLocalVariable("targetNode");
         operationHistory.removeLocalVariable("bucket");
+
+        operationHistory.removeLocalVariable("key");
         
         memoryHistory.addOperationHistory(operationHistory);
     }
