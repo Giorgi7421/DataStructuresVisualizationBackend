@@ -139,6 +139,9 @@ public class HashMap extends Map {
         HashMapNode storedNode = convertToHashMapNode(operationHistory.getObject(targetNodeAddress));
         operationHistory.addResult(storedNode.getValue());
 
+        operationHistory.removeLocalVariable("targetNode");
+        operationHistory.removeLocalVariable("bucket");
+
         memoryHistory.addOperationHistory(operationHistory);
     }
 
@@ -156,6 +159,9 @@ public class HashMap extends Map {
         operationHistory.removeLocalVariable("currentNode");
 
         operationHistory.addResult(targetNodeAddress != null);
+
+        operationHistory.removeLocalVariable("targetNode");
+        operationHistory.removeLocalVariable("bucket");
         
         memoryHistory.addOperationHistory(operationHistory);
     }
