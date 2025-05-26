@@ -117,6 +117,7 @@ public class HashMap extends Map {
         newNode1.setValue(value);
 
         operationHistory.updateObject(targetNodeAddress, newNode1);
+        operationHistory.removeLocalVariable("targetNode");
         operationHistory.removeLocalVariable("bucket");
 
         operationHistory.removeLocalVariable("value");
