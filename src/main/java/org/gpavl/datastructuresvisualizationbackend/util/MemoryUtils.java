@@ -5,6 +5,7 @@ import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
 import org.gpavl.datastructuresvisualizationbackend.entity.User;
 import org.gpavl.datastructuresvisualizationbackend.model.*;
 import org.gpavl.datastructuresvisualizationbackend.model.map.HashMapNode;
+import org.gpavl.datastructuresvisualizationbackend.model.map.KeyValuePair;
 import org.gpavl.datastructuresvisualizationbackend.model.set.HashSetNode;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.gpavl.datastructuresvisualizationbackend.security.UserService;
@@ -151,6 +152,11 @@ public class MemoryUtils {
     public static List<String> getArray(OperationHistoryDto operationHistory, String name) {
         String arrayAddress = (String) operationHistory.getInstanceVariableValue(name);
         return operationHistory.getArray(arrayAddress);
+    }
+
+    public static List<KeyValuePair> getKeyValuePairArray(OperationHistoryDto operationHistory, String name) {
+        String arrayAddress = (String) operationHistory.getInstanceVariableValue(name);
+        return operationHistory.getKeyValuePairArray(arrayAddress);
     }
 
     public static List<Integer> getIntArray(OperationHistoryDto operationHistory, String name) {

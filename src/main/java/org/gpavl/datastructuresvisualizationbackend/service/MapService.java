@@ -4,6 +4,7 @@ import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
+import org.gpavl.datastructuresvisualizationbackend.model.map.ArrayMap;
 import org.gpavl.datastructuresvisualizationbackend.model.map.HashMap;
 import org.gpavl.datastructuresvisualizationbackend.model.set.MoveToFrontSet;
 import org.gpavl.datastructuresvisualizationbackend.model.set.Set;
@@ -34,8 +35,8 @@ public class MapService extends DataStructureService {
         this.operationUtils = operationUtils;
 
         typeMap = Map.of(
-                Type.HASH_MAP, HashMap::new
-                //Type.LINKED_LIST_VECTOR, LinkedListVector::new
+                Type.HASH_MAP, HashMap::new,
+                Type.ARRAY_MAP, ArrayMap::new
         );
     }
 

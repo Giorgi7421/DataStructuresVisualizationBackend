@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.gpavl.datastructuresvisualizationbackend.model.map.HashMapNode;
+import org.gpavl.datastructuresvisualizationbackend.model.map.KeyValuePair;
 import org.gpavl.datastructuresvisualizationbackend.util.MemoryUtils;
 
 import java.util.ArrayList;
@@ -73,6 +74,27 @@ public class OperationHistoryDto {
     public List<String> getArray(String address) {
         MemorySnapshotDto currentMemorySnapshot = getCurrentMemorySnapshot();
         return (List<String>) currentMemorySnapshot.getAddressObjectMap().get(address);
+    }
+
+    public List<KeyValuePair> getKeyValuePairArray(String address) {
+        MemorySnapshotDto currentMemorySnapshot = getCurrentMemorySnapshot();
+        List<Object> objects = (List<Object>) currentMemorySnapshot.getAddressObjectMap().get(address);
+        return objects.stream().map(obj -> {
+            if (obj == null) {
+                return null;
+            }
+
+            if (obj instanceof KeyValuePair keyValuePair) {
+                return keyValuePair;
+            }else {
+                Map<String, Object> casted = (Map<String, Object>) obj;
+
+                KeyValuePair keyValuePair = new KeyValuePair();
+                keyValuePair.setKey((String) casted.get("key"));
+                keyValuePair.setValue((String) casted.get("value"));
+                return keyValuePair;
+            }
+        }).toList();
     }
 
     public List<Integer> getIntArray(String address) {

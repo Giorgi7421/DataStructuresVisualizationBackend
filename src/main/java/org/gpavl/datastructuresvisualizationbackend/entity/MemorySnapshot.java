@@ -36,7 +36,7 @@ public class MemorySnapshot {
     @ElementCollection
     @CollectionTable(name = "address_objects", schema = "structure", joinColumns = @JoinColumn(name = "memory_snapshot_id"))
     @MapKeyColumn(name = "variable_name")
-    @Column(name = "variable_value")
+    @Column(name = "variable_value", columnDefinition = "TEXT")
     @Convert(converter = ObjectToJsonConverter.class)
     private Map<String, Object> addressObjectMap;
 
