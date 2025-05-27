@@ -4,7 +4,6 @@ import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
-import org.gpavl.datastructuresvisualizationbackend.model.tree.AVLTree;
 import org.gpavl.datastructuresvisualizationbackend.model.tree.BSTree;
 import org.gpavl.datastructuresvisualizationbackend.model.tree.Tree;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
@@ -34,8 +33,7 @@ public class TreeService extends DataStructureService {
         this.operationUtils = operationUtils;
 
         typeMap = Map.of(
-                Type.BS_TREE, BSTree::new,
-                Type.AVL_TREE, AVLTree::new
+                Type.BS_TREE, BSTree::new
         );
     }
 

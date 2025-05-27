@@ -6,10 +6,6 @@ import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.model.map.ArrayMap;
 import org.gpavl.datastructuresvisualizationbackend.model.map.HashMap;
 import org.gpavl.datastructuresvisualizationbackend.model.map.MapType;
-import org.gpavl.datastructuresvisualizationbackend.model.map.TreeMap;
-import org.gpavl.datastructuresvisualizationbackend.model.tree.AVLTree;
-import org.gpavl.datastructuresvisualizationbackend.model.tree.BSTree;
-import org.gpavl.datastructuresvisualizationbackend.model.tree.TreeType;
 import org.gpavl.datastructuresvisualizationbackend.service.MapService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,12 +37,6 @@ public class MapController {
                     name,
                     new ArrayMap()
             );
-
-            case TREE -> mapService.create(
-                    Type.TREE_MAP,
-                    name,
-                    new TreeMap()
-            );
         };
 
         return ResponseEntity.ok(response);
@@ -66,11 +56,6 @@ public class MapController {
 
             case ARRAY -> mapService.findByName(
                     Type.ARRAY_MAP,
-                    name
-            );
-
-            case TREE -> mapService.findByName(
-                    Type.TREE_MAP,
                     name
             );
         };
@@ -94,11 +79,6 @@ public class MapController {
                     Type.ARRAY_MAP,
                     name
             );
-
-            case TREE -> mapService.size(
-                    Type.TREE_MAP,
-                    name
-            );
         };
 
         return ResponseEntity.ok(response);
@@ -120,11 +100,6 @@ public class MapController {
                     Type.ARRAY_MAP,
                     name
             );
-
-            case TREE -> mapService.isEmpty(
-                    Type.TREE_MAP,
-                    name
-            );
         };
 
         return ResponseEntity.ok(response);
@@ -144,11 +119,6 @@ public class MapController {
 
             case ARRAY -> mapService.clear(
                     Type.ARRAY_MAP,
-                    name
-            );
-
-            case TREE -> mapService.clear(
-                    Type.TREE_MAP,
                     name
             );
         };
@@ -178,13 +148,6 @@ public class MapController {
                     key,
                     value
             );
-
-            case TREE -> mapService.put(
-                    Type.TREE_MAP,
-                    name,
-                    key,
-                    value
-            );
         };
 
         return ResponseEntity.ok(response);
@@ -209,12 +172,6 @@ public class MapController {
                     name,
                     key
             );
-
-            case TREE -> mapService.get(
-                    Type.TREE_MAP,
-                    name,
-                    key
-            );
         };
 
         return ResponseEntity.ok(response);
@@ -236,12 +193,6 @@ public class MapController {
 
             case ARRAY -> mapService.containsKey(
                     Type.ARRAY_MAP,
-                    name,
-                    key
-            );
-
-            case TREE -> mapService.containsKey(
-                    Type.TREE_MAP,
                     name,
                     key
             );

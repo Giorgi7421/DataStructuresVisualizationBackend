@@ -3,7 +3,6 @@ package org.gpavl.datastructuresvisualizationbackend.controller;
 import lombok.AllArgsConstructor;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
-import org.gpavl.datastructuresvisualizationbackend.model.tree.AVLTree;
 import org.gpavl.datastructuresvisualizationbackend.model.tree.BSTree;
 import org.gpavl.datastructuresvisualizationbackend.model.tree.TreeType;
 import org.gpavl.datastructuresvisualizationbackend.service.TreeService;
@@ -31,12 +30,6 @@ public class TreeController {
                     name,
                     new BSTree()
             );
-
-            case AVL -> treeService.create(
-                    Type.AVL_TREE,
-                    name,
-                    new AVLTree()
-            );
         };
 
         return ResponseEntity.ok(response);
@@ -51,11 +44,6 @@ public class TreeController {
         Response response = switch (type) {
             case BS -> treeService.findByName(
                     Type.BS_TREE,
-                    name
-            );
-
-            case AVL -> treeService.findByName(
-                    Type.AVL_TREE,
                     name
             );
         };
@@ -73,12 +61,6 @@ public class TreeController {
         Response response = switch (type) {
             case BS -> treeService.insert(
                     Type.BS_TREE,
-                    name,
-                    element
-            );
-
-            case AVL -> treeService.insert(
-                    Type.AVL_TREE,
                     name,
                     element
             );
@@ -100,12 +82,6 @@ public class TreeController {
                     name,
                     element
             );
-
-            case AVL -> treeService.remove(
-                    Type.AVL_TREE,
-                    name,
-                    element
-            );
         };
 
         return ResponseEntity.ok(response);
@@ -124,12 +100,6 @@ public class TreeController {
                     name,
                     element
             );
-
-            case AVL -> treeService.search(
-                    Type.AVL_TREE,
-                    name,
-                    element
-            );
         };
 
         return ResponseEntity.ok(response);
@@ -144,11 +114,6 @@ public class TreeController {
         Response response = switch (type) {
             case BS -> treeService.clear(
                     Type.BS_TREE,
-                    name
-            );
-
-            case AVL -> treeService.clear(
-                    Type.AVL_TREE,
                     name
             );
         };

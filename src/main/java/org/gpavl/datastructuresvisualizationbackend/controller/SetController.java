@@ -30,22 +30,10 @@ public class SetController {
                     new HashSet()
             );
 
-            case TREE -> setService.create(
-                    Type.TREE_SET,
-                    name,
-                    new TreeSet()
-            );
-
             case MOVE_TO_FRONT -> setService.create(
                     Type.MOVE_TO_FRONT_SET,
                     name,
                     new MoveToFrontSet()
-            );
-
-            case SMALL_INT -> setService.create(
-                    Type.SMALL_INT_SET,
-                    name,
-                    new SmallIntSet()
             );
         };
 
@@ -64,18 +52,8 @@ public class SetController {
                     name
             );
 
-            case TREE -> setService.findByName(
-                    Type.TREE_SET,
-                    name
-            );
-
             case MOVE_TO_FRONT -> setService.findByName(
                     Type.MOVE_TO_FRONT_SET,
-                    name
-            );
-
-            case SMALL_INT -> setService.findByName(
-                    Type.SMALL_INT_SET,
                     name
             );
         };
@@ -95,18 +73,8 @@ public class SetController {
                     name
             );
 
-            case TREE -> setService.size(
-                    Type.TREE_SET,
-                    name
-            );
-
             case MOVE_TO_FRONT -> setService.size(
                     Type.MOVE_TO_FRONT_SET,
-                    name
-            );
-
-            case SMALL_INT -> setService.size(
-                    Type.SMALL_INT_SET,
                     name
             );
         };
@@ -126,18 +94,8 @@ public class SetController {
                     name
             );
 
-            case TREE -> setService.isEmpty(
-                    Type.TREE_SET,
-                    name
-            );
-
             case MOVE_TO_FRONT -> setService.isEmpty(
                     Type.MOVE_TO_FRONT_SET,
-                    name
-            );
-
-            case SMALL_INT -> setService.isEmpty(
-                    Type.SMALL_INT_SET,
                     name
             );
         };
@@ -157,18 +115,8 @@ public class SetController {
                     name
             );
 
-            case TREE -> setService.clear(
-                    Type.TREE_SET,
-                    name
-            );
-
             case MOVE_TO_FRONT -> setService.clear(
                     Type.MOVE_TO_FRONT_SET,
-                    name
-            );
-
-            case SMALL_INT -> setService.clear(
-                    Type.SMALL_INT_SET,
                     name
             );
         };
@@ -190,20 +138,8 @@ public class SetController {
                     element
             );
 
-            case TREE -> setService.add(
-                    Type.TREE_SET,
-                    name,
-                    element
-            );
-
             case MOVE_TO_FRONT -> setService.add(
                     Type.MOVE_TO_FRONT_SET,
-                    name,
-                    element
-            );
-
-            case SMALL_INT -> setService.add(
-                    Type.SMALL_INT_SET,
                     name,
                     element
             );
@@ -226,20 +162,8 @@ public class SetController {
                     element
             );
 
-            case TREE -> setService.remove(
-                    Type.TREE_SET,
-                    name,
-                    element
-            );
-
             case MOVE_TO_FRONT -> setService.remove(
                     Type.MOVE_TO_FRONT_SET,
-                    name,
-                    element
-            );
-
-            case SMALL_INT -> setService.remove(
-                    Type.SMALL_INT_SET,
                     name,
                     element
             );
@@ -262,20 +186,8 @@ public class SetController {
                     element
             );
 
-            case TREE -> setService.contains(
-                    Type.TREE_SET,
-                    name,
-                    element
-            );
-
             case MOVE_TO_FRONT -> setService.contains(
                     Type.MOVE_TO_FRONT_SET,
-                    name,
-                    element
-            );
-
-            case SMALL_INT -> setService.contains(
-                    Type.SMALL_INT_SET,
                     name,
                     element
             );

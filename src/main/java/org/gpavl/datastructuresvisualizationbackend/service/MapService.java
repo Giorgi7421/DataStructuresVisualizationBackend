@@ -6,8 +6,6 @@ import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
 import org.gpavl.datastructuresvisualizationbackend.model.map.ArrayMap;
 import org.gpavl.datastructuresvisualizationbackend.model.map.HashMap;
-import org.gpavl.datastructuresvisualizationbackend.model.set.MoveToFrontSet;
-import org.gpavl.datastructuresvisualizationbackend.model.set.Set;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.gpavl.datastructuresvisualizationbackend.security.UserService;
 import org.gpavl.datastructuresvisualizationbackend.util.Converter;
