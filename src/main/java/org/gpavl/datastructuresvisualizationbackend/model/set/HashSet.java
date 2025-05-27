@@ -131,6 +131,7 @@ public class HashSet extends Set {
         String targetNodeAddress = findPreviousNode(operationHistory, bucket, element);
         operationHistory.addLocalVariable("targetNode", targetNodeAddress);
         operationHistory.removeLocalVariable("currentNode");
+        operationHistory.removeLocalVariable("nextNode");
 
         if (targetNodeAddress != null) {
             HashSetNode targetNode = convertToHashSetNode(operationHistory.getObject(targetNodeAddress));
