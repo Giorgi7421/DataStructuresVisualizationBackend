@@ -191,6 +191,7 @@ public class HashMap extends Map {
 
         while (currentNodeAddress != null && !key.equals(currentNode.getKey())) {
             currentNodeAddress = currentNode.getLinkAddress();
+            operationHistory.addLocalVariable("currentNode", currentNodeAddress);
             currentNode = currentNodeAddress != null ? convertToHashMapNode(operationHistory.getObject(currentNodeAddress)) : null;
         }
         return currentNodeAddress;
