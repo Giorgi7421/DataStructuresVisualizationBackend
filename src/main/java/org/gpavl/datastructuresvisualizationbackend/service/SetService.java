@@ -4,6 +4,7 @@ import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
 import org.gpavl.datastructuresvisualizationbackend.model.MemoryHistoryDto;
 import org.gpavl.datastructuresvisualizationbackend.model.Response;
 import org.gpavl.datastructuresvisualizationbackend.model.Type;
+import org.gpavl.datastructuresvisualizationbackend.model.set.HashSet;
 import org.gpavl.datastructuresvisualizationbackend.model.set.MoveToFrontSet;
 import org.gpavl.datastructuresvisualizationbackend.model.set.Set;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
@@ -33,8 +34,8 @@ public class SetService extends DataStructureService {
         this.operationUtils = operationUtils;
 
         typeMap = Map.of(
-                Type.MOVE_TO_FRONT_SET, MoveToFrontSet::new
-                //Type.LINKED_LIST_VECTOR, LinkedListVector::new
+                Type.MOVE_TO_FRONT_SET, MoveToFrontSet::new,
+                Type.HASH_SET, HashSet::new
         );
     }
 

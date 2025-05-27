@@ -100,6 +100,7 @@ public class HashMap extends Map {
 
             String newNodeAddress = operationHistory.addNewObject(newNode);
             targetNodeAddress = newNodeAddress;
+            operationHistory.addLocalVariable("targetNode", targetNodeAddress);
 
             buckets = new ArrayList<>(buckets);
             buckets.set(bucket, newNodeAddress);

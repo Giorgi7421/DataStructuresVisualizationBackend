@@ -5,6 +5,7 @@ import org.gpavl.datastructuresvisualizationbackend.entity.DataStructureState;
 import org.gpavl.datastructuresvisualizationbackend.entity.User;
 import org.gpavl.datastructuresvisualizationbackend.model.*;
 import org.gpavl.datastructuresvisualizationbackend.model.map.HashMapNode;
+import org.gpavl.datastructuresvisualizationbackend.model.set.HashSetNode;
 import org.gpavl.datastructuresvisualizationbackend.repository.DataStructureRepository;
 import org.gpavl.datastructuresvisualizationbackend.security.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -130,6 +131,13 @@ public class MemoryUtils {
         hashMapNode.setValue((String) obj.get("value"));
         hashMapNode.setLinkAddress((String) obj.get("linkAddress"));
         return hashMapNode;
+    }
+
+    public static HashSetNode convertToHashSetNode(Map<String, Object> obj) {
+        HashSetNode hashSetNode = new HashSetNode();
+        hashSetNode.setElement((String) obj.get("element"));
+        hashSetNode.setLinkAddress((String) obj.get("linkAddress"));
+        return hashSetNode;
     }
 
     public static int getCount(OperationHistoryDto operationHistory) {
